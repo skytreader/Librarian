@@ -1,6 +1,6 @@
 <?php
 
-require_once("dbconfigs.php");
+require_once(APPPATH . "dbconfigs.php");
 require_once(APPPATH . "app_constants.php");
 require_once(ARC_CONSTANTS_PATH . "architecture_constants.php");
 
