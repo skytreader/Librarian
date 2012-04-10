@@ -4,7 +4,7 @@ class Home extends CI_Controller {
 	
 	public function index(){
 		$data["title"] = "Home";
-		$data["content"] = "searchbox.php";
+		$data["content"] = "content/searchbox.php";
 		$this->load->helper("url");
 		$this->load->view("mainview", $data);
 	}

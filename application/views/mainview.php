@@ -11,7 +11,13 @@
 			<img src="<?php echo base_url();?>images/librarian.png" />
 			<?php include("navbox.php"); ?>
 			<div class="content_box">
-				<?php include($content); ?>
+				<?php
+					if(isset($echo_content) && $echo_content){
+						echo $content;
+					} else{
+						include($content);
+					}
+				?>
 			</div>
 		</div>
 	</body>

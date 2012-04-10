@@ -3,8 +3,10 @@
 
 <?php
 $this->load->helper("form");
-$search_form_attributes = array("method" => "get",
-                                "id" => "book_search");
+//Method is get so results are bookmark-able.
+$search_form_attributes["method"] = "get";
+$search_form_attributes["id"] = "book_search";
+$search_form_attributes["action"] = "search/";
 echo form_open("search", $search_form_attributes);
 ?>
 
@@ -16,20 +18,21 @@ echo form_open("search", $search_form_attributes);
 </tr>
 <tr>
 	<td>
-		<?php			
-			$book_fields["title"] = "Title";
-			$book_fields["author"] = "Author";
-			$book_fields["publisher"] = "Publisher";
-			$book_fields["isbn"] = "ISBN";
+		<?php	
+			require_once(APPPATH . "controllers/search.php");
+			$book_fields[Search::TITLE] = "Title";
+			$book_fields[Search::AUTHOR] = "Author";
+			$book_fields[Search::PUBLISHER] = "Publisher";
+			$book_fields[Search::ISBN] = "ISBN";
 			
 			$bookfield_attributes = 'class="search"';
 			
-			echo form_dropdown("bookfield", $book_fields, "title", $bookfield_attributes);
+			echo form_dropdown(Search::SEARCH_TYPE, $book_fields, "title", $bookfield_attributes);
 		?>
 	</td>
 	<td>
 		<?php
-			$query_attributes["name"] = "query";
+			$query_attributes["name"] = Search::SEARCH_QUERY;
 			$query_attributes["class"] = "search";
 			$query_attributes["value"] = "";
 			$query_attributes["size"] = "60";
