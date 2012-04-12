@@ -1,7 +1,11 @@
 <?php
 
 require_once(APPPATH . "dbconfigs.php");
+require_once(APPPATH . "app_constants.php");
 
+/**
+Handles login feature of Librarian.
+*/
 class Login extends CI_Controller{
 	
 	public function index(){
@@ -12,12 +16,7 @@ class Login extends CI_Controller{
 	}
 	
 	public function dashboard(){
-		$this->load->model("LoginModel");
-		if($this->LoginModel->verify($_POST["username"], $_POST["password"])){
-			echo "Login success!";
-		} else{
-			echo "Login failed";
-		}
+		
 	}
 	
 }

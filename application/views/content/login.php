@@ -1,6 +1,6 @@
 <?php 
 $this->load->helper("form");
-echo form_open("login/dashboard"); ?>
+echo form_open("dashboard"); ?>
 	Username:<br />
 	<input type="text" id="username" name="username" /><br />
 	Password:<br />

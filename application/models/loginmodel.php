@@ -14,7 +14,7 @@ class LoginModel extends CI_Model{
 	public function verify($username, $password){
 		$this->load->database(DSN);
 		$password = hash(HASH_FUNCTION, $password);
-		$user_query = "SELECT * FROM librarians WHERE username = ? AND password = ?;";
+		$user_query = "SELECT * FROM librarians WHERE username = ? AND password = ? LIMIT 1;";
 		$query_result = $this->db->query($user_query, array($username, $password));
 		
 		if($query_result->num_rows() == 1){
