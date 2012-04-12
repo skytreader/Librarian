@@ -5,6 +5,8 @@ require_once(APPPATH . "app_constants.php");
 
 /**
 Handles login feature of Librarian.
+
+@author Chad Estioco
 */
 class Login extends CI_Controller{
 	

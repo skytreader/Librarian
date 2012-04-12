@@ -1,5 +1,17 @@
 <?php
 	require_once(APPPATH . "app_constants.php");
+/**
+This view requires the following variables to be defined:
+  >$title - displayed at the title bar of the browser
+  >$content - can either be the URL of a page to include or text
+   to be echoed
+
+Additionally, if the $content contains text to be echoed, users of this
+view must set a variable $echo_content to TRUE.
+
+For navbox.php, you also need to specify the variable $logged_in,
+to determine if we should display the logged-in navbar.
+*/
 ?>
 <html>
 	<head>
