@@ -15,8 +15,6 @@ class Dashboard extends CI_Controller{
 	Tests:
 	  -Check behavior when visited and user is not logged in
 	  -Check behavior when visited and user is logged in
-	
-	TODO: Fix behavior when user returns to dashboard after initial log in.
 	*/
 	public function index(){
 		$this->load->model("LoginModel");
