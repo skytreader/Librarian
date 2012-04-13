@@ -28,6 +28,7 @@ class Dashboard extends CI_Controller{
 			
 			$this->load->library("session");
 			$this->session->set_userdata($user_session);
+			$is_logged_in = TRUE;
 		} else{
 			//Just load some views here.
 		}
