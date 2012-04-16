@@ -10,6 +10,9 @@ Handles login feature of Librarian.
 */
 class Login extends CI_Controller{
 	
+	/**
+	TODO: Abstract these two functions!
+	*/
 	public function index(){
 		$data["title"] = "Login";
 		$data["content"] = "content/login.php";
@@ -17,6 +20,13 @@ class Login extends CI_Controller{
 		$this->load->view("mainview", $data);
 	}
 	
+	public function fail(){
+		$data["title"] = "Login";
+		$data["content"] = "content/login.php";//?" . FLAG_LOGIN_FAIL . "=true";
+		$data["fail"] = TRUE;
+		$this->load->helper("url");
+		$this->load->view("mainview", $data);
+	}
 }
 
 ?>

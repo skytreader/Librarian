@@ -1,6 +1,7 @@
 <?php
 
 require_once(APPPATH . "app_constants.php");
+require_once("login.php");
 
 /**
 This controller handles what the user will see upon
@@ -31,6 +32,8 @@ class Dashboard extends CI_Controller{
 			$is_logged_in = TRUE;
 		} else{
 			//Just load some views here.
+			$this->load->helper("url");
+			redirect("login/fail");
 		}
 		
 		if($is_logged_in){
