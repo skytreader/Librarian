@@ -6,7 +6,6 @@ $this->load->helper("form");
 //Method is get so results are bookmark-able.
 $search_form_attributes["method"] = "get";
 $search_form_attributes["id"] = "book_search";
-$search_form_attributes["action"] = "search/";
 echo form_open("search", $search_form_attributes);
 ?>
 

@@ -1,6 +1,7 @@
 <?php
 
 require_once("utility/resultprinter.php");
+require_once(APPPATH . "app_constants.php");
 
 /**
 This controller is for displaying the search results. The actual
@@ -35,6 +36,7 @@ class Search extends CI_Controller{
 	}
 	
 	private function display($search_method, $search_query){
+		$this->load->library("session");
 		$printer = new ResultPrinter();
 		
 		$this->load->model($search_method);
@@ -42,6 +44,7 @@ class Search extends CI_Controller{
 		$data["title"] = "Search Results";
 		$data["echo_content"] = TRUE;
 		$data["content"] = $printer->print_results($search_results);
+		$data["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
 		$this->load->helper("url");
 		$this->load->view("mainview", $data);
 	}
