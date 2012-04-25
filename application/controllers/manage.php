@@ -20,6 +20,10 @@ class Manage extends CI_Controller{
 		
 	}
 	
+	/**
+	TODO: Check validity of ISBN input upon form submission.
+	(Or, maybe, we can use JavaScript for this?)
+	*/
 	public function books(){
 		$view_data["title"] = "Manage Books";
 		

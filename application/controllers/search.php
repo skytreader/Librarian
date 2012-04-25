@@ -10,6 +10,8 @@ controller for the search form is home.php .
 The SEARCH_TYPE and SEARCH_QUERY will be passed as $_GET variables
 to the index of this controller. The index then calls the function
 display to "prepare" the results for a view.
+
+TODO: Use CI's Pagination class to break down results into pages.
 */
 class Search extends CI_Controller{
 	
