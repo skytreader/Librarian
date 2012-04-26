@@ -6,6 +6,7 @@
 		<a href="<?php echo base_url() . 'index.php/dashboard'; ?>" class="navbox">Dashboard</a>
 		<a href="manage/users" class="navbox">Manage Users</a>
 		<a href="manage/books" class="navbox">Manage Books</a>
+		<a href="<?php echo base_url() . 'index.php/settings'; ?>" class="navbox">Account Settings</a>
 	<?php }else{ ?>
 		<!--No need to call base_url() here since we are sure that this will only appear iff
 		the user isn't logged-in, and therefore the "subdirectoried" URLs are not accessible-->

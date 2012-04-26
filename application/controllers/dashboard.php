@@ -22,30 +22,37 @@ class Dashboard extends CI_Controller{
 		$this->load->library("session");
 		
 		$is_logged_in = $this->session->userdata(SESSION_LOGGED_IN);
+		$is_verified = isset($_POST["username"]) &&
+		               isset($_POST["password"]) &&
+		               $this->LoginModel->verify($_POST["username"], $_POST["password"]);
 		
-		if(!$is_logged_in && $this->LoginModel->verify($_POST["username"], $_POST["password"])){
+		if(!$is_logged_in && $is_verified){
 			$user_session[SESSION_USERNAME] = $_POST["username"];
 			$user_session[SESSION_LOGGED_IN] = TRUE;
 			
 			$this->load->library("session");
 			$this->session->set_userdata($user_session);
 			$is_logged_in = TRUE;
-		} else{
+			$this->display_logged_in_view();
+		} elseif($is_logged_in){
+			$this->display_logged_in_view();
+		} elseif(!$is_verified){
 			//Just load some views here.
 			$this->load->helper("url");
 			redirect("login/fail");
-		}
-		
-		if($is_logged_in){
-			$page_data["echo_content"] = TRUE;
-			$page_data["content"] = "<h1>Welcome to your Dashboard</h1>";
-			$page_data["title"] = "Dashboard";
-			$page_data["logged_in"] = TRUE;
-			$this->load->helper("url");
-			$this->load->view("mainview", $page_data);
+		} else{
+			//User visited the dashboard URL without logging in.
 		}
 	}
 	
+	private function display_logged_in_view(){
+		$page_data["echo_content"] = TRUE;
+		$page_data["content"] = "<h1>Welcome to your Dashboard</h1>";
+		$page_data["title"] = "Dashboard";
+		$page_data["logged_in"] = TRUE;
+		$this->load->helper("url");
+		$this->load->view("mainview", $page_data);
+	}
 }
 
 ?>
