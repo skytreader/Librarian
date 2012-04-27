@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2012 at 09:25 AM
+-- Generation Time: Apr 27, 2012 at 04:57 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -36,6 +36,11 @@ CREATE TABLE IF NOT EXISTS `authored` (
 -- Dumping data for table `authored`
 --
 
+INSERT INTO `authored` (`isbn`, `personid`) VALUES
+('0000000000000', 2),
+('0000000000001', 2),
+('1415926535897', 3),
+('9780062001719', 1);
 
 -- --------------------------------------------------------
 
@@ -66,12 +71,16 @@ CREATE TABLE IF NOT EXISTS `bookpersons` (
   `lastname` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
   PRIMARY KEY (`personid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `bookpersons`
 --
 
+INSERT INTO `bookpersons` (`personid`, `lastname`, `firstname`) VALUES
+(1, 'Huxley', 'Aldous'),
+(2, 'Gaiman', 'Neil'),
+(3, 'Gaiman', 'Someone Else');
 
 -- --------------------------------------------------------
 
@@ -90,6 +99,11 @@ CREATE TABLE IF NOT EXISTS `books` (
 -- Dumping data for table `books`
 --
 
+INSERT INTO `books` (`isbn`, `title`, `year`) VALUES
+('9780062001719', 'Brave New World, A', 2010),
+('0000000000000', 'Preludes and Nocturnes', 2011),
+('0000000000001', 'Game of You, A', 2012),
+('1415926535897', 'Fake Book', 2012);
 
 -- --------------------------------------------------------
 
@@ -152,9 +166,10 @@ CREATE TABLE IF NOT EXISTS `illustrated` (
 
 CREATE TABLE IF NOT EXISTS `librarians` (
   `librarianid` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) UNIQUE NOT NULL,
+  `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`librarianid`)
+  PRIMARY KEY (`librarianid`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
