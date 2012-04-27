@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS books(
 	isbn VARCHAR(13) PRIMARY KEY,
-	title VARCHAR(255) NOT NULL,
-	year INTEGER NOT NULL
+	title VARCHAR(255) NOT NULL
 ) ENGINE = MYISAM;
 
 CREATE TABLE IF NOT EXISTS publishers(
@@ -12,6 +11,7 @@ CREATE TABLE IF NOT EXISTS publishers(
 CREATE TABLE IF NOT EXISTS published(
 	isbn VARCHAR(13),
 	publisherid INTEGER,
+	year INTEGER NOT NULL
 	FOREIGN KEY (isbn) REFERENCES books,
 	FOREIGN KEY (publisherid) REFERENCES publishers,
 	PRIMARY KEY (isbn, publisherid)
@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS printed(
 CREATE TABLE IF NOT EXISTS bookpersons(
 	personid INTEGER PRIMARY KEY AUTO_INCREMENT,
 	lastname VARCHAR(255) NOT NULL,
-	firstname VARCHAR(255) NOT NULL
+	firstname VARCHAR(255) NOT NULL,
+	CONSTRAINT uniqueNames UNIQUE (lastname, firstname)
 ) ENGINE = MYISAM;
 
 CREATE TABLE IF NOT EXISTS authored(
@@ -68,6 +69,9 @@ CREATE TABLE IF NOT EXISTS illustrated(
 	PRIMARY KEY (isbn, personid)
 ) ENGINE = MYISAM;
 
+/**
+Is this table ever going into any use?
+*/
 CREATE TABLE IF NOT EXISTS pseudonyms(
 	personid INTEGER,
 	isbn VARCHAR(13),

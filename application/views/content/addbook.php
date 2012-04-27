@@ -18,9 +18,10 @@
 <label for="illustrators">Illustrator(s):</label><br /><input type="text" id="illustrators" /><br />
 <label for="editors">Editor(s):</label><br /><input type="text" id="editors" /><br /><br />
 
-<h2>Auxilliary Information</h2>
+<h2>Publishing Information</h2>
 <label for="publisher">Publisher:</label><br /><input type="text" id="publisher" /><br />
-<lable for="printer">Printer:</label><br /><input type="text" id="printer" /><br />
+<label for="printer">Printer:</label><br /><input type="text" id="printer" /><br />
+<label for="year">Year:</label><br /><input type="text" id="year" /><br />
 <br /><input type="submit" value="Add Book" />
 
 <?php echo form_close(); ?>

@@ -42,7 +42,7 @@ class AuthorSearch extends CI_Model implements BookSearch{
 		$lastname = $exploded[$i];
 		
 		global $dbconfigs;
-		$this->load->database(DSN);
+		$this->load->database(BOOKS_DSN);
 		
 		if($firstname == ""){
 			//Lastname-only search

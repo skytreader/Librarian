@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 27, 2012 at 04:57 PM
+-- Generation Time: Apr 27, 2012 at 09:54 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -70,8 +70,9 @@ CREATE TABLE IF NOT EXISTS `bookpersons` (
   `personid` int(11) NOT NULL AUTO_INCREMENT,
   `lastname` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
-  PRIMARY KEY (`personid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  PRIMARY KEY (`personid`),
+  UNIQUE KEY `uniqueNames` (`lastname`,`firstname`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `bookpersons`
@@ -80,7 +81,8 @@ CREATE TABLE IF NOT EXISTS `bookpersons` (
 INSERT INTO `bookpersons` (`personid`, `lastname`, `firstname`) VALUES
 (1, 'Huxley', 'Aldous'),
 (2, 'Gaiman', 'Neil'),
-(3, 'Gaiman', 'Someone Else');
+(3, 'Gaiman', 'Someone Else'),
+(4, 'Huxley', 'Aldus');
 
 -- --------------------------------------------------------
 
@@ -91,7 +93,6 @@ INSERT INTO `bookpersons` (`personid`, `lastname`, `firstname`) VALUES
 CREATE TABLE IF NOT EXISTS `books` (
   `isbn` varchar(13) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `year` int(11) NOT NULL,
   PRIMARY KEY (`isbn`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -99,11 +100,11 @@ CREATE TABLE IF NOT EXISTS `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`isbn`, `title`, `year`) VALUES
-('9780062001719', 'Brave New World, A', 2010),
-('0000000000000', 'Preludes and Nocturnes', 2011),
-('0000000000001', 'Game of You, A', 2012),
-('1415926535897', 'Fake Book', 2012);
+INSERT INTO `books` (`isbn`, `title`) VALUES
+('9780062001719', 'Brave New World, A'),
+('0000000000000', 'Preludes and Nocturnes'),
+('0000000000001', 'Game of You, A'),
+('1415926535897', 'Fake Book');
 
 -- --------------------------------------------------------
 
@@ -243,6 +244,7 @@ CREATE TABLE IF NOT EXISTS `pseudonyms` (
 CREATE TABLE IF NOT EXISTS `published` (
   `isbn` varchar(13) NOT NULL DEFAULT '',
   `publisherid` int(11) NOT NULL DEFAULT '0',
+  `year` int(11) NOT NULL,
   PRIMARY KEY (`isbn`,`publisherid`),
   KEY `publisherid` (`publisherid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
