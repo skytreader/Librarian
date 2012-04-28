@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 27, 2012 at 09:54 PM
+-- Generation Time: Apr 28, 2012 at 04:51 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -207,7 +207,8 @@ CREATE TABLE IF NOT EXISTS `printed` (
 CREATE TABLE IF NOT EXISTS `printers` (
   `printerid` int(11) NOT NULL AUTO_INCREMENT,
   `printername` varchar(255) NOT NULL,
-  PRIMARY KEY (`printerid`)
+  PRIMARY KEY (`printerid`),
+  UNIQUE KEY `printername` (`printername`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
@@ -263,7 +264,8 @@ CREATE TABLE IF NOT EXISTS `published` (
 CREATE TABLE IF NOT EXISTS `publishers` (
   `publisherid` int(11) NOT NULL AUTO_INCREMENT,
   `publishername` varchar(255) NOT NULL,
-  PRIMARY KEY (`publisherid`)
+  PRIMARY KEY (`publisherid`),
+  UNIQUE KEY `publishername` (`publishername`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
