@@ -7,10 +7,11 @@ TODO: Maybe, it's a bad idea to generalize the add function?
 Code looks messy!
 Model that handles all the add functions in Librarian.
 
-TODO: Decide on how to implement db-content passing.
-TODO: Examine query results and react accordingly.
+TODO: Examine query results and react accordingly for errors, etc.
+TODO: Not all names may be parseable as firstname, lastname. This is
+a western concept. Handle this.
 */
-class Add extends CI_Model{
+class AddBook extends CI_Model{
 
 	public function book($isbn, $title, $authors, $illustrators,
 	                     $editors, $publisher, $printer, $year){
@@ -25,12 +26,18 @@ class Add extends CI_Model{
 		$this->insert_persons($authors, $add_bookperson_query);
 		$this->insert_persons($illustrators, $add_bookperson_query);
 		$this->insert_persons($editors, $add_bookperson_query);
-		$add_publisher_result = $this->db->query($add_publisher_query, array($publisher));
-		$add_printer_result = $this->db->query($add_printer_query, array($printer));
+		
+		$publisher_array = array($publisher);
+		if($this->check_not_exits("publishers", "publishername = ?", $publisher_array)){
+			$add_publisher_result = $this->db->query($add_publisher_query, $publisher_array);
+		}
+		
+		$printer_array = array($printer);
+		if($this->check_not_exists("printers", "printername = ?", $printer_array)){
+			$add_printer_result = $this->db->query($add_printer_query, $printer_array);
+		}
 		
 		//Relate the added values to each other
-		//TODO: Modify database so that we are sure that only unique publisher/printer names
-		//get entered into the database.
 		$make_authored_query = "INSERT INTO authored (isbn, personid) VALUES (?,?);";
 		$make_illustrated_query = "INSERT INTO illustrated (isbn, personid) VALUES (?,?);";
 		$make_edited_query = "INSERT INTO edited (isbn, personid) VALUES (?,?);";
@@ -52,6 +59,15 @@ class Add extends CI_Model{
 	}
 	
 	/**
+	Checks if a certain combination of values exist $in_table.
+	*/
+	private function check_not_exists($in_table, $where_clause, $values){
+		$query_statement = "SELECT * FROM $in_table WHERE $where_clause LIMIT 1;";
+		$query_result = $this->db->query($query_statement, $values);
+		return $query_result->count_rows() = 0;
+	}
+	
+	/**
 	Parses user input of $authors, $illustrators, and $editors. Presently,
 	we are assuming that the format of names is in Lastname, Firstname(s)
 	and delimited by semicolons. In future iterations, we need to check the
@@ -65,9 +81,13 @@ class Add extends CI_Model{
 		
 		foreach($persons_split as $person){
 			$name_parse = explode(",", $person);
-			//Working under assumptions...
+			//Working under alphabet assumptions...
 			$lastname = trim($name_parse[0]);
 			$firstname = trim($name_parse[1]);
+			
+			//Check if person is already in the database
+			
+			
 			$insert_person = $this->db->query($insertion_query, array($lastname, $firstname));
 		}
 	}
