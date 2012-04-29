@@ -18,7 +18,7 @@ class Addbook extends CI_Model{
 			$add_book_query = "INSERT INTO books (isbn, title) VALUES (?,?);";
 			$add_bookperson_query = "INSERT INTO bookpersons (lastname, firstname) VALUES (?,?);";
 			$add_publisher_query = "INSERT INTO publishers (publishername) VALUES (?);";
-			$add_printer_query = "INSERT_INTO printers (printername) VALUES (?);";
+			$add_printer_query = "INSERT INTO printers (printername) VALUES (?);";
 			
 			//Insert values into the database
 			$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
@@ -49,6 +49,16 @@ class Addbook extends CI_Model{
 			$this->relate_to_persons($illustrator_personids, $isbn, $make_illustrated_query);
 			$editor_personids = $this->get_personids(explode(";", $editors));
 			$this->relate_to_persons($editor_personids, $isbn, $make_edited_query);
+			
+			//Now relate the publisher and printer
+			$publisherid_query = "SELECT publisherid FROM publishers WHERE publishername = ? LIMIT 1;";
+			$publisherid_action = $this->db->query($publisherid_query, array($publisher));
+			$publisherid = $publisherid_action->row()->publisherid;
+			$printerid_query = "SELECT printerid FROM printers WHERE printername = ? LIMIT 1;";
+			$printerid_action = $this->db->query($printerid_query, array($printer));
+			$printerid = $printerid_action->row()->printerid;
+			$this->db->query($make_published_query, array($isbn, $publisherid, $year));
+			$this->db->query($make_printed_query, array($isbn, $printerid));
 			
 			return TRUE;
 		} catch(Exception $e){
