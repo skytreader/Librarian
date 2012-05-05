@@ -1,5 +1,7 @@
-==This is an example README.md for the Github repo==
+This is just a test GitHub project for me. Trying to learn both CodeIgniter
+and git.
 
-''This text is italic''
-
-I'm just trying this out...
+I intend to use this personally and, as such, my branch of development will
+not focus on things which an actual library might need such as keeping tab
+on library members and borrowed books. For the most part, it is just an
+interface to a book database designed by me.
