@@ -8,6 +8,9 @@
 body {
 	background-color: #4c4039;
 	font-family: Arial, Helvetica, sans-serif;
+	position: absolute;
+	height: 100%;
+	width: 100%;
 }
 
 h1 {
@@ -27,6 +30,7 @@ p, .text {
 	font-family: Arial, Helvetica, sans-serif;
 	text-align: justify;
 	padding-bottom: 8px;
+	padding-right: 10px;
 	color: #000000;
 }
 
@@ -60,9 +64,30 @@ div.navbox{
 	padding-bottom: 5px;
 }
 
+div.block{
+	float: left;
+	padding: 5px;
+	margin: 3px;
+}
+
 a.navbox{
 	color: #ffffff;
 	word-spacing: normal;
+}
+
+table.booklist{
+	margin-left: 3%;
+	margin-right: 3%;
+	width: 94%
+}
+
+table.booklist, tr.booklist{
+	border: solid 1px;
+}
+
+td.booklist{
+	border: solid 1px;
+	padding: 3px;
 }
 
 /**
@@ -80,6 +105,11 @@ div.account_box{
 /*Forms*/
 input.search, select.search, option.search {
 	font-size: 16px;
+}
+
+input.btn {
+	padding: 3px;
+	border: solid 1px;
 }
 
 /*Images*/

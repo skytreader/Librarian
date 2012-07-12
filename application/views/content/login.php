@@ -9,5 +9,5 @@ echo form_open("dashboard"); ?>
 	<input type="text" id="username" name="username" /><br />
 	Password:<br />
 	<input type="password" id="password" name="password" /><br />
-	<input type="submit" value="Log-in" />
+	<input type="submit" class="btn" value="Log-in" />
 </form>

@@ -14,6 +14,8 @@ For navbox.php, you also need to specify the variable $logged_in,
 to determine if we should display the logged-in navbar.
 */
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
 		<title><?php echo APP_TITLE . " - " . $title; ?></title>

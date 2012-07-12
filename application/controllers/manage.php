@@ -34,6 +34,7 @@ class Manage extends CI_Controller{
 			$view_data["content"] = "content/not_logged_in.php";
 		}
 		
+		$this->load->library("javascript");
 		$this->load->view("mainview", $view_data);
 	}
 	

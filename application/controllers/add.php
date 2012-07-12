@@ -1,5 +1,8 @@
 <?php
 
+/**
+Adds books to the database.
+*/
 class Add extends CI_Controller{
 
 	public function book(){
