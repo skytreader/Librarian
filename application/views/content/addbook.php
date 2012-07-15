@@ -3,13 +3,15 @@
 
 <div>
 
-<!--TODO: Consider using a 3-column table for displaying these fields-->
+<form id="detailsForm" action="" method="">
 <div class="block">
 	<h2>Book Information</h2>
 	<label for="isbn">ISBN:*</label><br />
-	<input type="text" id="isbn" name="isbn" maxlength="13" /><br />
-	<label for="title">Title:*</label><br /><input type="text" id="title" name="title" /><br />
-	<label for="genre">Genre:*</label><br /><input type="text" id="genre" name="genre" /><br />
+	<input type="text" id="isbn" class="required" name="isbn" maxlength="13" /><br />
+	<label for="title">Title:*</label><br />
+	<input type="text" id="title" class="required" name="title" /><br />
+	<label for="genre">Genre:*</label><br />
+	<input type="text" id="genre" class="required" name="genre" /><br />
 </div>
 
 <div class="block">
@@ -22,13 +24,17 @@
 
 <div class="block">
 	<h2>Publishing Information</h2>
-	<label for="publisher">Publisher:*</label><br /><input type="text" id="publisher" name="publisher" /><br />
-	<label for="printer">Printer:*</label><br /><input type="text" id="printer" name="printer" /><br />
-	<label for="year">Year:*</label><br /><input type="text" id="year" name="year" /><br />
+	<label for="publisher">Publisher:*</label><br />
+	<input type="text" id="publisher" class="required" name="publisher" /><br />
+	<label for="printer">Printer:*</label><br />
+	<input type="text" id="printer" class="required" name="printer" /><br />
+	<label for="year">Year:*</label><br />
+	<input type="text" id="year" class="required" name="year" /><br />
 </div>
 <div>
-	<br /><input type="submit" value="List Book" class="btn" />
+	<br /><input type="button" name="add" value="List Book" class="btn" />
 </div>
+</form>
 
 </div>
 <div style="clear: both;">

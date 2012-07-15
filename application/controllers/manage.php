@@ -27,6 +27,7 @@ class Manage extends MainController{
 	*/
 	public function books(){
 		$this->data_bundle["title"] = "Manage Books";
+		array_push($this->data_bundle["scripts"], "jquery.js", "jquery.validate.min.js", "manage/ready.js");
 		
 		if($this->is_logged_in){
 			$this->data_bundle["content"] = "content/addbook.php";

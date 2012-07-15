@@ -23,13 +23,13 @@ to determine if we should display the logged-in navbar.
 		<link rel="stylesheet" type="text/css" href="css/librariantheme.css" />
 		<?php
 			foreach($stylesheets as $style){
-				echo '<link rel="stylesheet" type="text/css" href="css/$style" />"';
+				echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/$style\" />";
 			}
 		?>
 		
 		<?php
 			foreach($scripts as $script){
-				echo '<script type="text/javascript" src="scripts/$script"></script>"';
+				echo "<script type=\"text/javascript\" src=\"scripts/$script\"></script>";
 			}
 		?>
 	</head>
