@@ -22,7 +22,7 @@ from CI_Controller.
 */
 class MainController extends CI_Controller{
 	
-	static protected $data_bundle;
+	protected $data_bundle = array();
 	
 	/**
 	All classes that will extend MainController should have their own constructors
@@ -30,11 +30,11 @@ class MainController extends CI_Controller{
 	*/
 	public function __construct(){
 		parent::__construct();
-		$data_bundle["title"] = "";
-		$data_bundle["content"] = "";
-		$data_bundle["stylesheets"] = "";
-		$data_bundle["scripts"] = "";
-		$data_bundle["echo_content"] = true;
+		$this->data_bundle["title"] = "";
+		$this->data_bundle["content"] = "";
+		$this->data_bundle["stylesheets"] = array();
+		$this->data_bundle["scripts"] = array();
+		$this->data_bundle["echo_content"] = false;
 	}
 	
 }

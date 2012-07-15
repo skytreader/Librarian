@@ -48,12 +48,12 @@ class Search extends MainController{
 		
 		$this->load->model($search_method);
 		$search_results = $this->$search_method->search($search_query)->result();
-		parent::$data_bundle["title"] = "Search Results";
-		parent::$data_bundle["echo_content"] = TRUE;
-		parent::$data_bundle["content"] = $printer->print_results($search_results);
-		parent::$data_bundle["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
+		$this->data_bundle["title"] = "Search Results";
+		$this->data_bundle["echo_content"] = TRUE;
+		$this->data_bundle["content"] = $printer->print_results($search_results);
+		$this->data_bundle["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
 		$this->load->helper("url");
-		$this->load->view("mainview", parent::$data_bundle);
+		$this->load->view("mainview", $this->data_bundle);
 	}
 	
 	

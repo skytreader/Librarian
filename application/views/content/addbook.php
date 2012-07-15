@@ -6,22 +6,25 @@
 <!--TODO: Consider using a 3-column table for displaying these fields-->
 <div class="block">
 	<h2>Book Information</h2>
-	<label for="isbn">ISBN:</label><br /><input type="text" id="isbn" name="isbn" maxlength="13" /><br />
-	<label for="title">Title:</label><br /><input type="text" id="title" name="title" /><br /><br />
+	<label for="isbn">ISBN:*</label><br />
+	<input type="text" id="isbn" name="isbn" maxlength="13" /><br />
+	<label for="title">Title:*</label><br /><input type="text" id="title" name="title" /><br />
+	<label for="genre">Genre:*</label><br /><input type="text" id="genre" name="genre" /><br />
 </div>
 
 <div class="block">
 	<h2>Content Creators</h2>
 	<label for="authors">Author(s):</label><br /><input type="text" id="authors" name="authors" /><br />
 	<label for="illustrators">Illustrator(s):</label><br /><input type="text" id="illustrators" name="illustrators" /><br />
-	<label for="editors">Editor(s):</label><br /><input type="text" id="editors" name="editors" /><br /><br />
+	<label for="editors">Editor(s):</label><br /><input type="text" id="editors" name="editors" /><br />
+	<label for="translators">Translator(s):</label><br /><input type="text" id="translators" name="translators" /><br /><br />
 </div>
 
 <div class="block">
 	<h2>Publishing Information</h2>
-	<label for="publisher">Publisher:</label><br /><input type="text" id="publisher" name="publisher" /><br />
-	<label for="printer">Printer:</label><br /><input type="text" id="printer" name="printer" /><br />
-	<label for="year">Year:</label><br /><input type="text" id="year" name="year" /><br />
+	<label for="publisher">Publisher:*</label><br /><input type="text" id="publisher" name="publisher" /><br />
+	<label for="printer">Printer:*</label><br /><input type="text" id="printer" name="printer" /><br />
+	<label for="year">Year:*</label><br /><input type="text" id="year" name="year" /><br />
 </div>
 <div>
 	<br /><input type="submit" value="List Book" class="btn" />

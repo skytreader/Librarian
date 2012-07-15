@@ -2,13 +2,14 @@
 
 require_once(APPPATH . "dbconfigs.php");
 require_once(APPPATH . "app_constants.php");
+require_once("maincontroller.php");
 
 /**
 Handles login feature of Librarian.
 
 @author Chad Estioco
 */
-class Login extends CI_Controller{
+class Login extends MainController{
 	
 	public function __construct(){
 		parent::__construct();
@@ -18,18 +19,18 @@ class Login extends CI_Controller{
 	TODO: Abstract these two functions!
 	*/
 	public function index(){
-		parent::$data_bundle["title"] = "Login";
-		parent::$data_bundle["content"] = "content/login.php";
+		$this->data_bundle["title"] = "Login";
+		$this->data_bundle["content"] = "content/login.php";
 		$this->load->helper("url");
-		$this->load->view("mainview", parent::$data_bundle);
+		$this->load->view("mainview", $this->data_bundle);
 	}
 	
 	public function fail(){
-		parent::$data_bundle["title"] = "Login";
-		parent::$data_bundle["content"] = "content/login.php";//?" . FLAG_LOGIN_FAIL . "=true";
-		parent::$data_bundle["fail"] = TRUE;
+		$this->data_bundle["title"] = "Login";
+		$this->data_bundle["content"] = "content/login.php";//?" . FLAG_LOGIN_FAIL . "=true";
+		$this->data_bundle["fail"] = TRUE;
 		$this->load->helper("url");
-		$this->load->view("mainview", parent::$data_bundle);
+		$this->load->view("mainview", $this->data_bundle);
 	}
 }
 

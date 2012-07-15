@@ -15,14 +15,14 @@ class About extends MainController{
 	}
 	
 	public function index(){
-		parent::$data_bundle["title"] = "About";
-		parent::$data_bundle["content"] = "content/about.php";
+		$this->data_bundle["title"] = "About";
+		$this->data_bundle["content"] = "content/about.php";
 		
 		$this->load->library("session");
-		parent::$data_bundle["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
+		$this->data_bundle["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
 		
 		$this->load->helper("url");
-		$this->load->view("mainview", parent::$data_bundle);
+		$this->load->view("mainview", $this->data_bundle);
 	}
 	
 }

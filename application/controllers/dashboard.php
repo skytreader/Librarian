@@ -51,12 +51,12 @@ class Dashboard extends MainController{
 	}
 	
 	private function display_logged_in_view(){
-		parent::$data_bundle["echo_content"] = TRUE;
-		parent::$data_bundle["content"] = "<h1>Welcome to your Dashboard</h1>";
-		parent::$data_bundle["title"] = "Dashboard";
-		parent::$data_bundle["logged_in"] = TRUE;
+		$this->data_bundle["echo_content"] = TRUE;
+		$this->data_bundle["content"] = "<h1>Welcome to your Dashboard</h1>";
+		$this->data_bundle["title"] = "Dashboard";
+		$this->data_bundle["logged_in"] = TRUE;
 		$this->load->helper("url");
-		$this->load->view("mainview", parent::$data_bundle);
+		$this->load->view("mainview", $this->data_bundle);
 	}
 }
 

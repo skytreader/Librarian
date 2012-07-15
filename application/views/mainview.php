@@ -21,6 +21,17 @@ to determine if we should display the logged-in navbar.
 		<title><?php echo APP_TITLE . " - " . $title; ?></title>
 		<base href="<?php echo base_url(); ?>" />
 		<link rel="stylesheet" type="text/css" href="css/librariantheme.css" />
+		<?php
+			foreach($stylesheets as $style){
+				echo '<link rel="stylesheet" type="text/css" href="css/$style" />"';
+			}
+		?>
+		
+		<?php
+			foreach($scripts as $script){
+				echo '<script type="text/javascript" src="scripts/$script"></script>"';
+			}
+		?>
 	</head>
 	<body>
 		<div class="main_box">

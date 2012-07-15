@@ -26,17 +26,17 @@ class Manage extends MainController{
 	(Or, maybe, we can use JavaScript for this?)
 	*/
 	public function books(){
-		parent::$data_bundle["title"] = "Manage Books";
+		$this->data_bundle["title"] = "Manage Books";
 		
 		if($this->is_logged_in){
-			parent::$data_bundle["content"] = "content/addbook.php";
-			parent::$data_bundle["logged_in"] = TRUE;
+			$this->data_bundle["content"] = "content/addbook.php";
+			$this->data_bundle["logged_in"] = TRUE;
 		} else{
-			parent::$data_bundle["content"] = "content/not_logged_in.php";
+			$this->data_bundle["content"] = "content/not_logged_in.php";
 		}
 		
 		$this->load->library("javascript");
-		$this->load->view("mainview", parent::$data_bundle);
+		$this->load->view("mainview", $this->data_bundle);
 	}
 	
 }
