@@ -10,22 +10,26 @@ Handles login feature of Librarian.
 */
 class Login extends CI_Controller{
 	
+	public function __construct(){
+		parent::__construct();
+	}
+	
 	/**
 	TODO: Abstract these two functions!
 	*/
 	public function index(){
-		$data["title"] = "Login";
-		$data["content"] = "content/login.php";
+		parent::$data_bundle["title"] = "Login";
+		parent::$data_bundle["content"] = "content/login.php";
 		$this->load->helper("url");
-		$this->load->view("mainview", $data);
+		$this->load->view("mainview", parent::$data_bundle);
 	}
 	
 	public function fail(){
-		$data["title"] = "Login";
-		$data["content"] = "content/login.php";//?" . FLAG_LOGIN_FAIL . "=true";
-		$data["fail"] = TRUE;
+		parent::$data_bundle["title"] = "Login";
+		parent::$data_bundle["content"] = "content/login.php";//?" . FLAG_LOGIN_FAIL . "=true";
+		parent::$data_bundle["fail"] = TRUE;
 		$this->load->helper("url");
-		$this->load->view("mainview", $data);
+		$this->load->view("mainview", parent::$data_bundle);
 	}
 }
 

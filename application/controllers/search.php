@@ -2,6 +2,7 @@
 
 require_once("utility/resultprinter.php");
 require_once(APPPATH . "app_constants.php");
+require_once("maincontroller.php");
 
 /**
 This controller is for displaying the search results. The actual
@@ -13,7 +14,7 @@ display to "prepare" the results for a view.
 
 TODO: Use CI's Pagination class to break down results into pages.
 */
-class Search extends CI_Controller{
+class Search extends MainController{
 	
 	/**
 	These constants contain the class names of the models
@@ -31,6 +32,10 @@ class Search extends CI_Controller{
 	const SEARCH_TYPE = "searchtype";
 	const SEARCH_QUERY = "query";
 	
+	public function __construct(){
+		parent::__construct();
+	}
+	
 	public function index(){
 		$search_method = $_GET[Search::SEARCH_TYPE];
 		$search_query = $_GET[Search::SEARCH_QUERY];
@@ -43,12 +48,12 @@ class Search extends CI_Controller{
 		
 		$this->load->model($search_method);
 		$search_results = $this->$search_method->search($search_query)->result();
-		$data["title"] = "Search Results";
-		$data["echo_content"] = TRUE;
-		$data["content"] = $printer->print_results($search_results);
-		$data["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
+		parent::$data_bundle["title"] = "Search Results";
+		parent::$data_bundle["echo_content"] = TRUE;
+		parent::$data_bundle["content"] = $printer->print_results($search_results);
+		parent::$data_bundle["logged_in"] = $this->session->userdata(SESSION_LOGGED_IN);
 		$this->load->helper("url");
-		$this->load->view("mainview", $data);
+		$this->load->view("mainview", parent::$data_bundle);
 	}
 	
 	

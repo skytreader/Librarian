@@ -1,8 +1,9 @@
 <?php
 
 require_once(APPPATH . "app_constants.php");
+require_once("maincontroller.php");
 
-class Manage extends CI_Controller{
+class Manage extends MainController{
 	
 	/**
 	TODO: Create you own "root controller" class which implements CI_Controller
@@ -25,17 +26,17 @@ class Manage extends CI_Controller{
 	(Or, maybe, we can use JavaScript for this?)
 	*/
 	public function books(){
-		$view_data["title"] = "Manage Books";
+		parent::$data_bundle["title"] = "Manage Books";
 		
 		if($this->is_logged_in){
-			$view_data["content"] = "content/addbook.php";
-			$view_data["logged_in"] = TRUE;
+			parent::$data_bundle["content"] = "content/addbook.php";
+			parent::$data_bundle["logged_in"] = TRUE;
 		} else{
-			$view_data["content"] = "content/not_logged_in.php";
+			parent::$data_bundle["content"] = "content/not_logged_in.php";
 		}
 		
 		$this->load->library("javascript");
-		$this->load->view("mainview", $view_data);
+		$this->load->view("mainview", parent::$data_bundle);
 	}
 	
 }

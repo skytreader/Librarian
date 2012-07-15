@@ -2,6 +2,7 @@
 
 require_once(APPPATH . "app_constants.php");
 require_once("login.php");
+require_once("maincontroller.php");
 
 /**
 This controller handles what the user will see upon
@@ -10,7 +11,11 @@ log in failure.
 
 @author Chad Estioco
 */
-class Dashboard extends CI_Controller{
+class Dashboard extends MainController{
+	
+	public function __construct(){
+		parent::__construct();
+	}
 	
 	/**
 	Tests:
@@ -46,12 +51,12 @@ class Dashboard extends CI_Controller{
 	}
 	
 	private function display_logged_in_view(){
-		$page_data["echo_content"] = TRUE;
-		$page_data["content"] = "<h1>Welcome to your Dashboard</h1>";
-		$page_data["title"] = "Dashboard";
-		$page_data["logged_in"] = TRUE;
+		parent::$data_bundle["echo_content"] = TRUE;
+		parent::$data_bundle["content"] = "<h1>Welcome to your Dashboard</h1>";
+		parent::$data_bundle["title"] = "Dashboard";
+		parent::$data_bundle["logged_in"] = TRUE;
 		$this->load->helper("url");
-		$this->load->view("mainview", $page_data);
+		$this->load->view("mainview", parent::$data_bundle);
 	}
 }
 
