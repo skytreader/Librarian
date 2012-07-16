@@ -1,4 +1,3 @@
-<script type="text/javascript" language="javascript" src="scripts/isbn_verify.js"></script>
 <h1>Add a Book to the Inventory</h1>
 
 <div>
@@ -7,7 +6,7 @@
 <div class="block">
 	<h2>Book Information</h2>
 	<label for="isbn">ISBN:*</label><br />
-	<input type="text" id="isbn" class="required" name="isbn" maxlength="13" /><br />
+	<input type="text" id="isbn" class="isbn required" name="isbn" maxlength="13" /><br />
 	<label for="title">Title:*</label><br />
 	<input type="text" id="title" class="required" name="title" /><br />
 	<label for="genre">Genre:*</label><br />
@@ -29,7 +28,7 @@
 	<label for="printer">Printer:*</label><br />
 	<input type="text" id="printer" class="required" name="printer" /><br />
 	<label for="year">Year:*</label><br />
-	<input type="text" id="year" class="required" name="year" /><br />
+	<input type="text" id="year" class="required year" name="year" /><br />
 </div>
 <div>
 	<br /><input type="button" name="add" value="List Book" class="btn" />
@@ -44,17 +43,18 @@
 <?php
 	$this->load->helper("form");
 	$form_attributes["method"] = "post";
-	$form_attributes["id"] = "add_book";
+	$form_attributes["name"] = "add_book";
 	echo form_open("add/book", $form_attributes);
 ?>
-
 <table class="booklist" id="booklist">
 	<tr class="booklist">
 		<td class="booklist">ISBN</td>
 		<td class="booklist">Title</td>
+		<td class="booklist">Genre</td>
 		<td class="booklist">Author(s)</td>
 		<td class="booklist">Illustrator(s)</td>
 		<td class="booklist">Editor(s)</td>
+		<td class="booklist">Translator(s)</td>
 		<td class="booklist">Publisher</td>
 		<td class="booklist">Printer</td>
 		<td class="booklist">Year</td>

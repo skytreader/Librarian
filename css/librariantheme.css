@@ -75,10 +75,15 @@ a.navbox{
 	word-spacing: normal;
 }
 
+label.error{
+	display: block;
+	margin-bottom: -10px;
+}
+
 table.booklist{
-	margin-left: 3%;
-	margin-right: 3%;
-	width: 94%
+	margin-left: 1%;
+	margin-right: 1%;
+	width: 98%
 }
 
 table.booklist, tr.booklist{

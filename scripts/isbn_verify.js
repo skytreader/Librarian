@@ -21,9 +21,17 @@ is exactly 10 characters (including check char) and is
 already stripped of dash and whitespace characters.
 
 TODO: Document here how ISBN10 is checked.
+
+@param isbn10
+  ISBN10 string.
 */
 function verifyISBN10(isbn10){
 	var isbnLength = 10 //TODO: Must enforce this!
+	
+	if(isbn10.length > isbnLength){
+		return false;
+	}
+	
 	var checkChar = isbn10.charAt(isbnLength - 1)
 	var checkDigit = checkChar == 'X' ? 10 : parseInt(checkChar)
 	var runningSum = 0
@@ -31,5 +39,6 @@ function verifyISBN10(isbn10){
 	for(var weight = 10; weight >= 2; weight--){
 		runningSum += parseInt(isbn10.charAt(10 - weight)) * weight
 	}
+	
 	return ((runningSum % 11) + checkDigit) == 11
 }
