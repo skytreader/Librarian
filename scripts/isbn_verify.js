@@ -15,6 +15,8 @@ function stripExtraneous(isbnInput){
 	return isbnInput.replace(/[\s-]/g, "")
 }
 
+//TODO: Abstract ISBN verification.
+
 /**
 Verifies an ISBN10 string. Assume that the argument
 is exactly 10 characters (including check char) and is
@@ -26,9 +28,9 @@ TODO: Document here how ISBN10 is checked.
   ISBN10 string.
 */
 function verifyISBN10(isbn10){
-	var isbnLength = 10 //TODO: Must enforce this!
+	var isbnLength = 10;
 	
-	if(isbn10.length > isbnLength){
+	if(isbn10.length != isbnLength){
 		return false;
 	}
 	
@@ -41,4 +43,36 @@ function verifyISBN10(isbn10){
 	}
 	
 	return ((runningSum % 11) + checkDigit) == 11
+}
+
+/**
+Verifies an ISBN13 string. Assume that the argument has already
+been stripped clean of non-ISBN-related characters.
+*/
+function verifyISBN13(isbn13){
+	var isbnLength = 13;
+	
+	if(isbn13.length != isbnLength){
+		return false;
+	}
+	
+	var checkDigit = parseInt(isbn13.charAt(isbnLength - 1));
+	var limit = isbnLength - 1;
+	var sumRunner = 0;
+	
+	for(var i = 0; i < limit; i++){
+		var multiplier;
+		
+		if((i % 2) == 0){
+			multiplier = 1;
+		} else{
+			multiplier = 3;
+		}
+		
+		sumRunner += multiplier * parseInt(isbn13.charAt(i));
+	}
+	
+	var checkDigitCalc = (10 - (sumRunner % 10)) % 10;
+	
+	return checkDigitCalc == checkDigit;
 }
