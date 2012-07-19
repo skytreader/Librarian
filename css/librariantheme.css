@@ -95,6 +95,10 @@ td.booklist{
 	padding: 3px;
 }
 
+td.bookrecord{
+	font-size: 10px;
+}
+
 /**
 This seems irrelevant now...
 */

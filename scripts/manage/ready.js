@@ -15,13 +15,54 @@ function addRecord(){
 	
 	for(var i = 0; i < limit; i++){
 		var cell = document.createElement("td");
+		cell.class = "bookrecord";
 		cell.innerHTML = bookDetails[i].value;
 		cell.appendChild(createHiddenField(bookDetails[i].id, bookDetails[i].value));
+		
 		row.appendChild(cell);
 		bookDetails[i].value = "";
 	}
 	
+	// Create a cell for the button
+	var delCell = document.createElement("td");
+	delCell.class = "bookrecord";
+	delCell.appendChild(deleteButton());
+	
+	// Add it to the row
+	row.appendChild(delCell);
+	
 	window.booklistTableBody.appendChild(row);
+}
+
+/**
+Removes the row which holds the button which triggered
+event e .
+
+@param e
+  The event object.
+*/
+function removeRow(e){
+	//Get the button
+	var button = e.target;
+	//Get the cell
+	var cell = button.parentNode;
+	//Get the row
+	var row = cell.parentNode;
+	
+	window.booklistTableBody.removeChild(row);
+}
+
+/**
+Generates the delete button to be added at the end
+of every row record.
+*/
+function deleteButton(){
+	var button = document.createElement("input");
+	button.type = "button";
+	button.onclick = function(){removeRow(event);};
+	button.value = "-";
+	
+	return button;
 }
 
 /**
