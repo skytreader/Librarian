@@ -15,10 +15,12 @@ class Addbook extends CI_Model{
 	                    $editors, $publisher, $printer, $year){
 	        try{
 			$this->load->database(BOOKS_DSN);
+			// TODO: Abstract this!
 			$add_book_query = "INSERT INTO books (isbn, title) VALUES (?,?);";
 			$add_bookperson_query = "INSERT INTO bookpersons (lastname, firstname) VALUES (?,?);";
 			$add_publisher_query = "INSERT INTO publishers (publishername) VALUES (?);";
 			$add_printer_query = "INSERT INTO printers (printername) VALUES (?);";
+			$add_genre_query = "INSERT INTO genres (genrename) VALUES (?);";
 			
 			//Insert values into the database
 			$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
