@@ -96,7 +96,8 @@ td.booklist{
 }
 
 td.bookrecord{
-	font-size: 10px;
+	font-size: 12px;
+	border: solid 1px;
 }
 
 /**

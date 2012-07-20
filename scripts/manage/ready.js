@@ -15,7 +15,7 @@ function addRecord(){
 	
 	for(var i = 0; i < limit; i++){
 		var cell = document.createElement("td");
-		cell.class = "bookrecord";
+		cell.className = "bookrecord";
 		cell.innerHTML = bookDetails[i].value;
 		cell.appendChild(createHiddenField(bookDetails[i].id, bookDetails[i].value));
 		
@@ -25,7 +25,7 @@ function addRecord(){
 	
 	// Create a cell for the button
 	var delCell = document.createElement("td");
-	delCell.class = "bookrecord";
+	delCell.className = "bookrecord";
 	delCell.appendChild(deleteButton());
 	
 	// Add it to the row
@@ -71,7 +71,7 @@ Creates a hidden input element with the given value.
 function createHiddenField(inputName, value){
 	var inputObject = document.createElement("input");
 	inputObject.type = "hidden";
-	inputObject.name = inputName;
+	inputObject.name = inputName + "[]";
 	inputObject.value = value;
 	return inputObject;
 }

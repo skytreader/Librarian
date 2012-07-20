@@ -72,4 +72,7 @@
 		</tr>
 	</tbody>
 </table>
-<?php echo form_close(); ?>
+<?php
+	echo form_submit("dbadd", "Add Books");
+	echo form_close();
+?>
