@@ -21,12 +21,16 @@ class Add extends CI_Controller{
 			$isbn = $isbn[$i];
 			$title = $this->input->post("title");
 			$title = $title[$i];
+			$genre = $this->input->post("genre");
+			$genre = $genre[$i];
 			$authors = $this->input->post("authors");
 			$authors = $authors[$i];
 			$illustrators = $this->input->post("illustrators");
 			$illustrators = $illustrators[$i];
 			$editors = $this->input->post("editors");
 			$editors = $editors[$i];
+			$translators = $this->input->post("translators");
+			$translators = $translators[$i];
 			$publisher = $this->input->post("publisher");
 			$publisher = $publisher[$i];
 			$printer = $this->input->post("printer");
@@ -34,8 +38,18 @@ class Add extends CI_Controller{
 			$year = $this->input->post("year");
 			$year = $year[$i];
 			
-			$add = $this->Addbook->add($isbn, $title, $authors, $illustrators, $editors,
-				$publisher, $printer, $year);
+			$book_data["isbn"] = $isbn;
+			$book_data["title"] = $title;
+			$book_data["genre"] = $genre;
+			$book_data["authors"] = $authors;
+			$book_data["illustrators"] = $illustrators;
+			$book_data["editors"] = $editors;
+			$book_data["translators"] = $translators;
+			$book_data["publisher"] = $publisher;
+			$book_data["printer"] = $printer;
+			$book_data["year"] = $year;
+			
+			$add = $this->Addbook->add($book_data);
 			
 			if(!$add){
 				echo "Transaction failed for book $title with ISBN $isbn";
