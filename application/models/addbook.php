@@ -1,6 +1,7 @@
 <?php
 
 require_once(APPPATH . "app_constants.php");
+require_once("utilities.php");
 
 /**
 Model that handles all the add functions in Librarian.
@@ -38,11 +39,14 @@ class Addbook extends CI_Model{
 				$add_printer_query = "INSERT INTO printers (printername) VALUES (?);";
 				$add_genre_query = "INSERT INTO genres (genrename) VALUES (?);";
 				
+				
+				
 				//Insert values into the database
-				$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
-				$this->insert_persons($authors, $add_bookperson_query);
-				$this->insert_persons($illustrators, $add_bookperson_query);
-				$this->insert_persons($editors, $add_bookperson_query);
+				//$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
+				Utils.insert("books", "isbn,title", array($isbn, $title));
+				$this->insert_persons($authors);
+				$this->insert_persons($illustrators);
+				$this->insert_persons($editors);
 				
 				$publisher_array = array($publisher);
 				if($this->check_not_exists("publishers", "publishername = ?", $publisher_array)){
@@ -112,7 +116,7 @@ class Addbook extends CI_Model{
 	We are assuming that the insertion queries passed insert on table
 	bookpersons.
 	*/
-	private function insert_persons($persons_delimited, $insertion_query){
+	private function insert_persons($persons_delimited){
 		$persons_split = explode(";", $persons_delimited);
 		
 		foreach($persons_split as $person){
@@ -130,7 +134,7 @@ class Addbook extends CI_Model{
 			
 			if($query_result->num_rows()){
 			} else{
-				$insert_person = $this->db->query($insertion_query, array($lastname, $firstname));
+				Utils.insert("bookpersons", "lastname,firstname", array($lastname, $firstname));
 			}
 		}
 	}
