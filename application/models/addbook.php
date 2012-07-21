@@ -1,7 +1,6 @@
 <?php
 
 require_once(APPPATH . "app_constants.php");
-require_once("utilities.php");
 
 /**
 Model that handles all the add functions in Librarian.
@@ -11,6 +10,12 @@ TODO: Not all names may be parseable as firstname, lastname. This is
 a western concept. Handle this.
 */
 class Addbook extends CI_Model{
+	
+	public function __construct(){
+		parent::__construct();
+		$this->load->library("Utils");
+		$this->load->library("LibrarianUtilities");
+	}
 	
 	/**
 	Expects an associative array/hash map of the book's data.
@@ -32,13 +37,9 @@ class Addbook extends CI_Model{
 	        
 	        try{
 				$this->load->database(BOOKS_DSN);
-				// TODO: Abstract this!
-				$add_book_query = "INSERT INTO books (isbn, title) VALUES (?,?);";
-				$add_bookperson_query = "INSERT INTO bookpersons (lastname, firstname) VALUES (?,?);";
-				$add_publisher_query = "INSERT INTO publishers (publishername) VALUES (?);";
-				$add_printer_query = "INSERT INTO printers (printername) VALUES (?);";
-				$add_genre_query = "INSERT INTO genres (genrename) VALUES (?);";
 				
+				// Non-person tables only, since authors, illustrators, et.al.,
+				// need special parsing.
 				$entity_tables = array("books", "bookpersons", "publishers", "printers", "genres");
 				$entity_cols = array("isbn,title", "lastname,firstname", "publishername",
 					"printername", "genrename");
@@ -47,7 +48,7 @@ class Addbook extends CI_Model{
 				
 				//Insert values into the database
 				//$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
-				Utils.insert("books", "isbn,title", array($isbn, $title));
+				$this->Utils->insert("books", "isbn,title", array($isbn, $title));				
 				$this->insert_persons($authors);
 				$this->insert_persons($illustrators);
 				$this->insert_persons($editors);
@@ -63,18 +64,12 @@ class Addbook extends CI_Model{
 				}
 			
 				//Relate the added values to each other
-				$make_authored_query = "INSERT INTO authored (isbn, personid) VALUES (?,?);";
-				$make_illustrated_query = "INSERT INTO illustrated (isbn, personid) VALUES (?,?);";
-				$make_edited_query = "INSERT INTO edited (isbn, personid) VALUES (?,?);";
-				$make_published_query = "INSERT INTO published (isbn, publisherid, year) VALUES (?,?,?);";
-				$make_printed_query = "INSERT INTO printed (isbn, printerid) VALUES (?,?);";
-				
-				$author_personids = $this->get_personids(explode(";", $authors));
-				$this->relate_to_persons($author_personids, $isbn, $make_authored_query);
-				$illustrator_personids = $this->get_personids(explode(";", $illustrators));
-				$this->relate_to_persons($illustrator_personids, $isbn, $make_illustrated_query);
-				$editor_personids = $this->get_personids(explode(";", $editors));
-				$this->relate_to_persons($editor_personids, $isbn, $make_edited_query);
+				$author_personids = $this->LibrarianUtilities->get_personids(explode(";", $authors));
+				$this->LibrarianUtilities->relate_to_persons($author_personids, $isbn);
+				$illustrator_personids = $this->LibrarianUtilities->get_personids(explode(";", $illustrators));
+				$this->LibrarianUtilities->relate_to_persons($illustrator_personids, $isbn);
+				$editor_personids = $this->LibrarianUtilities->get_personids(explode(";", $editors));
+				$this->LibrarianUtilities->relate_to_persons($editor_personids, $isbn);
 				
 				//Now relate the publisher and printer
 				$publisherid_query = "SELECT publisherid FROM publishers WHERE publishername = ? LIMIT 1;";
@@ -83,8 +78,9 @@ class Addbook extends CI_Model{
 				$printerid_query = "SELECT printerid FROM printers WHERE printername = ? LIMIT 1;";
 				$printerid_action = $this->db->query($printerid_query, array($printer));
 				$printerid = $printerid_action->row()->printerid;
-				$this->db->query($make_published_query, array($isbn, $publisherid, $year));
-				$this->db->query($make_printed_query, array($isbn, $printerid));
+				$this->Utils->insert("publishers", "isbn,publisherid,year",
+					array($isbn, $publisherid, $year));
+				$this->Utils->insert("printers", "isbn,printerid", array($isbn, $printerid));
 				
 				return TRUE;
 		} catch(Exception $e){
@@ -111,14 +107,10 @@ class Addbook extends CI_Model{
 	/**
 	Parses user input of $authors, $illustrators, and $editors. Presently,
 	we are assuming that the format of names is in Lastname, Firstname(s)
-	and delimited by semicolons. In future iterations, we need to check the
-	user settings for the name format and the delimiter used.
+	and delimited by semicolons.
 	
-	This also checks whether a given name is already in the database. If it
-	is, it is no longer added.
-	
-	We are assuming that the insertion queries passed insert on table
-	bookpersons.
+	TODO: We need to check the user settings for the name format and the
+	delimiter used.
 	*/
 	private function insert_persons($persons_delimited){
 		$persons_split = explode(";", $persons_delimited);
@@ -129,43 +121,9 @@ class Addbook extends CI_Model{
 			}
 			
 			$name_parse = explode(",", $person);
-			//Working under alphabet assumptions...
-			$lastname = trim($name_parse[0]);
-			$firstname = trim($name_parse[1]);
 			
-			$query_statement = "SELECT * FROM bookpersons WHERE lastname = ? AND firstname = ?;";
-			$query_result = $this->db->query($query_statement, array($lastname, $firstname));
-			
-			if($query_result->num_rows()){
-			} else{
-				Utils.insert("bookpersons", "lastname,firstname", array($lastname, $firstname));
-			}
+			$this->LibrarianUtilities->insert_entity("bookpersons", "lastname,firstname", $name_parse);
 		}
-	}
-	
-	/**
-	Returns an associative array where each name is mapped to its corresponding
-	personid in the database. For purposes of performance, we are assuming
-	that $persons is already an array of names in format Lastname, Firstname(s).
-	*/
-	private function get_personids($persons){
-		$query = "SELECT personid FROM bookpersons WHERE lastname = ? AND firstname = ? LIMIT 1;";
-		$personids = array();
-		
-		foreach($persons as $name){
-			if($name == "" || $name == NULL){
-				continue;
-			}
-			
-			$name_parse = explode(",", $name);
-			$lastname = trim($name_parse[0]);
-			$firstname = trim($name_parse[1]);
-			$query_action = $this->db->query($query, array($lastname, $firstname));
-			$query_result = $query_action->row();
-			$personids[$name] = $query_result->personid;
-		}
-		
-		return $personids;
 	}
 }
 

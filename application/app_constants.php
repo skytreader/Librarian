@@ -5,4 +5,4 @@
 	define("FLAG_LOGIN_FAIL", "lf");
 	define("SESSION_LOGGED_IN", "logged_in");
 	define("SESSION_USERNAME", "username");
-?>
+?>	

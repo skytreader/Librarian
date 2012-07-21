@@ -2,6 +2,11 @@
 
 class Utils extends CI_Model{
 	
+	public function __construct(){
+		parent::__construct();
+		$this->load->library("QueryStringUtils");
+	}
+	
 	/**
 	Inserts all the values into $table.
 	
@@ -19,29 +24,6 @@ class Utils extends CI_Model{
 		$bind_vars = generate_insert_bind_vars($bind_var_count);
 		$insertion = "INSERT into $table ($cols) VALUES $bind_vars;";
 		return $this->db->query($insertion, $values);
-	}
-	
-	/*
-	Generates a string of the form \(\?(,\?)*\)---bind variables
-	to an SQL query for CodeIgniter. The number of bind variables
-	generated depends on $num .
-	
-	Set to public when unit testing. Else, MUST be set to private.
-	*/
-	public static function generate_insert_bind_vars($num){
-		$bind_vars = "(";
-		
-		for($i = 0; $i < $num; $i++){
-			if($i == 0){
-				$bind_vars .= "?";
-			} else{
-				$bind_vars .= ",?";
-			}
-		}
-		
-		$bind_vars .= ")";
-		
-		return $bind_vars;
 	}
 	
 }

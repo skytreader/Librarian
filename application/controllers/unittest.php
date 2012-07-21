@@ -11,7 +11,7 @@ class UnitTest extends CI_Controller{
 	Tests generate_and_clause from LibrarianUtilities.
 	*/
 	public function generate_and_clause(){
-		$this->load->model("LibrarianUtilities");
+		$this->load->model("QueryStringUtils");
 		
 		$single = "foo";
 		$single_test = $this->LibrarianUtilities->generate_and_clause($single);
@@ -32,7 +32,7 @@ class UnitTest extends CI_Controller{
 	Tests generate_insert_bind_vars in Utilities.
 	*/
 	public function generate_insert_bind_vars(){
-		$this->load->model("Utils");
+		$this->load->model("QueryStringUtils");
 		
 		$single_test = $this->Utils->generate_insert_bind_vars(1);
 		$single_expected_result = "(?)";
