@@ -39,7 +39,11 @@ class Addbook extends CI_Model{
 				$add_printer_query = "INSERT INTO printers (printername) VALUES (?);";
 				$add_genre_query = "INSERT INTO genres (genrename) VALUES (?);";
 				
-				
+				$entity_tables = array("books", "bookpersons", "publishers", "printers", "genres");
+				$entity_cols = array("isbn,title", "lastname,firstname", "publishername",
+					"printername", "genrename");
+				$array_vals = array(array($isbn,$title), array($lastname,$firstname),
+					array($publisher), array($printer), array($genre));
 				
 				//Insert values into the database
 				//$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
@@ -110,8 +114,8 @@ class Addbook extends CI_Model{
 	and delimited by semicolons. In future iterations, we need to check the
 	user settings for the name format and the delimiter used.
 	
-	After parsing the given names, it inserts the names into the database
-	using the $insertion_query.
+	This also checks whether a given name is already in the database. If it
+	is, it is no longer added.
 	
 	We are assuming that the insertion queries passed insert on table
 	bookpersons.
