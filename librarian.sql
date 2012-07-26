@@ -138,9 +138,21 @@ CREATE TABLE IF NOT EXISTS librarians(
 	librarianid INTEGER AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(50) UNIQUE NOT NULL,
 	password VARCHAR(255) NOT NULL,
-	read BOOLEAN NOT NULL,
-	write BOOLEAN NOT NULL,
-	execute BOOLEAN NOT NULL,
+	canread BOOLEAN NOT NULL,
+	canwrite BOOLEAN NOT NULL,
+	canexec BOOLEAN NOT NULL,
+	lastupdate TIMESTAMP NOT NULL,
+	lastupdateby INTEGER NOT NULL,
+	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
+) ENGINE = MYISAM;
+
+/**
+This will act like a hash map of setting values.
+*/
+CREATE TABLE IF NOT EXISTS appsettings(
+	settingcode VARCHAR(50) PRIMARY KEY,
+	settingstring VARCHAR(100) NOT NULL,
+	settingvalue VARCHAR(255),
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
