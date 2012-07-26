@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 28, 2012 at 04:51 PM
+-- Generation Time: Jul 26, 2012 at 07:46 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -37,10 +37,12 @@ CREATE TABLE IF NOT EXISTS `authored` (
 --
 
 INSERT INTO `authored` (`isbn`, `personid`) VALUES
-('0000000000000', 2),
-('0000000000001', 2),
-('1415926535897', 3),
-('9780062001719', 1);
+('0451527984', 4),
+('0451528050', 4),
+('9780061561795', 1),
+('9780061789694', 2),
+('9780062001719', 1),
+('9781407221441', 3);
 
 -- --------------------------------------------------------
 
@@ -80,9 +82,9 @@ CREATE TABLE IF NOT EXISTS `bookpersons` (
 
 INSERT INTO `bookpersons` (`personid`, `lastname`, `firstname`) VALUES
 (1, 'Huxley', 'Aldous'),
-(2, 'Gaiman', 'Neil'),
-(3, 'Gaiman', 'Someone Else'),
-(4, 'Huxley', 'Aldus');
+(2, 'Winterburn', 'Emily'),
+(3, 'Yeats', 'William Butler'),
+(4, 'Alighieri', 'Dante');
 
 -- --------------------------------------------------------
 
@@ -101,10 +103,12 @@ CREATE TABLE IF NOT EXISTS `books` (
 --
 
 INSERT INTO `books` (`isbn`, `title`) VALUES
-('9780062001719', 'Brave New World, A'),
-('0000000000000', 'Preludes and Nocturnes'),
-('0000000000001', 'Game of You, A'),
-('1415926535897', 'Fake Book');
+('9780061561795', 'Island'),
+('9780062001719', 'Brave New World'),
+('9780061789694', 'Stargazer''s Guide, The'),
+('0451528050', 'Paradiso, The'),
+('9781407221441', 'W.B. Yeats Selected Poems'),
+('0451527984', 'Inferno, The');
 
 -- --------------------------------------------------------
 
@@ -197,6 +201,13 @@ CREATE TABLE IF NOT EXISTS `printed` (
 -- Dumping data for table `printed`
 --
 
+INSERT INTO `printed` (`isbn`, `printerid`) VALUES
+('0451527984', 3),
+('0451528050', 3),
+('9780061561795', 1),
+('9780061789694', 1),
+('9780062001719', 1),
+('9781407221441', 2);
 
 -- --------------------------------------------------------
 
@@ -209,12 +220,16 @@ CREATE TABLE IF NOT EXISTS `printers` (
   `printername` varchar(255) NOT NULL,
   PRIMARY KEY (`printerid`),
   UNIQUE KEY `printername` (`printername`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `printers`
 --
 
+INSERT INTO `printers` (`printerid`, `printername`) VALUES
+(1, 'HarperPerennial'),
+(2, 'Phoenix'),
+(3, 'Penguin');
 
 -- --------------------------------------------------------
 
@@ -254,6 +269,13 @@ CREATE TABLE IF NOT EXISTS `published` (
 -- Dumping data for table `published`
 --
 
+INSERT INTO `published` (`isbn`, `publisherid`, `year`) VALUES
+('9780061561795', 1, 2009),
+('9780062001719', 1, 2010),
+('9780061789694', 1, 2008),
+('0451528050', 3, 2002),
+('9781407221441', 2, 2010),
+('0451527984', 3, 2002);
 
 -- --------------------------------------------------------
 
@@ -266,12 +288,16 @@ CREATE TABLE IF NOT EXISTS `publishers` (
   `publishername` varchar(255) NOT NULL,
   PRIMARY KEY (`publisherid`),
   UNIQUE KEY `publishername` (`publishername`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `publishers`
 --
 
+INSERT INTO `publishers` (`publisherid`, `publishername`) VALUES
+(1, 'HarperPerennial'),
+(2, 'Phoenix'),
+(3, 'Signet Classic');
 
 -- --------------------------------------------------------
 
