@@ -37,6 +37,13 @@ class MainController extends CI_Controller{
 		$this->data_bundle["echo_content"] = false;
 	}
 	
+	protected function login_check(){
+		if(!$this->is_logged_in){
+			$this->load->helper("url");
+			redirect("login");
+		}
+	}
+	
 }
 
 ?>
