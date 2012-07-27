@@ -45,14 +45,18 @@ class DAOModel extends CI_Model{
 	}
 	
 	/**
-	Selects a record from the database.
+	Selects records from the database.
 	
 	@param fields
 	  The columns to be searched and returned.
 	@param where_clause
 	  The where clause of the query, expect bind vars.
+	@return The result set of the query.
 	*/
 	public function select($fields, $where_clause){
+		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause";
+		$query_return = $this->db->query($query);
+		return $query_return->result();
 	}
 	
 	/**
