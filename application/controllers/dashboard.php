@@ -24,7 +24,7 @@ class Dashboard extends MainController{
 	  -Check behavior when visited and user is logged in
 	*/
 	public function index(){
-		$this->load->model("Librarians");
+		$this->load->model("dao/Librarians");
 		$this->load->library("session");
 		$this->load->database(BOOKS_DSN);
 		

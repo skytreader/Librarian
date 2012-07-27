@@ -5,11 +5,6 @@ require_once("maincontroller.php");
 
 class Manage extends MainController{
 	
-	/**
-	TODO: Create you own "root controller" class which implements CI_Controller
-	and automatically loads the session library and checks for logged in/logged
-	out states.
-	*/
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper("url");
