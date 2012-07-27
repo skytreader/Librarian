@@ -1,6 +1,7 @@
 <?php
 
 require_once(APPPATH . "app_constants.php");
+require_once(ARC_CONSTANTS_PATH . "architecture_constants.php");
 require_once("login.php");
 require_once("maincontroller.php");
 
@@ -23,13 +24,15 @@ class Dashboard extends MainController{
 	  -Check behavior when visited and user is logged in
 	*/
 	public function index(){
-		$this->load->model("LoginModel");
+		$this->load->model("Librarians");
 		$this->load->library("session");
+		$this->load->database(BOOKS_DSN);
 		
 		$is_logged_in = $this->session->userdata(SESSION_LOGGED_IN);
-		$is_verified = isset($_POST["username"]) &&
-		               isset($_POST["password"]) &&
-		               $this->LoginModel->verify($_POST["username"], $_POST["password"]);
+		$username = $this->input->post("username");
+		$password = $this->input->post("password");
+		$password = hash(HASH_FUNCTION, $password);
+		$is_verified = $this->Librarians->check_login_cred($username, $password);
 		
 		if(!$is_logged_in && $is_verified){
 			$user_session[SESSION_USERNAME] = $_POST["username"];

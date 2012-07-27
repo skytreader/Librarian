@@ -5,6 +5,8 @@ class DAOModel extends CI_Model{
 	protected $timestamp;
 	protected $last_updater;
 	
+	protected $table_name;
+	
 	public function __construct(){
 	}
 	
@@ -24,13 +26,20 @@ class DAOModel extends CI_Model{
 		$last_updater = $lu;
 	}
 	
+	public function get_table_name(){
+		return $table_name;
+	}
+	
 	/**
 	Inserts a record to the database.
 	
 	All required fields should be in $fields and with their corresponding
 	$values. Else, this function will fail.
 	
-	TODO: Format for $fields and $values?
+	@param fields
+	  The columns to insert to, comma delimited.
+	@param values
+	  The values to be inserted, as an array.
 	*/
 	public function insert($fields, $values){
 	}
@@ -38,9 +47,12 @@ class DAOModel extends CI_Model{
 	/**
 	Selects a record from the database.
 	
-	TODO: What will this function return?
+	@param fields
+	  The columns to be searched and returned.
+	@param where_clause
+	  The where clause of the query, expect bind vars.
 	*/
-	public function select($fields){
+	public function select($fields, $where_clause){
 	}
 	
 	/**
