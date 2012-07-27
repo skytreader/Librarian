@@ -6,6 +6,7 @@ class Appsettings extends DAOModel{
 	
 	private $settingcode;
 	private $settingstring;
+	private $description;
 	private $settingvalue;
 	
 	public function __construct(){
@@ -27,6 +28,14 @@ class Appsettings extends DAOModel{
 	
 	public function set_settingstring($s){
 		$settingstring = $s;
+	}
+	
+	public function get_description(){
+		return $description;
+	}
+	
+	public function set_description($d){
+		$description = $d;
 	}
 	
 	public function get_settingvalue(){

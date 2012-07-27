@@ -152,6 +152,7 @@ This will act like a hash map of setting values.
 CREATE TABLE IF NOT EXISTS appsettings(
 	settingcode VARCHAR(50) PRIMARY KEY,
 	settingstring VARCHAR(100) NOT NULL,
+	description VARCHAR(255),
 	settingvalue VARCHAR(255),
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
