@@ -23,7 +23,7 @@ class LibrarianUtilities extends CI_Model{
 	*/
 	public static function insert_entity($entity_table, $cols, $values){
 		$and_bind = $this->QueryStringUtils->generate_and_clause($cols);
-		$check_query = "SELECT $cols FROM $entity_table where $and_bind";
+		$check_query = "SELECT $cols FROM $entity_table WHERE $and_bind";
 		$check_result = $this->db->query($check_query, $values);
 		
 		if($check_result->num_rows()){
