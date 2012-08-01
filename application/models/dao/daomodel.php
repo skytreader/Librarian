@@ -12,7 +12,7 @@ class DAOModel extends CI_Model{
 	protected $tables;
 	
 	public function __construct(){
-		$tables = [DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATED => null];
+		$tables = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 	}
 	
 	public function get_timestamp(){
@@ -78,7 +78,7 @@ class DAOModel extends CI_Model{
 	@param timestamp
 	  For timestamp checking.
 	*/
-	public function update($fields, $values, $wherefields, $wherevals, $tables[DAOModel::TIMESTAMP]){
+	public function update($fields, $values, $wherefields, $wherevals, $timestamp){
 	}
 	
 	/**
