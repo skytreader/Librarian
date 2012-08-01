@@ -48,15 +48,49 @@ class DAOModel extends CI_Model{
 	/**
 	Inserts a record to the database.
 	
-	All required fields should be in $fields and with their corresponding
+	All specified fields should be in $fields and with their corresponding
 	$values. Else, this function will fail.
 	
 	@param fields
 	  The columns to insert to, comma delimited.
-	@param values
-	  The values to be inserted, as an array.
+	
+	TODO is this safe? Will PHP return the same order of keys everytime?
 	*/
-	public function insert($fields, $values){
+	public function insert($fields){
+		$insert_fields = generate_insert_fields();
+		$bind_vars = $this->QueryStringUtils->generate_insert_bind_vars(count($insert_fields));
+		$insert_query = "INSERT INTO $table_name $insert_fields VALUES $bind_vars";
+		$bind_var_vals = array();
+		
+		for($fields as $f){
+			if($f != null){
+				array_push($bind_var_vals, $f);
+			}
+		}
+		
+		$query_result = $this->db->query($insert_query, $bind_var_vals);
+		return $query_result->result();
+	}
+	
+	/*
+	Checks every field in $fields. All non-null values are returned as a comma-
+	separated list, wrapped in parentheses.
+	*/
+	private function generate_insert_fields(){
+		$insert_fields = "(";
+		
+		while(list($key) = each($fields)){
+			if($fields[$key] != null){
+				if($insert_fields == "("){
+					$insert_fields .= $key;
+				} else{
+					$insert_fields .= "," . $key;
+				}
+			}
+		}
+		
+		$insert_fields .= ")";
+		return $insert_fields;
 	}
 	
 	/**
@@ -74,7 +108,7 @@ class DAOModel extends CI_Model{
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 				
-		for($table_names as $tn){
+		for($field_names as $tn){
 			array_push($bind_var_vals, $fields[$tn]);
 		}
 		
@@ -118,8 +152,22 @@ class DAOModel extends CI_Model{
 	
 	/**
 	Deletes a record from the database.
+	
+	@param where_clause
+	  The where clause, expected to be in bind vars.
 	*/
-	public function delete($fields, $values){
+	public function delete($where_clause){
+		$delete_query = "DELETE FROM $table_name WHERE $where_clause";
+		$bind_var_vals = array();
+		$fields = $this->QueryStringUtils->get_field_names($where_clause);
+		
+		for($fields as $field){
+			array_push($bind_var_vals, $field);
+		}
+		
+		$query_return = $this->db->query($delete_query, $bind_var_vals);
+		return $query_return->result();
+		
 	}
 }
 
