@@ -2,28 +2,33 @@
 
 class DAOModel extends CI_Model{
 	
-	protected $timestamp;
-	protected $last_updater;
+	const TIMESTAMP = "timestamp";
+	const LAST_UPDATER = "last_updater";
 	
 	protected $table_name;
+	/**
+	A hash map with table names as keys, mapping the values.
+	*/
+	protected $tables;
 	
 	public function __construct(){
+		$tables = [DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATED => null];
 	}
 	
 	public function get_timestamp(){
-		return $timestamp;
+		return $tables[DAOModel::TIMESTAMP];
 	}
 	
 	public function set_timestamp($ts){
-		$timestamp = $ts;
+		$tables[DAOModel::TIMESTAMP] = $ts;
 	}
 	
 	public function get_last_updater(){
-		return $last_updater;
+		return $tables[DAOModel::LAST_UPDATER];
 	}
 	
 	public function set_last_updater($lu){
-		$last_updater = $lu;
+		$tables[DAOModel::LAST_UPDATER] = $lu;
 	}
 	
 	public function get_table_name(){
@@ -73,7 +78,7 @@ class DAOModel extends CI_Model{
 	@param timestamp
 	  For timestamp checking.
 	*/
-	public function update($fields, $values, $wherefields, $wherevals, $timestamp){
+	public function update($fields, $values, $wherefields, $wherevals, $tables[DAOModel::TIMESTAMP]){
 	}
 	
 	/**
