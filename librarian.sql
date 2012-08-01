@@ -1,10 +1,21 @@
+CREATE TABLE IF NOT EXISTS librarians(
+	librarianid INTEGER AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(50) UNIQUE NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	canread BOOLEAN NOT NULL,
+	canwrite BOOLEAN NOT NULL,
+	canexec BOOLEAN NOT NULL,
+	lastupdate TIMESTAMP NOT NULL,
+	lastupdateby INTEGER NOT NULL
+) ENGINE = INNODB;
+
 CREATE TABLE IF NOT EXISTS books(
 	isbn VARCHAR(13) PRIMARY KEY,
 	title VARCHAR(255) NOT NULL,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS publishers(
 	publisherid INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -12,19 +23,19 @@ CREATE TABLE IF NOT EXISTS publishers(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS published(
-	isbn VARCHAR(13),
-	publisherid INTEGER,
+	isbn VARCHAR(13) NOT NULL,
+	publisherid INTEGER NOT NULL,
 	year INTEGER NOT NULL,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books,
-	FOREIGN KEY (publisherid) REFERENCES publishers,
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
+	FOREIGN KEY (publisherid) REFERENCES publishers (publisherid),
 	PRIMARY KEY (isbn, publisherid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS printers(
 	printerid INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -32,7 +43,7 @@ CREATE TABLE IF NOT EXISTS printers(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS printed(
 	isbn VARCHAR(13),
@@ -40,10 +51,10 @@ CREATE TABLE IF NOT EXISTS printed(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books,
-	FOREIGN KEY (printerid) REFERENCES printers,
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
+	FOREIGN KEY (printerid) REFERENCES printers (printerid),
 	PRIMARY KEY (isbn, printerid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS bookpersons(
 	personid INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -53,7 +64,7 @@ CREATE TABLE IF NOT EXISTS bookpersons(
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
 	CONSTRAINT uniqueNames UNIQUE (lastname, firstname)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS authored(
 	isbn VARCHAR(13),
@@ -61,10 +72,10 @@ CREATE TABLE IF NOT EXISTS authored(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books,
-	FOREIGN KEY (personid) REFERENCES bookpersons,
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
+	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
 	PRIMARY KEY (isbn, personid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS edited(
 	isbn VARCHAR(13),
@@ -72,10 +83,10 @@ CREATE TABLE IF NOT EXISTS edited(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books,
-	FOREIGN KEY (personid) REFERENCES bookpersons,
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
+	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
 	PRIMARY KEY (isbn, personid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS translated(
 	isbn VARCHAR(13),
@@ -83,10 +94,10 @@ CREATE TABLE IF NOT EXISTS translated(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books,
-	FOREIGN KEY (personid) REFERENCES bookpersons,
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
+	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
 	PRIMARY KEY (isbn, personid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS illustrated(
 	isbn VARCHAR(13),
@@ -94,10 +105,10 @@ CREATE TABLE IF NOT EXISTS illustrated(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books,
-	FOREIGN KEY (personid) REFERENCES bookpersons,
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
+	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
 	PRIMARY KEY (isbn, personid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 /**
 Is this table ever going into any use?
@@ -110,10 +121,10 @@ CREATE TABLE IF NOT EXISTS pseudonyms(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (personid) REFERENCES bookpersons,
-	FOREIGN KEY (isbn) REFERENCES books,
+	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
 	PRIMARY KEY (personid, isbn)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS genres(
 	genreid INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -121,7 +132,7 @@ CREATE TABLE IF NOT EXISTS genres(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS bookgenres(
 	genreid INTEGER,
@@ -129,22 +140,10 @@ CREATE TABLE IF NOT EXISTS bookgenres(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (genreid) REFERENCES genres,
-	FOREIGN KEY (isbn) REFERENCES books,
+	FOREIGN KEY (genreid) REFERENCES genres (genreid),
+	FOREIGN KEY (isbn) REFERENCES books (isbn),
 	PRIMARY KEY (genreid, isbn)
-) ENGINE = MYISAM;
-
-CREATE TABLE IF NOT EXISTS librarians(
-	librarianid INTEGER AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(50) UNIQUE NOT NULL,
-	password VARCHAR(255) NOT NULL,
-	canread BOOLEAN NOT NULL,
-	canwrite BOOLEAN NOT NULL,
-	canexec BOOLEAN NOT NULL,
-	lastupdate TIMESTAMP NOT NULL,
-	lastupdateby INTEGER NOT NULL,
-	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;
 
 /**
 This will act like a hash map of setting values.
@@ -157,4 +156,4 @@ CREATE TABLE IF NOT EXISTS appsettings(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = MYISAM;
+) ENGINE = INNODB;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 27, 2012 at 08:54 PM
+-- Generation Time: Aug 01, 2012 at 06:57 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -28,18 +28,21 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 CREATE TABLE IF NOT EXISTS `appsettings` (
   `settingcode` varchar(50) NOT NULL,
   `settingstring` varchar(100) NOT NULL,
-  `description` varchar(255),
+  `description` varchar(255) DEFAULT NULL,
   `settingvalue` varchar(255) DEFAULT NULL,
   `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`settingcode`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `appsettings`
 --
 
+INSERT INTO `appsettings` (`settingcode`, `settingstring`, `description`, `settingvalue`, `lastupdate`, `lastupdateby`) VALUES
+('name_separator', 'Name Separator', 'Separates portions of a name (e.g. last name from first name)', ',', '2012-07-29 02:39:59', 1),
+('person_separator', 'Person Separator', 'In case of multiple name inputs, this character separates one name from another.', ';', '2012-07-29 02:40:50', 1);
 
 -- --------------------------------------------------------
 
@@ -55,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `authored` (
   PRIMARY KEY (`isbn`,`personid`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `personid` (`personid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `authored`
@@ -76,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `bookgenres` (
   PRIMARY KEY (`genreid`,`isbn`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `isbn` (`isbn`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `bookgenres`
@@ -98,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `bookpersons` (
   PRIMARY KEY (`personid`),
   UNIQUE KEY `uniqueNames` (`lastname`,`firstname`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `bookpersons`
@@ -118,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `books` (
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`isbn`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `books`
@@ -139,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `edited` (
   PRIMARY KEY (`isbn`,`personid`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `personid` (`personid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `edited`
@@ -159,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `genres` (
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`genreid`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `genres`
@@ -180,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `illustrated` (
   PRIMARY KEY (`isbn`,`personid`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `personid` (`personid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `illustrated`
@@ -203,16 +206,16 @@ CREATE TABLE IF NOT EXISTS `librarians` (
   `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`librarianid`),
-  UNIQUE KEY `username` (`username`),
-  KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `librarians`
 --
 
 INSERT INTO `librarians` (`librarianid`, `username`, `password`, `canread`, `canwrite`, `canexec`, `lastupdate`, `lastupdateby`) VALUES
-(1, 'chad', 'cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282', 1, 1, 1, '2012-07-27 02:45:39', 0);
+(1, 'administrator', 'cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282', 1, 1, 1, '2012-08-02 00:54:18', 0),
+(2, 'chad', 'cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282', 1, 1, 1, '2012-08-02 00:54:42', 0);
 
 -- --------------------------------------------------------
 
@@ -228,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `printed` (
   PRIMARY KEY (`isbn`,`printerid`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `printerid` (`printerid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `printed`
@@ -249,7 +252,7 @@ CREATE TABLE IF NOT EXISTS `printers` (
   PRIMARY KEY (`printerid`),
   UNIQUE KEY `printername` (`printername`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `printers`
@@ -272,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `pseudonyms` (
   PRIMARY KEY (`personid`,`isbn`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `isbn` (`isbn`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pseudonyms`
@@ -286,15 +289,15 @@ CREATE TABLE IF NOT EXISTS `pseudonyms` (
 --
 
 CREATE TABLE IF NOT EXISTS `published` (
-  `isbn` varchar(13) NOT NULL DEFAULT '',
-  `publisherid` int(11) NOT NULL DEFAULT '0',
+  `isbn` varchar(13) NOT NULL,
+  `publisherid` int(11) NOT NULL,
   `year` int(11) NOT NULL,
   `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`isbn`,`publisherid`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `publisherid` (`publisherid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `published`
@@ -315,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `publishers` (
   PRIMARY KEY (`publisherid`),
   UNIQUE KEY `publishername` (`publishername`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `publishers`
@@ -336,9 +339,113 @@ CREATE TABLE IF NOT EXISTS `translated` (
   PRIMARY KEY (`isbn`,`personid`),
   KEY `lastupdateby` (`lastupdateby`),
   KEY `personid` (`personid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `translated`
 --
 
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `appsettings`
+--
+ALTER TABLE `appsettings`
+  ADD CONSTRAINT `appsettings_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `authored`
+--
+ALTER TABLE `authored`
+  ADD CONSTRAINT `authored_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `authored_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `authored_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
+
+--
+-- Constraints for table `bookgenres`
+--
+ALTER TABLE `bookgenres`
+  ADD CONSTRAINT `bookgenres_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `bookgenres_ibfk_2` FOREIGN KEY (`genreid`) REFERENCES `genres` (`genreid`),
+  ADD CONSTRAINT `bookgenres_ibfk_3` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`);
+
+--
+-- Constraints for table `bookpersons`
+--
+ALTER TABLE `bookpersons`
+  ADD CONSTRAINT `bookpersons_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `books`
+--
+ALTER TABLE `books`
+  ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `edited`
+--
+ALTER TABLE `edited`
+  ADD CONSTRAINT `edited_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `edited_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `edited_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
+
+--
+-- Constraints for table `genres`
+--
+ALTER TABLE `genres`
+  ADD CONSTRAINT `genres_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `illustrated`
+--
+ALTER TABLE `illustrated`
+  ADD CONSTRAINT `illustrated_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `illustrated_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `illustrated_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
+
+--
+-- Constraints for table `printed`
+--
+ALTER TABLE `printed`
+  ADD CONSTRAINT `printed_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `printed_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `printed_ibfk_3` FOREIGN KEY (`printerid`) REFERENCES `printers` (`printerid`);
+
+--
+-- Constraints for table `printers`
+--
+ALTER TABLE `printers`
+  ADD CONSTRAINT `printers_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `pseudonyms`
+--
+ALTER TABLE `pseudonyms`
+  ADD CONSTRAINT `pseudonyms_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `pseudonyms_ibfk_2` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`),
+  ADD CONSTRAINT `pseudonyms_ibfk_3` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`);
+
+--
+-- Constraints for table `published`
+--
+ALTER TABLE `published`
+  ADD CONSTRAINT `published_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `published_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `published_ibfk_3` FOREIGN KEY (`publisherid`) REFERENCES `publishers` (`publisherid`);
+
+--
+-- Constraints for table `publishers`
+--
+ALTER TABLE `publishers`
+  ADD CONSTRAINT `publishers_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `translated`
+--
+ALTER TABLE `translated`
+  ADD CONSTRAINT `translated_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `translated_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `translated_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
