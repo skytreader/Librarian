@@ -62,6 +62,16 @@ class UnitTest extends CI_Controller{
 		$multiple_and_name = "Multiple conditions joined by AND";
 		$this->unit->run($multiple_and_result, $multiple_and_expected_result, $multiple_and_name);
 		
+		$multiple_or = "somefieldname = ? OR anotherfieldname = ? OR fieldname = ?";
+		$multiple_or_result = $this->QueryStringUtils->get_table_names($multiple_or);
+		$multiple_or_name = "Multiple conditions joined by OR";
+		$this->unit->run($multiple_or_result, $multiple_and_expected_result, $multiple_or_name);
+		
+		$mixed = "somefieldname = ? AND anotherfieldname = ? OR fieldname = ?";
+		$mixed_result = $this->QueryStringUtils->get_table_names($mixed);
+		$mixed_name = "Mixed AND and OR";
+		$this->unit->run($mixed_result, $multiple_and_expected_result, $multiple_or_name);
+		
 		echo $this->unit->report();
 	}
 }

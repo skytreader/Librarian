@@ -7,11 +7,12 @@ To do a query, instantiate a DAO object and then set the fields
 affected by your query. Afterwards, call one of the DB query
 methods of that DAO object. See the documentation of said function
 for details on how they'll use the DAO properties.
+
+This class automatically loads QueryStringUtils upon construction.
 */
 class DAOModel extends CI_Model{
-	public const TIMESTAMP = "timestamp";
-	public const LAST_UPDATER = "last_updater";
-	protected const BIND_VAR_REGEX = "[a-zA-Z][a-zA-Z0-9_]*\s*=\s*\?";
+	const TIMESTAMP = "timestamp";
+	const LAST_UPDATER = "last_updater";
 	
 	protected $table_name;
 	/**
@@ -21,6 +22,7 @@ class DAOModel extends CI_Model{
 	
 	public function __construct(){
 		$tables = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
+		$this->load->model("QueryStringUtils");
 	}
 	
 	public function get_timestamp(){
@@ -69,7 +71,14 @@ class DAOModel extends CI_Model{
 	*/
 	public function select($fields, $where_clause){
 		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause";
-		$query_return = $this->db->query($query);
+		$table_names = $this->QueryStringUtils->get_table_names($where_clause);
+		$bind_var_vals = array();
+				
+		for($table_names as $tn){
+			array_push($bind_var_vals, $tables[$tn]);
+		}
+		
+		$query_return = $this->db->query($query, $bind_var_vals);
 		return $query_return->result();
 	}
 	
