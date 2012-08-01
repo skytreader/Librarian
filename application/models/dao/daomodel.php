@@ -62,7 +62,7 @@ class DAOModel extends CI_Model{
 		$insert_query = "INSERT INTO $table_name $insert_fields VALUES $bind_vars";
 		$bind_var_vals = array();
 		
-		for($fields as $f){
+		foreach($fields as $f){
 			if($f != null){
 				array_push($bind_var_vals, $f);
 			}
@@ -108,7 +108,7 @@ class DAOModel extends CI_Model{
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 				
-		for($field_names as $tn){
+		foreach($field_names as $tn){
 			array_push($bind_var_vals, $fields[$tn]);
 		}
 		
@@ -136,13 +136,13 @@ class DAOModel extends CI_Model{
 		// Bind the set vars
 		$set_field_names = $this->QueryStringUtils->get_field_names($set_fields);
 		
-		for($set_field_names as $field){
+		foreach($set_field_names as $field){
 			array_push($bind_var_vals, $fields[$field]);
 		}
 		
 		$where_field_names = $this->QueryStringUtils->get_field_names($where_fields);
 		
-		for($where_field_names as $field){
+		foreach($where_field_names as $field){
 			array_push($bind_var_vals, $fields[$field]);
 		}
 		
@@ -161,7 +161,7 @@ class DAOModel extends CI_Model{
 		$bind_var_vals = array();
 		$fields = $this->QueryStringUtils->get_field_names($where_clause);
 		
-		for($fields as $field){
+		foreach($fields as $field){
 			array_push($bind_var_vals, $field);
 		}
 		
