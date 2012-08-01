@@ -30,14 +30,11 @@ class QueryStringUtils extends CI_Model{
 	Generates a bind clause, linked by ANDs, given the commma-
 	delimited columns.
 	
-	When unit-testing, set this to public. Else, this _must_ be
-	private.
-	
 	@param $cols
 	  The columns, comma-delimited.
 	@return A bind clause for the columns, linked by ANDs.
 	*/
-	private static function generate_and_clause($cols){
+	public static function generate_and_clause($cols){
 		$col_names = explode(",", $cols);
 		$limit = count($col_names);
 		$bind_clause = "";
@@ -46,11 +43,23 @@ class QueryStringUtils extends CI_Model{
 			if($i == 0){
 				$bind_clause = $col_names[$i] . "=?";
 			} else{
-				$bind_clause = " AND " . $col_names[$i] . "=?";
+				$bind_clause .= " AND " . $col_names[$i] . "=?";
 			}
 		}
 		
 		return $bind_clause;
+	}
+	
+	/**
+	Returns the table names embedded in a where clause with bind vars.
+	*/
+	private function get_table_names($where_clause){
+		preg_match("[a-zA-Z][a-zA-Z0-9_]*\s*=\s*\?", $where_clause,
+			$table_names);
+		
+		echo $table_names[0];
+		
+		return $table_names;
 	}
 	
 }

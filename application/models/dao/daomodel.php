@@ -1,9 +1,17 @@
 <?php
 
+/**
+General handler for single-table database transactions.
+
+To do a query, instantiate a DAO object and then set the fields
+affected by your query. Afterwards, call one of the DB query
+methods of that DAO object. See the documentation of said function
+for details on how they'll use the DAO properties.
+*/
 class DAOModel extends CI_Model{
-	
-	const TIMESTAMP = "timestamp";
-	const LAST_UPDATER = "last_updater";
+	public const TIMESTAMP = "timestamp";
+	public const LAST_UPDATER = "last_updater";
+	protected const BIND_VAR_REGEX = "[a-zA-Z][a-zA-Z0-9_]*\s*=\s*\?";
 	
 	protected $table_name;
 	/**
@@ -55,7 +63,8 @@ class DAOModel extends CI_Model{
 	@param fields
 	  The columns to be searched and returned.
 	@param where_clause
-	  The where clause of the query, expect bind vars.
+	  The where clause of the query, expect bind vars. The values of the
+	  bind vars will be taken from the attributes of this object.
 	@return The result set of the query.
 	*/
 	public function select($fields, $where_clause){

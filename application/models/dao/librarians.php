@@ -5,6 +5,7 @@ require_once("daomodel.php");
 
 class Librarians extends DAOModel{
 	
+	// TODO Map these keys in $this->tables
 	const LIBRARIANID = "librarianid";
 	const USERNAME = "username";
 	const PASSWORD = "password";
