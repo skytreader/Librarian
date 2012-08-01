@@ -78,7 +78,7 @@ class DAOModel extends CI_Model{
 			array_push($bind_var_vals, $fields[$tn]);
 		}
 		
-		$query_return = $this->db->query($query, $bind_var_vals);
+		$query_return = $this->db->query($query_statement, $bind_var_vals);
 		return $query_return->result();
 	}
 	
@@ -103,8 +103,17 @@ class DAOModel extends CI_Model{
 		$set_field_names = $this->QueryStringUtils->get_field_names($set_fields);
 		
 		for($set_field_names as $field){
-			array_push($bind_var_vals, $tab
+			array_push($bind_var_vals, $fields[$field]);
 		}
+		
+		$where_field_names = $this->QueryStringUtils->get_field_names($where_fields);
+		
+		for($where_field_names as $field){
+			array_push($bind_var_vals, $fields[$field]);
+		}
+		
+		$query_return = $this->db->query($query_statement, $bind_var_vals);
+		return $query_return->result();
 	}
 	
 	/**
