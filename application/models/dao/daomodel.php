@@ -18,27 +18,27 @@ class DAOModel extends CI_Model{
 	/**
 	A hash map with table names as keys, mapping the values.
 	*/
-	protected $tables;
+	protected $fields;
 	
 	public function __construct(){
-		$tables = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
+		$fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
 	}
 	
 	public function get_timestamp(){
-		return $tables[DAOModel::TIMESTAMP];
+		return $fields[DAOModel::TIMESTAMP];
 	}
 	
 	public function set_timestamp($ts){
-		$tables[DAOModel::TIMESTAMP] = $ts;
+		$fields[DAOModel::TIMESTAMP] = $ts;
 	}
 	
 	public function get_last_updater(){
-		return $tables[DAOModel::LAST_UPDATER];
+		return $fields[DAOModel::LAST_UPDATER];
 	}
 	
 	public function set_last_updater($lu){
-		$tables[DAOModel::LAST_UPDATER] = $lu;
+		$fields[DAOModel::LAST_UPDATER] = $lu;
 	}
 	
 	public function get_table_name(){
@@ -75,7 +75,7 @@ class DAOModel extends CI_Model{
 		$bind_var_vals = array();
 				
 		for($table_names as $tn){
-			array_push($bind_var_vals, $tables[$tn]);
+			array_push($bind_var_vals, $fields[$tn]);
 		}
 		
 		$query_return = $this->db->query($query, $bind_var_vals);
@@ -97,9 +97,14 @@ class DAOModel extends CI_Model{
 	*/
 	public function update($set_fields, $where_fields, $timestamp){
 		$query_statement = "UPDATE $table SET $set_fields WHERE $where_fields";
+		$bind_var_vals = array();
 		
 		// Bind the set vars
-		$table_names = $this->QueryStringUtils->
+		$set_field_names = $this->QueryStringUtils->get_field_names($set_fields);
+		
+		for($set_field_names as $field){
+			array_push($bind_var_vals, $tab
+		}
 	}
 	
 	/**
