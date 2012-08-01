@@ -47,28 +47,28 @@ class UnitTest extends CI_Controller{
 		echo $this->unit->report();
 	}
 	
-	public function get_table_names(){
+	public function get_field_names(){
 		$this->load->model("QueryStringUtils");
 		
 		$single_cond_test = "somefieldname = ?";
-		$single_cond_result = $this->QueryStringUtils->get_table_names($single_cond_test);
+		$single_cond_result = $this->QueryStringUtils->get_field_names($single_cond_test);
 		$single_cond_expected_result = array("somefieldname");
 		$single_cond_name = "Single where condition";
 		$this->unit->run($single_cond_result, $single_cond_expected_result, $single_cond_name);
 		
 		$multiple_and = "somefieldname = ? AND anotherfieldname = ? AND fieldname = ?";
-		$multiple_and_result = $this->QueryStringUtils->get_table_names($multiple_and);
+		$multiple_and_result = $this->QueryStringUtils->get_field_names($multiple_and);
 		$multiple_and_expected_result = array("somefieldname", "anotherfieldname", "fieldname");
 		$multiple_and_name = "Multiple conditions joined by AND";
 		$this->unit->run($multiple_and_result, $multiple_and_expected_result, $multiple_and_name);
 		
 		$multiple_or = "somefieldname = ? OR anotherfieldname = ? OR fieldname = ?";
-		$multiple_or_result = $this->QueryStringUtils->get_table_names($multiple_or);
+		$multiple_or_result = $this->QueryStringUtils->get_field_names($multiple_or);
 		$multiple_or_name = "Multiple conditions joined by OR";
 		$this->unit->run($multiple_or_result, $multiple_and_expected_result, $multiple_or_name);
 		
 		$mixed = "somefieldname = ? AND anotherfieldname = ? OR fieldname = ?";
-		$mixed_result = $this->QueryStringUtils->get_table_names($mixed);
+		$mixed_result = $this->QueryStringUtils->get_field_names($mixed);
 		$mixed_name = "Mixed AND and OR";
 		$this->unit->run($mixed_result, $multiple_and_expected_result, $multiple_or_name);
 		

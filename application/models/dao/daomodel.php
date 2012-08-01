@@ -71,7 +71,7 @@ class DAOModel extends CI_Model{
 	*/
 	public function select($fields, $where_clause){
 		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause";
-		$table_names = $this->QueryStringUtils->get_table_names($where_clause);
+		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 				
 		for($table_names as $tn){
@@ -83,20 +83,23 @@ class DAOModel extends CI_Model{
 	}
 	
 	/**
-	Updates a record to the database.
+	Updates a record to the database. Values of $set_fields and $where_fields
+	are all taken from the attributes of this object.
 	
-	@param fields
-	  The fields to be updated.
-	@param values
-	  The new values to the fields to be updated.
-	@param wherefields
-	  Ideally, the primary keys.
-	@param wherevals
-	  The corresponding values to wherefields.
+	@param set_fields
+	  The fields to be updated, expressed with bind vars.
+	@param where_fields
+	  Ideally, the primary keys. Expressed with bind vars.
 	@param timestamp
 	  For timestamp checking.
+	
+	TODO: Timestamp checking.
 	*/
-	public function update($fields, $values, $wherefields, $wherevals, $timestamp){
+	public function update($set_fields, $where_fields, $timestamp){
+		$query_statement = "UPDATE $table SET $set_fields WHERE $where_fields";
+		
+		// Bind the set vars
+		$table_names = $this->QueryStringUtils->
 	}
 	
 	/**
