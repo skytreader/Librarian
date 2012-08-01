@@ -53,13 +53,11 @@ class QueryStringUtils extends CI_Model{
 	/**
 	Returns the table names embedded in a where clause with bind vars.
 	*/
-	private function get_table_names($where_clause){
-		preg_match("[a-zA-Z][a-zA-Z0-9_]*\s*=\s*\?", $where_clause,
-			$table_names);
+	public static function get_table_names($where_clause){
+		preg_match_all('/([a-zA-Z][a-zA-Z0-9_]*)\\s*=\\s*\\?/', $where_clause,
+			$table_names, PREG_PATTERN_ORDER);
 		
-		echo $table_names[0];
-		
-		return $table_names;
+		return $table_names[1];
 	}
 	
 }
