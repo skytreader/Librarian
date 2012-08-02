@@ -16,7 +16,7 @@ class Librarians extends DAOModel{
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "librarians";
-		array_push($primary_keys, LIBRARIANID);
+		array_push($this->primary_keys, Librarians::LIBRARIANID);
 	}
 	
 	public function get_librarianid(){
@@ -64,10 +64,11 @@ class Librarians extends DAOModel{
 	}
 	
 	public function check_login_cred($username, $password){
-		$user_query = "SELECT * FROM librarians WHERE username = ? AND password = ? LIMIT 1;";
-		$query_result = $this->db->query($user_query, array($username, $password));
+		//$user_query = "SELECT * FROM librarians WHERE username = ? AND password = ? LIMIT 1;";
+		//$query_result = $this->db->query($user_query, array($username, $password));
+		$check_query_result = parent::select("1", "username = ? AND password = ?", "LIMIT 1");
 		
-		if($query_result->num_rows() == 1){
+		if($check_query_result->num_rows() == 1){
 			return TRUE;
 		} else{
 			return FALSE;

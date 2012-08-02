@@ -32,6 +32,10 @@ class Dashboard extends MainController{
 		$username = $this->input->post("username");
 		$password = $this->input->post("password");
 		$password = hash(HASH_FUNCTION, $password);
+		
+		$this->Librarians->set_username($username);
+		$this->Librarians->set_password($password);
+		
 		$is_verified = $this->Librarians->check_login_cred($username, $password);
 		
 		if(!$is_logged_in && $is_verified){

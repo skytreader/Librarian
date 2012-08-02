@@ -33,10 +33,10 @@ class DAOModel extends CI_Model{
 	protected $autocommit;
 	
 	public function __construct(){
-		$fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
+		$this->fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
-		$primary_keys = array();
-		$autocommit = true;
+		$this->primary_keys = array();
+		$this->autocommit = true;
 	}
 	
 	public function get_timestamp(){
@@ -132,6 +132,7 @@ class DAOModel extends CI_Model{
 	@return The result set of the query.
 	*/
 	public function select($fields, $where_clause, $extra_specs){
+		$table_name = $this->table_name;
 		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause $extra_specs";
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
@@ -150,7 +151,7 @@ class DAOModel extends CI_Model{
 		$timestamp_resultset = select(TIMESTAMP, $where_clause, "LIMIT 1");
 		$timestamp_array = $timestamp_resultset->result_array();
 		
-		return timestamp_array[TIMESTAMP];
+		return $timestamp_array[TIMESTAMP];
 	}
 	
 	/**
@@ -167,7 +168,7 @@ class DAOModel extends CI_Model{
 			$this->db->query("START TRANSACTION");
 		}
 		
-		$lock_query = "SELECT 1 FROM $table_name WHERE $where_clause FOR UPDATE":
+		$lock_query = "SELECT 1 FROM $table_name WHERE $where_clause FOR UPDATE";
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 		
