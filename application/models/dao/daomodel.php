@@ -132,7 +132,7 @@ class DAOModel extends CI_Model{
 	@return The result set of the query.
 	*/
 	public function select($fields, $where_clause, $extra_specs){
-		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause";
+		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause $extra_specs";
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 				
@@ -147,7 +147,7 @@ class DAOModel extends CI_Model{
 	Assumes that where_clause pertains to one and only one record.
 	*/
 	private function get_current_timestamp($where_clause){
-		$timestamp_resultset = select(TIMESTAMP, $where_clause);
+		$timestamp_resultset = select(TIMESTAMP, $where_clause, "LIMIT 1");
 		$timestamp_array = $timestamp_resultset->result_array();
 		
 		return timestamp_array[TIMESTAMP];
