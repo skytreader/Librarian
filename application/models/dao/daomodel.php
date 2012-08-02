@@ -26,11 +26,17 @@ class DAOModel extends CI_Model{
 	Contents of this array must be valid keys for $fields.
 	*/
 	protected $primary_keys;
+	/**
+	If set to true, every update and delete transaction commits automatically.
+	Default is true;
+	*/
+	protected $autocommit;
 	
 	public function __construct(){
 		$fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
 		$primary_keys = array();
+		$autocommit = true;
 	}
 	
 	public function get_timestamp(){
@@ -157,7 +163,10 @@ class DAOModel extends CI_Model{
 	@return TODO What to do if locking fails?
 	*/
 	public function lock($where_clause){
-		$this->db->query("START TRANSACTION");
+		if(!$autocommit){
+			$this->db->query("START TRANSACTION");
+		}
+		
 		$lock_query = "SELECT 1 FROM $table_name WHERE $where_clause FOR UPDATE":
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
@@ -167,6 +176,10 @@ class DAOModel extends CI_Model{
 		}
 		
 		$this->db->query($lock_query, $bind_var_vals);
+	}
+	
+	public function commit(){
+		return $this->db->query("commit");
 	}
 	
 	/**
