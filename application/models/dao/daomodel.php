@@ -13,6 +13,8 @@ This class automatically loads QueryStringUtils upon construction.
 class DAOModel extends CI_Model{
 	const TIMESTAMP = "timestamp";
 	const LAST_UPDATER = "last_updater";
+	const PK_EXCEPTION_MESSAGE = "Not all primary keys are set.";
+	const TIMESTAMP_EXPIRED_MESSAGE = "You don't have the most recent copy of this record.";
 	
 	protected $table_name;
 	/**
@@ -49,6 +51,19 @@ class DAOModel extends CI_Model{
 	
 	public function get_table_name(){
 		return $table_name;
+	}
+	
+	/**
+	Checks if all primary keys have non-null values.
+	*/
+	private function are_pks_set(){
+		foreach($primary_keys as $pk){
+			if($fields[$pk] == null){
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	/**
@@ -168,6 +183,14 @@ class DAOModel extends CI_Model{
 	TODO: Timestamp checking.
 	*/
 	public function update($set_fields, $where_fields, $timestamp){
+		if(!are_pks_set()){
+			throw new Exception(PK_EXCEPTION_MESSAGE);
+		}else if(get_current_timestamp($where_fields) != $timestamp){
+			throw new Exception(TIMESTAMP_EXPIRED_MESSAGE);
+		}
+		
+		lock($where_fields);
+		
 		$query_statement = "UPDATE $table SET $set_fields WHERE $where_fields";
 		$bind_var_vals = array();
 		
@@ -194,7 +217,15 @@ class DAOModel extends CI_Model{
 	@param where_clause
 	  The where clause, expected to be in bind vars.
 	*/
-	public function delete($where_clause){
+	public function delete($where_clause, $timestamp){
+		if(!are_pks_set()){
+			throw new Exception(PK_EXCEPTION_MESSAGE);
+		}else if(get_current_timestamp($where_clause) != $timestamp){
+			throw new Exception(TIMESTAMP_EXPIRED_MESSAGE);
+		}
+		
+		lock($where_clause);
+		
 		$delete_query = "DELETE FROM $table_name WHERE $where_clause";
 		$bind_var_vals = array();
 		$fields = $this->QueryStringUtils->get_field_names($where_clause);
