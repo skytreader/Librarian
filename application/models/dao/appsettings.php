@@ -12,42 +12,43 @@ class Appsettings extends DAOModel{
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "appsettings";
-		$this->tables[SETTINGCODE] = null;
-		$this->tables[SETTINGSTRING] = null;
-		$this->tables[DESCRIPTION] = null;
-		$this->tables[SETTINGVALUE] = null;
+		$this->fields[SETTINGCODE] = null;
+		$this->fields[SETTINGSTRING] = null;
+		$this->fields[DESCRIPTION] = null;
+		$this->fields[SETTINGVALUE] = null;
+		array_push($this->primary_keys, SETTING_CODE);
 	}
 	
 	public function get_settingcode(){
-		return $this->tables[SETTINGCODE];
+		return $this->fields[SETTINGCODE];
 	}
 	
 	public function set_settingcode($s){
-		$this->tables[SETTINGCODE] = $s;
+		$this->fields[SETTINGCODE] = $s;
 	}
 	
 	public function get_settingstring(){
-		return $this->tables[SETTINGSTRING];
+		return $this->fields[SETTINGSTRING];
 	}
 	
 	public function set_settingstring($s){
-		$this->tables[SETTINGSTRING] = $s;
+		$this->fields[SETTINGSTRING] = $s;
 	}
 	
 	public function get_description(){
-		return $this->tables[DESCRIPTION];
+		return $this->fields[DESCRIPTION];
 	}
 	
 	public function set_description($d){
-		$this->tables[DESCRIPTION] = $d;
+		$this->fields[DESCRIPTION] = $d;
 	}
 	
 	public function get_settingvalue(){
-		return $this->tables[SETTINGVALUE];
+		return $this->fields[SETTINGVALUE];
 	}
 	
 	public function set_settingvalue($s){
-		$this->tables[SETTINGVALUE] = $s;
+		$this->fields[SETTINGVALUE] = $s;
 	}
 	
 }

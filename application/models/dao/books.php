@@ -4,28 +4,31 @@ require_once("daomodel.php");
 
 class Books extends DAOModel{
 	
-	private $isbn;
-	private $title;
+	const ISBN = "isbn";
+	const TITLE = "title";
 	
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "books";
+		$this->fields[ISBN] = null;
+		$this->fields[TITLE] = null;
+		array_push($this->primary_keys, ISBN);
 	}
 	
 	public function get_isbn($i){
-		return $isbn;
+		return $this->fields[ISBN];
 	}
 	
 	public function set_isbn($i){
-		$isbn = $i;
+		$this->fields[ISBN] = $i;
 	}
 	
 	public function get_title(){
-		return $title;
+		return $this->fields[TITLE];
 	}
 	
 	public function set_title($t){
-		$title= $t;
+		$this->fields[TITLE]= $t;
 	}
 }
 
