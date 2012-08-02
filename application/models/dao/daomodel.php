@@ -137,8 +137,8 @@ class DAOModel extends CI_Model{
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 				
-		foreach($field_names as $tn){
-			array_push($bind_var_vals, $fields[$tn]);
+		foreach($field_names as $fn){
+			array_push($bind_var_vals, $this->fields[$fn]);
 		}
 		
 		return $this->db->query($query_statement, $bind_var_vals);

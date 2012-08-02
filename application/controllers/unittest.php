@@ -1,5 +1,7 @@
 <?
 
+require_once(APPPATH . "app_constants.php");
+
 class UnitTest extends CI_Controller{
 	
 	public function __construct(){
@@ -71,6 +73,22 @@ class UnitTest extends CI_Controller{
 		$mixed_result = $this->QueryStringUtils->get_field_names($mixed);
 		$mixed_name = "Mixed AND and OR";
 		$this->unit->run($mixed_result, $multiple_and_expected_result, $multiple_or_name);
+		
+		echo $this->unit->report();
+	}
+	
+	public function user_login(){
+		$this->load->model("dao/Librarians");
+		$this->load->database(BOOKS_DSN);
+		
+		$admin_username = "administrator";
+		$admin_password = "cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282";
+		$this->Librarians->set_username($admin_username);
+		$this->Librarians->set_password($admin_password);
+		$this->unit->run($admin_username, $this->Librarians->get_username(), "Username check.");
+		$this->unit->run($admin_password, $this->Librarians->get_password(), "Password check.");
+		$login_check = $this->Librarians->check_login_cred($admin_username, $admin_password);
+		$this->unit->run($login_check, true, "Login check.");
 		
 		echo $this->unit->report();
 	}
