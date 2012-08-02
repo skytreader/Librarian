@@ -16,13 +16,19 @@ class DAOModel extends CI_Model{
 	
 	protected $table_name;
 	/**
-	A hash map with table names as keys, mapping the values.
+	A hash map with field names as keys, mapping the values.
 	*/
 	protected $fields;
+	/**
+	An array containing the primary keys of the table represented.
+	Contents of this array must be valid keys for $fields.
+	*/
+	protected $primary_keys;
 	
 	public function __construct(){
 		$fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
+		$primary_keys = array();
 	}
 	
 	public function get_timestamp(){
