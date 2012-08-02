@@ -68,8 +68,7 @@ class DAOModel extends CI_Model{
 			}
 		}
 		
-		$query_result = $this->db->query($insert_query, $bind_var_vals);
-		return $query_result->result();
+		return $this->db->query($insert_query, $bind_var_vals);
 	}
 	
 	/*
@@ -101,9 +100,11 @@ class DAOModel extends CI_Model{
 	@param where_clause
 	  The where clause of the query, expect bind vars. The values of the
 	  bind vars will be taken from the attributes of this object.
+	@param extra_specs
+	  Conditions like ORDER BY, LIMIT, etc.
 	@return The result set of the query.
 	*/
-	public function select($fields, $where_clause){
+	public function select($fields, $where_clause, $extra_specs){
 		$query_statement = "SELECT $fields FROM $table_name WHERE $where_clause";
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
@@ -112,8 +113,39 @@ class DAOModel extends CI_Model{
 			array_push($bind_var_vals, $fields[$tn]);
 		}
 		
-		$query_return = $this->db->query($query_statement, $bind_var_vals);
-		return $query_return->result();
+		return $this->db->query($query_statement, $bind_var_vals);
+	}
+	
+	/**
+	Assumes that where_clause pertains to one and only one record.
+	*/
+	private function get_current_timestamp($where_clause){
+		$timestamp_resultset = select(TIMESTAMP, $where_clause);
+		$timestamp_array = $timestamp_resultset->result_array();
+		
+		return timestamp_array[TIMESTAMP];
+	}
+	
+	/**
+	Starts a transaction (effectively disabling the autocommit feature of
+	MySQL) and locks the record represented by this class.
+	
+	@param where_clause
+	  The where clause, expected to be in bind vars. Values will be taken
+	  from the attributes of this object.
+	@return TODO What to do if locking fails?
+	*/
+	public function lock($where_clause){
+		$this->db->query("START TRANSACTION");
+		$lock_query = "SELECT 1 FROM $table_name WHERE $where_clause FOR UPDATE":
+		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
+		$bind_var_vals = array();
+		
+		foreach($field_names as $field){
+			array_push($bind_var_vals, $fields[$field]);
+		}
+		
+		$this->db->query($lock_query, $bind_var_vals);
 	}
 	
 	/**
@@ -147,7 +179,7 @@ class DAOModel extends CI_Model{
 		}
 		
 		$query_return = $this->db->query($query_statement, $bind_var_vals);
-		return $query_return->result();
+		return $this->db->query($query_statement, $bind_var_vals);
 	}
 	
 	/**
@@ -165,9 +197,7 @@ class DAOModel extends CI_Model{
 			array_push($bind_var_vals, $field);
 		}
 		
-		$query_return = $this->db->query($delete_query, $bind_var_vals);
-		return $query_return->result();
-		
+		return $this->db->query($delete_query, $bind_var_vals);
 	}
 }
 
