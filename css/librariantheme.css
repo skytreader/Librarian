@@ -89,6 +89,7 @@ table.booklist{
 table.booklist, tr.booklist{
 	border: solid 1px;
 	vertical-align: middle;
+	text-align: center;
 }
 
 td.booklist{

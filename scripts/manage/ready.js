@@ -9,6 +9,7 @@ function addRecord(){
 		window.isTableFresh = false;
 	}
 	var row = document.createElement("tr");
+	$(row).addClass("booklist");
 	var locISBN = window.isbn[0];
 	var locGenre = window.genre[0];
 	
