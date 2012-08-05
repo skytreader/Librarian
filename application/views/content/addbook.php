@@ -60,6 +60,7 @@
 	</tbody>
 </table>
 <?php
-	echo form_submit("dbadd", "Add Books");
+	$submit_button_data = array("name"=>"dbadd", "value"=>"Add Books", "class"=>"btn");
+	echo form_submit($submit_button_data);
 	echo form_close();
 ?>
