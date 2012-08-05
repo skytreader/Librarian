@@ -116,18 +116,6 @@ td.bookspine{
 	text-align: center;
 }
 
-/**
-This seems irrelevant now...
-*/
-div.account_box{
-	margin: 5px;
-	float: left;
-	border-style: dashed;
-	padding: 8px;
-	padding-right: 8%;
-	margin-top:10px;
-}
-
 /*Forms*/
 input.search, select.search, option.search {
 	font-size: 16px;
