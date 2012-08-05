@@ -41,7 +41,7 @@
 
 </div>
 <div style="clear: both;">
-	<hr width="99%" />
+	<hr noshade />
 </div>
 <br />
 <?php

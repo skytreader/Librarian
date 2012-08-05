@@ -25,6 +25,14 @@ h2 {
 	color: #000000;
 }
 
+hr {
+	color: #4c4039;
+	background-color: #4c4039;
+	width: 98.8%;
+	height: 3px;
+	border: 0px;
+}
+
 p, .text {
 	font-size: 15px;
 	font-family: Arial, Helvetica, sans-serif;
@@ -81,9 +89,10 @@ label.error{
 }
 
 table.booklist{
-	margin-left: 1%;
-	margin-right: 1%;
-	width: 98%
+	margin-left: 3%;
+	margin-right: 3%;
+	width: 94%;
+	border-collapse: collapse;
 }
 
 table.booklist, tr.booklist{
@@ -93,8 +102,9 @@ table.booklist, tr.booklist{
 }
 
 td.booklist{
-	border: solid 1px;
 	padding: 3px;
+	margin: 0;
+	border: solid 1px;
 }
 
 td.bookrecord{

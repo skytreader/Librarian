@@ -15,6 +15,7 @@ function addRecord(){
 	
 	// Create the ISBN-Genre cell
 	var cell = document.createElement("td");
+	$(cell).addClass("booklist");
 	cell.innerHTML += locISBN.value;
 	cell.appendChild(createHiddenField(locISBN.id, locISBN.value));
 	cell.appendChild(document.createElement("br"));
@@ -23,10 +24,12 @@ function addRecord(){
 	
 	// Create the composite cell (a.k.a, the "spine")
 	var compositeCell = document.createElement("td");
+	$(compositeCell).addClass("booklist");
 	compositeCell.innerHTML = renderSpine();
 	
 	// Add the delete button
 	var deleteButtonCell = document.createElement("td");
+	$(deleteButtonCell).addClass("booklist");
 	deleteButtonCell.appendChild(deleteButton());
 	
 	row.appendChild(cell);
