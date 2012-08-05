@@ -27,6 +27,14 @@ function addRecord(){
 	$(compositeCell).addClass("booklist");
 	compositeCell.innerHTML = renderSpine();
 	
+	// Add the hidden fields to the composite cell
+	// At this point, window.spine is updated
+	var limit = window.spine.length;
+	
+	for(var i = 0; i < limit; i++){
+		compositeCell.appendChild(createHiddenField(window.spine[i][0].id, window.spine[i][0].value));
+	}
+	
 	// Add the delete button
 	var deleteButtonCell = document.createElement("td");
 	$(deleteButtonCell).addClass("booklist");
