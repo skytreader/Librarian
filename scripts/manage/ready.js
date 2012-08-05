@@ -9,29 +9,54 @@ function addRecord(){
 		window.isTableFresh = false;
 	}
 	var row = document.createElement("tr");
+	var locISBN = window.isbn[0].value;
+	var locGenre = window.isbn[0].genre;
 	
-	var bookDetails = document.addbook.getElementsByTagName("input");
-	var limit = bookDetails.length - 1;
+	// Create the ISBN-Genre cell
+	var cell = document.createElement("td");
+	cell.innerHTML += locISBN.value;
+	cell.appendChild(createHiddenField(locISBN.id, locISBN.value));
+	cell.appendChild(document.createElement("br"));
+	cell.innerHTML += locGenre.value;
+	cell.appendChild(createHiddenField(locGenre.id, locGenre.value));
+	
+	// Create the composite cell
+}
+
+/**
+Renders the "spine" display of the book list. Takes data from global
+variables directly.
+
+@return The text formatted like a spine of a book.
+*/
+function renderSpine(){
+	window.spine = [title, authors, illustrators, translators, editors, publisher, printer, year];
+	/*Parallel array to window.spine specifying if a break is rendered after*/
+	var spineText = "";
+	var limit = window.spine.length;
 	
 	for(var i = 0; i < limit; i++){
-		var cell = document.createElement("td");
-		cell.className = "bookrecord";
-		cell.innerHTML = bookDetails[i].value;
-		cell.appendChild(createHiddenField(bookDetails[i].id, bookDetails[i].value));
+		var item = window.spine[i][0];
+		var itemId = item.id;
 		
-		row.appendChild(cell);
-		bookDetails[i].value = "";
+		if(itemId != window.title[0].id && itemId != window.year[0].id && itemId != window.authors[0].id){
+			var label = document.createElement("strong");
+			
+			if(itemId == window.publisher[0].id || itemId == window.printer[0].id){
+				label.innerHTML = itemId == window.publisher[0].id ? "Published by" : "Printed by";
+			} else{
+				label.innerHTML = itemId;
+			}
+			
+			label.innerHTML += ": ";
+		} else{
+			spineText += item.value;
+		}
+		
+		spineText += window.breakAfter[itemId] ? "<br />" : "";
 	}
 	
-	// Create a cell for the button
-	var delCell = document.createElement("td");
-	delCell.className = "bookrecord";
-	delCell.appendChild(deleteButton());
-	
-	// Add it to the row
-	row.appendChild(delCell);
-	
-	window.booklistTableBody.appendChild(row);
+	return spineText;
 }
 
 /**

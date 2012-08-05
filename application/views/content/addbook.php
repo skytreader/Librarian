@@ -53,19 +53,6 @@
 <table class="booklist" id="booklist">
 	<tbody>
 		<tr class="booklist">
-			<td class="booklist">ISBN</td>
-			<td class="booklist">Title</td>
-			<td class="booklist">Genre</td>
-			<td class="booklist">Author(s)</td>
-			<td class="booklist">Illustrator(s)</td>
-			<td class="booklist">Editor(s)</td>
-			<td class="booklist">Translator(s)</td>
-			<td class="booklist">Publisher</td>
-			<td class="booklist">Printer</td>
-			<td class="booklist">Year</td>
-			<td class="booklist"></td>
-		</tr>
-		<tr class="booklist">
 			<td colspan="8">
 				No records yet.
 			</td>

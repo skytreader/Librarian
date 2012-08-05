@@ -88,6 +88,7 @@ table.booklist{
 
 table.booklist, tr.booklist{
 	border: solid 1px;
+	vertical-align: middle;
 }
 
 td.booklist{
@@ -98,6 +99,10 @@ td.booklist{
 td.bookrecord{
 	font-size: 12px;
 	border: solid 1px;
+}
+
+td.bookspine{
+	text-align: center;
 }
 
 /**

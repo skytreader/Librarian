@@ -23,6 +23,26 @@ var publisher;
 var printer;
 var year;
 
+/**
+An array holding the details that appears in a book spine.
+*/
+var spine;
+
+/**
+A JSON object specifying whether a line break is rendered after a particular entry
+in variable spine. The properties are the ids of the elements in spine.
+*/
+var breakAfter = {
+	"title":true,
+	"authors":true,
+	"illustrators":true,
+	"translators":true,
+	"editors":true,
+	"publisher":false,
+	"printer":true,
+	"year": false
+}
+
 /*
 ^Put them in an array!
 */
