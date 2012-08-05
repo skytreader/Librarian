@@ -4,13 +4,13 @@ Get the values in the textboxes and add them to the table.
 function addRecord(){
 	if(window.isTableFresh){
 		// "No records yet."
-		var child = window.booklistTableBody.children[1];
+		var child = window.booklistTableBody.children[0];
 		window.booklistTableBody.removeChild(child);
 		window.isTableFresh = false;
 	}
 	var row = document.createElement("tr");
-	var locISBN = window.isbn[0].value;
-	var locGenre = window.isbn[0].genre;
+	var locISBN = window.isbn[0];
+	var locGenre = window.genre[0];
 	
 	// Create the ISBN-Genre cell
 	var cell = document.createElement("td");
@@ -20,7 +20,18 @@ function addRecord(){
 	cell.innerHTML += locGenre.value;
 	cell.appendChild(createHiddenField(locGenre.id, locGenre.value));
 	
-	// Create the composite cell
+	// Create the composite cell (a.k.a, the "spine")
+	var compositeCell = document.createElement("td");
+	compositeCell.innerHTML = renderSpine();
+	
+	// Add the delete button
+	var deleteButtonCell = document.createElement("td");
+	deleteButtonCell.appendChild(deleteButton());
+	
+	row.appendChild(cell);
+	row.appendChild(compositeCell);
+	row.appendChild(deleteButtonCell);
+	window.booklistTableBody.appendChild(row);
 }
 
 /**
@@ -40,19 +51,19 @@ function renderSpine(){
 		var itemId = item.id;
 		
 		if(itemId != window.title[0].id && itemId != window.year[0].id && itemId != window.authors[0].id){
-			var label = document.createElement("strong");
+			var label = "<strong>";
 			
 			if(itemId == window.publisher[0].id || itemId == window.printer[0].id){
-				label.innerHTML = itemId == window.publisher[0].id ? "Published by" : "Printed by";
+				label += itemId == window.publisher[0].id ? "Published by" : "Printed by";
 			} else{
-				label.innerHTML = itemId;
+				label += itemId;
 			}
 			
-			label.innerHTML += ": ";
-		} else{
-			spineText += item.value;
+			label += ":</strong> ";
+			spineText += label;
 		}
 		
+		spineText += item.value;
 		spineText += window.breakAfter[itemId] ? "<br />" : "";
 	}
 	
@@ -116,10 +127,10 @@ $.validator.addMethod("year", function(value, element, param){
 $(document).ready(function(){
 	$("#detailsForm").validate({
 		rules:{
-			isbn:{
+			isbn1:{
 				isbn: true
 			},
-			year:{
+			year1:{
 				year: true
 			}
 		}
