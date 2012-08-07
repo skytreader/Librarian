@@ -40,7 +40,7 @@ echo form_open("search", $search_form_attributes);
 	</td>
 	<td>
 		<?php
-			$submit_attributes["class"] = "search btn";
+			$submit_attributes["class"] = "search btn frequent";
 			echo form_submit($submit_attributes, "Search");
 		?>
 	</td>

@@ -35,7 +35,7 @@
 	<input type="text" id="year" class="required year" name="year1" /><br />
 </div>
 <div>
-	<br /><input type="button" name="add" value="List Book" class="btn" />
+	<br /><input type="button" name="add" value="List Book" class="btn frequent" />
 </div>
 </form>
 
@@ -60,7 +60,7 @@
 	</tbody>
 </table>
 <?php
-	$submit_button_data = array("name"=>"dbadd", "value"=>"Add Books", "class"=>"btn");
+	$submit_button_data = array("name"=>"dbadd", "value"=>"Add Books", "class"=>"btn frequent");
 	echo form_submit($submit_button_data);
 	echo form_close();
 ?>

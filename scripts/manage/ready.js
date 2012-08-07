@@ -105,12 +105,13 @@ Generates the delete button to be added at the end
 of every row record.
 */
 function deleteButton(){
-	var button = document.createElement("input");
-	button.type = "button";
-	button.onclick = function(){removeRow(event);};
-	button.value = "-";
+	var container = document.createElement("input");
+	container.onclick = removeRow;
+	container.type = "button";
+	container.className = "btn infrequent";
+	container.value = "X";
 	
-	return button;
+	return container;
 }
 
 /**
