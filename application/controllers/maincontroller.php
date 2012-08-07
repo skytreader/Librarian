@@ -1,5 +1,7 @@
 <?php
 
+require_once(APPPATH . "app_constants.php");
+
 /**
 The MainController class will contain default resources which will be
 used by Views. These resources are:
@@ -35,10 +37,12 @@ class MainController extends CI_Controller{
 		$this->data_bundle["stylesheets"] = array();
 		$this->data_bundle["scripts"] = array();
 		$this->data_bundle["echo_content"] = false;
+		
+		$this->load->library("session");
 	}
 	
 	protected function login_check(){
-		if(!$this->is_logged_in){
+		if(!$this->session->userdata(SESSION_LOGGED_IN)){
 			$this->load->helper("url");
 			redirect("login");
 		}
