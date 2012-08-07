@@ -29,6 +29,10 @@ class MainController extends CI_Controller{
 	/**
 	All classes that will extend MainController should have their own constructors
 	calling the constructor of MainController.
+	
+	The following are automatically loaded by this constructor:
+	  - CodeIgniter Session library
+	  - CodeIgniter URL helper
 	*/
 	public function __construct(){
 		parent::__construct();
@@ -39,6 +43,7 @@ class MainController extends CI_Controller{
 		$this->data_bundle["echo_content"] = false;
 		
 		$this->load->library("session");
+		$this->load->helper("url");
 	}
 	
 	protected function login_check(){

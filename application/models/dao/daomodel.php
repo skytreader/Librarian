@@ -127,6 +127,9 @@ class DAOModel extends CI_Model{
 	@param where_clause
 	  The where clause of the query, expect bind vars. The values of the
 	  bind vars will be taken from the attributes of this object.
+	  
+	  Never pass an empty/whitespace string for this parameter. If you
+	  don't need any where conditions, pass in "1".
 	@param extra_specs
 	  Conditions like ORDER BY, LIMIT, etc.
 	@return The result set of the query.
@@ -140,7 +143,8 @@ class DAOModel extends CI_Model{
 		foreach($field_names as $fn){
 			array_push($bind_var_vals, $this->fields[$fn]);
 		}
-		
+		//echo $query_statement;
+		//var_dump($bind_var_vals);
 		return $this->db->query($query_statement, $bind_var_vals);
 	}
 	
