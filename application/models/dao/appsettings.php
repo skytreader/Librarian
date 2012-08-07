@@ -12,43 +12,43 @@ class Appsettings extends DAOModel{
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "appsettings";
-		$this->fields[SETTINGCODE] = null;
-		$this->fields[SETTINGSTRING] = null;
-		$this->fields[DESCRIPTION] = null;
-		$this->fields[SETTINGVALUE] = null;
-		array_push($this->primary_keys, SETTING_CODE);
+		$this->fields[Appsettings::SETTINGCODE] = null;
+		$this->fields[Appsettings::SETTINGSTRING] = null;
+		$this->fields[Appsettings::DESCRIPTION] = null;
+		$this->fields[Appsettings::SETTINGVALUE] = null;
+		array_push($this->primary_keys, Appsettings::SETTINGCODE);
 	}
 	
 	public function get_settingcode(){
-		return $this->fields[SETTINGCODE];
+		return $this->fields[Appsettings::SETTINGCODE];
 	}
 	
 	public function set_settingcode($s){
-		$this->fields[SETTINGCODE] = $s;
+		$this->fields[Appsettings::SETTINGCODE] = $s;
 	}
 	
 	public function get_settingstring(){
-		return $this->fields[SETTINGSTRING];
+		return $this->fields[Appsettings::SETTINGSTRING];
 	}
 	
 	public function set_settingstring($s){
-		$this->fields[SETTINGSTRING] = $s;
+		$this->fields[Appsettings::SETTINGSTRING] = $s;
 	}
 	
 	public function get_description(){
-		return $this->fields[DESCRIPTION];
+		return $this->fields[Appsettings::DESCRIPTION];
 	}
 	
 	public function set_description($d){
-		$this->fields[DESCRIPTION] = $d;
+		$this->fields[Appsettings::DESCRIPTION] = $d;
 	}
 	
 	public function get_settingvalue(){
-		return $this->fields[SETTINGVALUE];
+		return $this->fields[Appsettings::SETTINGVALUE];
 	}
 	
 	public function set_settingvalue($s){
-		$this->fields[SETTINGVALUE] = $s;
+		$this->fields[Appsettings::SETTINGVALUE] = $s;
 	}
 	
 }
