@@ -98,6 +98,13 @@ function removeRow(e){
 	var row = cell.parentNode;
 	
 	window.booklistTableBody.removeChild(row);
+	
+	// Check if table body became empty
+	if(window.booklistTableBody.children.length == 0){
+		var soleCell = document.createElement("td");
+		soleCell.innerHTML = "No records yet.";
+		window.booklistTableBody.appendChild(soleCell);
+	}
 }
 
 /**
