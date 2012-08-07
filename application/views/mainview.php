@@ -18,33 +18,27 @@ to determine if we should display the logged-in navbar.
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title><?php echo APP_TITLE . " - " . $title; ?></title>
-		<base href="<?php echo base_url(); ?>" />
+		<title><?= APP_TITLE . " - " . $title ?></title>
+		<base href="<?= base_url() ?>" />
 		<link rel="stylesheet" type="text/css" href="css/librariantheme.css" />
-		<?php
-			foreach($stylesheets as $style){
-				echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/$style\" />";
-			}
-		?>
+		<?php foreach($stylesheets as $style): ?>
+				<link rel="stylesheet" type="text/css" href="css/<?= $style ?>" />
+		<?php endforeach; ?>
 		
-		<?php
-			foreach($scripts as $script){
-				echo "<script type=\"text/javascript\" src=\"scripts/$script\"></script>";
-			}
-		?>
+		<?php foreach($scripts as $script): ?>
+				<script type="text/javascript" src="scripts/<?= $script ?>"></script>
+		<?php endforeach; ?>
 	</head>
 	<body>
 		<div class="main_box">
 			<img src="images/librarian.png" />
 			<?php include("navbox.php"); ?>
 			<div class="content_box">
-				<?php
-					if(isset($echo_content) && $echo_content){
-						echo $content;
-					} else{
-						include($content);
-					}
-				?>
+				<?php if(isset($echo_content) && $echo_content): ?>
+						<?= $content ?>
+				<?php else: ?>
+						<?php include($content); ?>
+				<?php endif; ?>
 			</div>
 		</div>
 	</body>
