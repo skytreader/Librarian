@@ -143,8 +143,7 @@ class DAOModel extends CI_Model{
 		foreach($field_names as $fn){
 			array_push($bind_var_vals, $this->fields[$fn]);
 		}
-		//echo $query_statement;
-		//var_dump($bind_var_vals);
+		
 		return $this->db->query($query_statement, $bind_var_vals);
 	}
 	

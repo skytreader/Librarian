@@ -18,9 +18,7 @@ class Settings extends MainController{
 		$extra_specs = "";
 		
 		$result = $this->AppSettings->select($fields, $where_clause, $extra_specs);
-		//if($result->num_rows() > 0){
-			$result_array = $result->result_array();
-		//}
+		$result_array = $result->result_array();
 		
 		$this->data_bundle["settings"] = $result_array;
 		$this->data_bundle["title"] = "Settings";
