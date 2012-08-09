@@ -8,10 +8,10 @@ class Logout extends CI_Controller{
 	public function index(){
 		$this->load->helper("url");
 		$this->load->library("session");
-		$logout[SESSION_LOGGED_IN] = FALSE;
+		$logout[SESSION_LOGGED_IN] = "";
 		$logout[SESSION_USERNAME] = "";
 		
-		$this->session->set_userdata($logout);
+		$this->session->unset_userdata($logout);
 		
 		redirect("login");
 	}

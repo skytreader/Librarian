@@ -22,6 +22,8 @@ class Dashboard extends MainController{
 	Tests:
 	  -Check behavior when visited and user is not logged in
 	  -Check behavior when visited and user is logged in
+	
+	TODO: How do we abstract this?
 	*/
 	public function index(){
 		$this->load->model("dao/Librarians");
@@ -42,18 +44,21 @@ class Dashboard extends MainController{
 			$user_session[SESSION_USERNAME] = $_POST["username"];
 			$user_session[SESSION_LOGGED_IN] = TRUE;
 			
-			$this->load->library("session");
 			$this->session->set_userdata($user_session);
 			$is_logged_in = TRUE;
 			$this->display_logged_in_view();
 		} elseif($is_logged_in){
 			$this->display_logged_in_view();
+		} elseif($is_logged_in == false){
+			log_message("debug", "Not logged in");
+			log_message("debug", "Check is_logged_in: " . isset($is_logged_in));
+			parent::login_check();
 		} elseif(!$is_verified){
+			log_message("debug", "Wrong password");
+			log_message("debug", "Check is_logged_in:" .isset($is_logged_in));
 			//Just load some views here.
 			$this->load->helper("url");
 			redirect("login/fail");
-		} else{
-			//User visited the dashboard URL without logging in.
 		}
 	}
 	

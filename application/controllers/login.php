@@ -19,6 +19,7 @@ class Login extends MainController{
 	TODO: Abstract these two functions!
 	*/
 	public function index(){
+		log_message("error", "Logging sanity check.");
 		parent::enforce_https();
 		$this->data_bundle["title"] = "Login";
 		$this->data_bundle["content"] = "content/login.php";
