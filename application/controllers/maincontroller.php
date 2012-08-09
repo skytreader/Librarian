@@ -53,6 +53,25 @@ class MainController extends CI_Controller{
 		}
 	}
 	
+	/**
+	Force users to use https.
+	
+	Code snippet from:
+	http://stackoverflow.com/a/4520249/777225
+	*/
+	protected function enforce_https(){
+		if($_SERVER["HTTPS"] != "on") {
+			$pageURL = "Location: https://";
+				if ($_SERVER["SERVER_PORT"] != "80") {
+					$pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+				} else {
+					$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+				}
+			header($pageURL);
+			exit();
+		}
+	}
+	
 }
 
 ?>
