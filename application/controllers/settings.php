@@ -25,6 +25,7 @@ class Settings extends MainController{
 		$this->data_bundle["settings"] = $result_array;
 		$this->data_bundle["title"] = "Settings";
 		$this->data_bundle["content"] = "content/settings.php";
+		$this->data_bundle["logged_in"] = true;
 		$this->load->view("mainview", $this->data_bundle);
 	}
 	

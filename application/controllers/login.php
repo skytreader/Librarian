@@ -27,6 +27,7 @@ class Login extends MainController{
 	}
 	
 	public function fail(){
+		parent::enforce_https();
 		$this->data_bundle["title"] = "Login";
 		$this->data_bundle["content"] = "content/login.php";//?" . FLAG_LOGIN_FAIL . "=true";
 		$this->data_bundle["fail"] = TRUE;
