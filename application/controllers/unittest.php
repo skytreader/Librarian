@@ -92,6 +92,18 @@ class UnitTest extends CI_Controller{
 		
 		echo $this->unit->report();
 	}
+	
+	public function sql_test(){
+		$dsn = "mysql://root:@localhost/test";
+		$this->load->database($dsn);
+		$this->load->model("dao/Foo");
+		
+		$insert_test = new Foo;
+		$insert_test->set_msg("This is a test message.");
+		$insert_test->insert("msg");
+		
+		echo "Check your DB for results!";
+	}
 }
 
 ?>

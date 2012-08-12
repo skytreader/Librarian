@@ -35,6 +35,7 @@ class DAOModel extends CI_Model{
 	public function __construct(){
 		$this->fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
+		$this->load->database();
 		$this->primary_keys = array();
 		$this->autocommit = true;
 	}
@@ -74,28 +75,38 @@ class DAOModel extends CI_Model{
 	
 	/**
 	Inserts a record to the database.
-	
-	All specified fields should be in $fields and with their corresponding
-	$values. Else, this function will fail.
-	
+
 	@param fields
 	  The columns to insert to, comma delimited.
 	
 	TODO is this safe? Will PHP return the same order of keys everytime?
+	TODO should we still check if all pks are set?
 	*/
 	public function insert($fields){
-		$insert_fields = generate_insert_fields();
-		$bind_vars = $this->QueryStringUtils->generate_insert_bind_vars(count($insert_fields));
-		$insert_query = "INSERT INTO $table_name $insert_fields VALUES $bind_vars";
-		$bind_var_vals = array();
+		$data_map = $this->get_query_data_map($fields);
+		$insert_query = $this->db->insert_string($this->table_name, $data_map);
 		
-		foreach($fields as $f){
-			if($f != null){
-				array_push($bind_var_vals, $f);
-			}
+		return $this->db->query($insert_query);
+	}
+	
+	/**
+	Returns an associative array with each column in $fields as key and
+	their corresponding values, as set in the invoking DAOModel as values.
+	
+	@param fields
+	  The keys of the return array, as a comma-delimited string.
+	@return An associative array with each column as specified in $fields
+	as key and the values taken from the attributes of the calling DAOModel.
+	*/
+	private function get_query_data_map($fields){
+		$field_parse = preg_split("/\\s*,\\s*/", $fields);
+		$data_map = array();
+		
+		foreach($field_parse as $field){
+			$data_map[$field] = $this->fields[$field];
 		}
 		
-		return $this->db->query($insert_query, $bind_var_vals);
+		return $data_map;
 	}
 	
 	/*
@@ -105,8 +116,8 @@ class DAOModel extends CI_Model{
 	private function generate_insert_fields(){
 		$insert_fields = "(";
 		
-		while(list($key) = each($fields)){
-			if($fields[$key] != null){
+		while(list($key) = each($this->fields)){
+			if($this->fields[$key] != null){
 				if($insert_fields == "("){
 					$insert_fields .= $key;
 				} else{
