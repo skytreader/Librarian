@@ -102,6 +102,18 @@ class UnitTest extends CI_Controller{
 		$insert_test->set_msg("This is a test message.");
 		$insert_test->insert("msg");
 		
+		$update_test = new Foo;
+		$update_buffer = new Foo;
+		
+		$update_buffer->set_id(1);
+		$foo = $update_buffer->select("lastupdate", "id = ?", "");
+		$bar = $foo->row_array();
+		$timestamp = $bar[Foo::TIMESTAMP];
+		
+		$update_test->set_id(1);
+		$update_test->set_msg("This is an updated message.");
+		$update_test->update(Foo::MSG . " = ?", "id = ?", $timestamp);
+		
 		echo "Check your DB for results!";
 	}
 }

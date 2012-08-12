@@ -11,8 +11,8 @@ for details on how they'll use the DAO properties.
 This class automatically loads QueryStringUtils upon construction.
 */
 class DAOModel extends CI_Model{
-	const TIMESTAMP = "timestamp";
-	const LAST_UPDATER = "last_updater";
+	const TIMESTAMP = "lastupdate";
+	const LAST_UPDATER = "lastupdateby";
 	const PK_EXCEPTION_MESSAGE = "Not all primary keys are set.";
 	const TIMESTAMP_EXPIRED_MESSAGE = "You don't have the most recent copy of this record.";
 	
@@ -64,8 +64,8 @@ class DAOModel extends CI_Model{
 	Checks if all primary keys have non-null values.
 	*/
 	private function are_pks_set(){
-		foreach($primary_keys as $pk){
-			if($fields[$pk] == null){
+		foreach($this->primary_keys as $pk){
+			if($this->fields[$pk] == null){
 				return false;
 			}
 		}
@@ -162,10 +162,10 @@ class DAOModel extends CI_Model{
 	Assumes that where_clause pertains to one and only one record.
 	*/
 	private function get_current_timestamp($where_clause){
-		$timestamp_resultset = select(TIMESTAMP, $where_clause, "LIMIT 1");
-		$timestamp_array = $timestamp_resultset->result_array();
+		$timestamp_resultset = $this->select(DAOModel::TIMESTAMP, $where_clause, "LIMIT 1");
+		$timestamp_array = $timestamp_resultset->row_array();
 		
-		return $timestamp_array[TIMESTAMP];
+		return $timestamp_array[DAOModel::TIMESTAMP];
 	}
 	
 	/**
@@ -178,16 +178,16 @@ class DAOModel extends CI_Model{
 	@return TODO What to do if locking fails?
 	*/
 	public function lock($where_clause){
-		if(!$autocommit){
+		if(!$this->autocommit){
 			$this->db->query("START TRANSACTION");
 		}
 		
-		$lock_query = "SELECT 1 FROM $table_name WHERE $where_clause FOR UPDATE";
+		$lock_query = "SELECT 1 FROM " . $this->table_name . " WHERE $where_clause FOR UPDATE";
 		$field_names = $this->QueryStringUtils->get_field_names($where_clause);
 		$bind_var_vals = array();
 		
 		foreach($field_names as $field){
-			array_push($bind_var_vals, $fields[$field]);
+			array_push($bind_var_vals, $this->fields[$field]);
 		}
 		
 		$this->db->query($lock_query, $bind_var_vals);
@@ -211,15 +211,16 @@ class DAOModel extends CI_Model{
 	TODO: Timestamp checking.
 	*/
 	public function update($set_fields, $where_fields, $timestamp){
-		if(!are_pks_set()){
-			throw new Exception(PK_EXCEPTION_MESSAGE);
-		}else if(get_current_timestamp($where_fields) != $timestamp){
-			throw new Exception(TIMESTAMP_EXPIRED_MESSAGE);
+		if(!$this->are_pks_set()){
+			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
+		}else if($this->get_current_timestamp($where_fields) != $timestamp){
+			throw new Exception(DAOModel::TIMESTAMP_EXPIRED_MESSAGE);
 		}
 		
-		lock($where_fields);
+		$this->lock($where_fields);
 		
-		$query_statement = "UPDATE $table SET $set_fields WHERE $where_fields";
+		$query_statement = "UPDATE " . $this->table_name . " SET $set_fields WHERE $where_fields";
+		echo $query_statement;
 		$bind_var_vals = array();
 		
 		// Bind the set vars
@@ -232,7 +233,7 @@ class DAOModel extends CI_Model{
 		$where_field_names = $this->QueryStringUtils->get_field_names($where_fields);
 		
 		foreach($where_field_names as $field){
-			array_push($bind_var_vals, $fields[$field]);
+			array_push($bind_var_vals, $this->fields[$field]);
 		}
 		
 		$query_return = $this->db->query($query_statement, $bind_var_vals);
