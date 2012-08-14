@@ -1,5 +1,7 @@
 <?php
 
+require_once(APPPATH . "app_constants.php");
+
 /**
 General handler for single-table database transactions.
 
@@ -35,7 +37,7 @@ class DAOModel extends CI_Model{
 	public function __construct(){
 		$this->fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
-		$this->load->database();
+		$this->load->database(BOOKS_DSN);
 		$this->primary_keys = array();
 		$this->autocommit = true;
 	}

@@ -46,8 +46,8 @@ class Dashboard extends MainController{
 			
 			// Get the librarianid and make a session var out of it.
 			$librarianid_result = $this->Librarians->select("librarianid", "username = ?", "LIMIT 1");
-			$result_array = $librarianid_resutl->result_array();
-			$user_session[SESSION_LIBRARIAN_ID] = $result_array("librarianid");
+			$result_array = $librarianid_result->row_array();
+			$user_session[SESSION_LIBRARIAN_ID] = $result_array["librarianid"];
 			
 			$this->session->set_userdata($user_session);
 			$is_logged_in = TRUE;
