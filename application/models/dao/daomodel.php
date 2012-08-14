@@ -81,6 +81,8 @@ class DAOModel extends CI_Model{
 	
 	TODO is this safe? Will PHP return the same order of keys everytime?
 	TODO should we still check if all pks are set?
+	If PKs are not set, won't this just throw an exception anyway? So it seems
+	pointless to check and throw our own exception.
 	*/
 	public function insert($fields){
 		$data_map = $this->get_query_data_map($fields);
@@ -197,18 +199,31 @@ class DAOModel extends CI_Model{
 		return $this->db->query("commit");
 	}
 	
+	/*
+	Returns the current timestamp from the database server.
+	
+	TODO What if this query fails?
+	*/
+	private function get_db_timestamp(){
+		$query = $this->db->query("SELECT CURRENT_TIMESTAMP");
+		$query_row = $query->row_array();
+		return $query_row["CURRENT_TIMESTAMP"];
+	}
+	
 	/**
 	Updates a record to the database. Values of $set_fields and $where_fields
 	are all taken from the attributes of this object.
 	
+	This automatically updates the timestamp field of the record concerned.
+	
+	TODO: Scan anyway if there is a timestamp field indicated in $set_fields.
+	
 	@param set_fields
-	  The fields to be updated, expressed with bind vars.
+	  The fields to be updated, expressed as a comma-delimited string.
 	@param where_fields
 	  Ideally, the primary keys. Expressed with bind vars.
 	@param timestamp
 	  For timestamp checking.
-	
-	TODO: Timestamp checking.
 	*/
 	public function update($set_fields, $where_fields, $timestamp){
 		if(!$this->are_pks_set()){
@@ -219,7 +234,20 @@ class DAOModel extends CI_Model{
 		
 		$this->lock($where_fields);
 		
-		$query_statement = "UPDATE " . $this->table_name . " SET $set_fields WHERE $where_fields";
+		$timestamp_in_set_fields = strpos($set_fields, DAOModel::TIMESTAMP);
+		
+		if($timestamp_in_set_fields === false){
+			$set_fields .= "," . DAOModel::TIMESTAMP;
+			// It's alright that we have a bit of discrepancy between the timestamp
+			// set and the actual moment we update the record since the record is
+			// now locked.
+			// TODO What if this query fails?
+			$this->set_timestamp($this->get_db_timestamp());
+		}
+		
+		$data_map = $this->get_query_data_map($set_fields);
+		
+		$query_statement = $this->db->update_string($this->table_name, $data_map, $where_fields);
 		echo $query_statement;
 		$bind_var_vals = array();
 		

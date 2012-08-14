@@ -99,7 +99,7 @@ class UnitTest extends CI_Controller{
 		$this->load->model("dao/Foo");
 		
 		$insert_test = new Foo;
-		$insert_test->set_msg("This is a test message.");
+		$insert_test->set_msg("It's a celebration to rejoice!");
 		$insert_test->insert("msg");
 		
 		$update_test = new Foo;
@@ -112,7 +112,7 @@ class UnitTest extends CI_Controller{
 		
 		$update_test->set_id(1);
 		$update_test->set_msg("This is an updated message.");
-		$update_test->update(Foo::MSG . " = ?", "id = ?", $timestamp);
+		$update_test->update(Foo::MSG, "id = ?", $timestamp);
 		
 		echo "Check your DB for results!";
 	}
