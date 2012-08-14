@@ -242,7 +242,9 @@ class DAOModel extends CI_Model{
 	@param timestamp
 	  For timestamp checking.
 	*/
-	public function update($set_fields, $where_fields, $timestamp){
+	public function update($set_fields, $timestamp){
+		$where_fields = $this->pk_condition();
+		
 		if(!$this->are_pks_set()){
 			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
 		}else if($this->get_current_timestamp($where_fields) != $timestamp){

@@ -111,8 +111,8 @@ class UnitTest extends CI_Controller{
 		$timestamp = $bar[Foo::TIMESTAMP];
 		
 		$update_test->set_id(1);
-		$update_test->set_msg("This is an updated message.");
-		$update_test->update(Foo::MSG, "id = ?", $timestamp);
+		$update_test->set_msg("This is an updated message. Hello.");
+		$update_test->update(Foo::MSG, $timestamp);
 		
 		echo "Check your DB for results!";
 	}
