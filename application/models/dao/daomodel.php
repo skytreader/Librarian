@@ -210,6 +210,23 @@ class DAOModel extends CI_Model{
 		return $query_row["CURRENT_TIMESTAMP"];
 	}
 	
+	/*
+	Returns a string featuring each primary key, bind var-ed, in conjunctive form.
+	*/
+	private function pk_condition(){
+		$cond = "";
+		
+		foreach($this->primary_keys as $pk){
+			if($cond == ""){
+				$cond .= "$pk = ?";
+			} else{
+				$cond .= " AND $pk =?";
+			}
+		}
+		
+		return $cond;
+	}
+	
 	/**
 	Updates a record to the database. Values of $set_fields and $where_fields
 	are all taken from the attributes of this object.
