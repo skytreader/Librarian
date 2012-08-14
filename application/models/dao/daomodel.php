@@ -267,7 +267,6 @@ class DAOModel extends CI_Model{
 		$data_map = $this->get_query_data_map($set_fields);
 		
 		$query_statement = $this->db->update_string($this->table_name, $data_map, $where_fields);
-		echo $query_statement;
 		$bind_var_vals = array();
 		
 		// Bind the set vars
@@ -293,7 +292,9 @@ class DAOModel extends CI_Model{
 	@param where_clause
 	  The where clause, expected to be in bind vars.
 	*/
-	public function delete($where_clause, $timestamp){
+	public function delete($timestamp){
+		$where_clause = $this->pk_condition();
+		
 		if(!are_pks_set()){
 			throw new Exception(PK_EXCEPTION_MESSAGE);
 		}else if(get_current_timestamp($where_clause) != $timestamp){
