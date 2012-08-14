@@ -13,6 +13,12 @@ class Settings extends MainController{
 		parent::login_check();
 		$this->load->database(BOOKS_DSN);
 		$this->load->model("dao/AppSettings");
+		$this->load->model("dao/Librarians");
+		$this->load->library("session");
+		
+		// Check first if user is super user to save time querying
+		$this->Librarians->set_librarianid($this->session->userdata(SESSION_LIBRARIAN_ID));
+		
 		$fields = "*";
 		$where_clause = "1";
 		$extra_specs = "";
