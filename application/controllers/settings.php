@@ -18,15 +18,19 @@ class Settings extends MainController{
 		
 		// Check first if user is super user to save time querying
 		$this->Librarians->set_librarianid($this->session->userdata(SESSION_LIBRARIAN_ID));
+		$this->Librarians->load();
 		
-		$fields = "*";
-		$where_clause = "1";
-		$extra_specs = "";
-		
-		$result = $this->AppSettings->select($fields, $where_clause, $extra_specs);
-		$result_array = $result->result_array();
-		
-		$this->data_bundle["settings"] = $result_array;
+		if($this->Librarians->get_canread() == 1 && $this->Librarians->get_canwrite() == 1 &&
+		  $this->Librarian->get_canexec() == 1){
+			$fields = "*";
+			$where_clause = "1";
+			$extra_specs = "";
+			
+			$result = $this->AppSettings->select($fields, $where_clause, $extra_specs);
+			$result_array = $result->result_array();
+			
+			$this->data_bundle["app_settings"] = $result_array;
+		}
 		$this->data_bundle["title"] = "Settings";
 		$this->data_bundle["content"] = "content/settings.php";
 		$this->data_bundle["logged_in"] = true;
