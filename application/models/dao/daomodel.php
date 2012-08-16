@@ -65,7 +65,7 @@ class DAOModel extends CI_Model{
 	/**
 	Checks if all primary keys have non-null values.
 	*/
-	private function are_pks_set(){
+	protected function are_pks_set(){
 		foreach($this->primary_keys as $pk){
 			if($this->fields[$pk] == null){
 				return false;
@@ -73,6 +73,45 @@ class DAOModel extends CI_Model{
 		}
 		
 		return true;
+	}
+	
+	/**
+	Converts the PKs array to a comma-delimited list, as for
+	the fields requirements of the functions in this class.
+	*/
+	private function pks_fields(){
+		$csl = "";
+		$first = true;
+		
+		foreach($this->primary_keys as $pk){
+			if($csl == ""){
+				$csl .= $pk;
+			} else{
+				$csl .= ",$pk";
+			}
+		}
+		
+		return $csl;
+	}
+	
+	/**
+	Assuming that the primary keys have been set, this function loads
+	the invoking DAOModel instance with all the values of the row as
+	described by the PKs.
+	*/
+	public function load(){
+		if($this->are_pks_set()){
+			$pk_fields = $this->pks_fields();
+			
+			$query = $this->select($pk_fields, "1", "");
+			$row = $query->array_row();
+			
+			$fields = array_keys($this->fields);
+			
+			foreach($fields as $f){
+				$this->fields[$f] = $row[$f];
+			}
+		}
 	}
 	
 	/**
