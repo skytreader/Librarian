@@ -12,23 +12,23 @@ class Books extends DAOModel{
 		$this->table_name = "books";
 		$this->fields[ISBN] = null;
 		$this->fields[TITLE] = null;
-		array_push($this->primary_keys, ISBN);
+		array_push($this->primary_keys, Books::ISBN);
 	}
 	
 	public function get_isbn($i){
-		return $this->fields[ISBN];
+		return $this->fields[Books::ISBN];
 	}
 	
 	public function set_isbn($i){
-		$this->fields[ISBN] = $i;
+		$this->fields[Books::ISBN] = $i;
 	}
 	
 	public function get_title(){
-		return $this->fields[TITLE];
+		return $this->fields[Books::TITLE];
 	}
 	
 	public function set_title($t){
-		$this->fields[TITLE]= $t;
+		$this->fields[Books::TITLE]= $t;
 	}
 }
 
