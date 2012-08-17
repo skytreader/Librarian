@@ -274,8 +274,6 @@ class DAOModel extends CI_Model{
 	
 	This automatically updates the timestamp field of the record concerned.
 	
-	TODO: Scan anyway if there is a timestamp field indicated in $set_fields.
-	
 	@param set_fields
 	  The fields to be updated, expressed as a comma-delimited string.
 	@param where_fields
