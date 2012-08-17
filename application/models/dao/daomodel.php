@@ -30,7 +30,7 @@ class DAOModel extends CI_Model{
 	protected $primary_keys;
 	/**
 	If set to true, every update and delete transaction commits automatically.
-	Default is true;
+	Default is true.
 	*/
 	protected $autocommit;
 	
@@ -43,19 +43,19 @@ class DAOModel extends CI_Model{
 	}
 	
 	public function get_timestamp(){
-		return $fields[DAOModel::TIMESTAMP];
+		return $this->fields[DAOModel::TIMESTAMP];
 	}
 	
 	public function set_timestamp($ts){
-		$fields[DAOModel::TIMESTAMP] = $ts;
+		$this->fields[DAOModel::TIMESTAMP] = $ts;
 	}
 	
 	public function get_last_updater(){
-		return $fields[DAOModel::LAST_UPDATER];
+		return $this->fields[DAOModel::LAST_UPDATER];
 	}
 	
 	public function set_last_updater($lu){
-		$fields[DAOModel::LAST_UPDATER] = $lu;
+		$this->fields[DAOModel::LAST_UPDATER] = $lu;
 	}
 	
 	public function get_table_name(){
