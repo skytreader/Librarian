@@ -6,7 +6,7 @@
 		<a href="index.php/dashboard" class="navbox">Dashboard</a>
 		<a href="index.php/manage/users" class="navbox">Manage Users</a>
 		<a href="index.php/manage/books" class="navbox">Manage Books</a>
-		<a href="index.php/settings" class="navbox">Account Settings</a>
+		<a href="index.php/settings" class="navbox">Settings</a>
 	<?php }else{ ?>
 		<a href="index.php/login" class="navbox">Log In</a>
 	<?php } ?>
