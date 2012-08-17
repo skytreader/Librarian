@@ -21,7 +21,7 @@ class Settings extends MainController{
 		$this->Librarians->load();
 		
 		if($this->Librarians->get_canread() == 1 && $this->Librarians->get_canwrite() == 1 &&
-		  $this->Librarian->get_canexec() == 1){
+		  $this->Librarians->get_canexec() == 1){
 			$fields = "*";
 			$where_clause = "1";
 			$extra_specs = "";

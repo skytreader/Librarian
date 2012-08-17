@@ -94,6 +94,23 @@ class DAOModel extends CI_Model{
 		return $csl;
 	}
 	
+	/*
+	Returns a string featuring each primary key, bind var-ed, in conjunctive form.
+	*/
+	private function pk_condition(){
+		$cond = "";
+		
+		foreach($this->primary_keys as $pk){
+			if($cond == ""){
+				$cond .= "$pk = ?";
+			} else{
+				$cond .= " AND $pk =?";
+			}
+		}
+		
+		return $cond;
+	}
+	
 	/**
 	Assuming that the primary keys have been set, this function loads
 	the invoking DAOModel instance with all the values of the row as
@@ -103,8 +120,8 @@ class DAOModel extends CI_Model{
 		if($this->are_pks_set()){
 			$pk_fields = $this->pks_fields();
 			
-			$query = $this->select($pk_fields, "1", "");
-			$row = $query->array_row();
+			$query = $this->select("*", $this->pk_condition(), "");
+			$row = $query->row_array();
 			
 			$fields = array_keys($this->fields);
 			
@@ -249,23 +266,6 @@ class DAOModel extends CI_Model{
 		$query = $this->db->query("SELECT CURRENT_TIMESTAMP");
 		$query_row = $query->row_array();
 		return $query_row["CURRENT_TIMESTAMP"];
-	}
-	
-	/*
-	Returns a string featuring each primary key, bind var-ed, in conjunctive form.
-	*/
-	private function pk_condition(){
-		$cond = "";
-		
-		foreach($this->primary_keys as $pk){
-			if($cond == ""){
-				$cond .= "$pk = ?";
-			} else{
-				$cond .= " AND $pk =?";
-			}
-		}
-		
-		return $cond;
 	}
 	
 	/**

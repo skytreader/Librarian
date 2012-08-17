@@ -1,5 +1,5 @@
 <!--
-Expects the variable $settings defined containing all the
+Expects the variable $app_settings defined containing all the
 rows in the appsettings table in an array.
 -->
 <?php if(isset($settings)): ?>
@@ -9,3 +9,10 @@ rows in the appsettings table in an array.
 		<input type="text" value="<?= $s['settingvalue'] ?>" /><br />
 	<?php endforeach ?>
 <?php endif ?>
+
+<!--
+And here, the librarian's user settings. Expects the following
+variables:
+  >$user_password - will not be displayed.
+-->
+
