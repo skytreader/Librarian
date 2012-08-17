@@ -1,3 +1,7 @@
+<?php
+require_once(APPPATH . "architecture_constants.php");
+?>
+
 <!--
 Expects the variable $app_settings defined containing all the
 rows in the appsettings table in an array.
@@ -16,6 +20,24 @@ rows in the appsettings table in an array.
 <br />
 <hr noshade>
 
+<?php
+/*
+Check if page was loaded from password submission and change
+password if appropriate.
+*/
+if($this->input->post("change_password")){
+	try{
+		$password = hash(HASH_FUNCTION, $this->input->post("password"));
+		$new_password = hash(HASH_FUNCTION, $this->input->post("new_password"));
+		$confirm_new_password = hash(HASH_FUNCTION ,$this->input->post("confirm_new_password"));
+		$user->change_password($password, $new_password, $confirm_new_password, $user->get_timestamp());
+		echo "<em>Password changed successfully.</em>";
+	} catch(Exception $e){
+		echo $e->getMessage();
+	}
+}
+?>
+
 <!--
 And here, the librarian's user settings. Expects the following
 variables:
@@ -31,5 +53,5 @@ variables:
 	<input type="password" name="new_password" /><br />
 	<strong>Confirm New Password:</strong><br />
 	<input type="password" name="confirm_new_password" /><br />
-	<input type="submit" class="btn frequent" value="Change Password" />
+	<input type="submit" class="btn frequent" name="change_password" value="Change Password" />
 </form>

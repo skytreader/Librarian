@@ -13,6 +13,9 @@ class Librarians extends DAOModel{
 	const CANWRITE = "canwrite";
 	const CANEXEC = "canexec";
 	
+	const INCORRECT_PASSWORD = "Password supplied is incorrect.";
+	const UNMATCHED_PASSWORD = "New password does not match.";
+	
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "librarians";
@@ -78,6 +81,29 @@ class Librarians extends DAOModel{
 			return TRUE;
 		} else{
 			return FALSE;
+		}
+	}
+	
+	/**
+	Preferred method of changing a user's password (in contrast
+	to using update).
+	
+	Throws an exception when pks are not set.
+	*/
+	public function change_password($old_password, $new_password, $new_password_verify, $timestamp){
+		if($this->are_pks_set()){
+			if($this->get_password() == $old_password){
+				throw new Exception(Librarians::INCORRECT_PASSWORD);
+			}
+			
+			if($new_password != $new_password_verify){
+				throw new Exception(Librarians::UNMATCHED_PASSWORD);
+			}
+			
+			$this->set_password($new_password);
+			$this->update(Librarians::PASSWORD, $timestamp);
+		} else{
+			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
 		}
 	}
 	
