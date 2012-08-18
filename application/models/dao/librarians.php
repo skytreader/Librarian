@@ -92,7 +92,7 @@ class Librarians extends DAOModel{
 	*/
 	public function change_password($old_password, $new_password, $new_password_verify, $timestamp){
 		if($this->are_pks_set()){
-			if($this->get_password() == $old_password){
+			if($this->get_password() != $old_password){
 				throw new Exception(Librarians::INCORRECT_PASSWORD);
 			}
 			
