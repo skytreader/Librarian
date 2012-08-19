@@ -1,14 +1,23 @@
+<?php
+
+if(isset($messages["app_settings"])){
+	echo "<em>" . $messages["app_settings"] . "</em>";
+}
+
+?>
 <!--
 Expects the variable $app_settings defined containing all the
 rows in the appsettings table in an array.
 -->
 <h1>App Settings</h1>
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+<input type="hidden" name="mc" value="app_settings" />
 <?php if(isset($app_settings)): ?>
 	<?php foreach($app_settings as $s): ?>
 		<strong><?= $s["settingstring"] ?>:</strong><br />
 		<em><?= $s["description"] ?></em><br />
 		<input type="text" value="<?= $s['settingvalue'] ?>" name="<?= $s['settingcode'] ?>" /><br />
+		<input type="hidden" value="<?= $s['lastupdate'] ?>" name="<?= $s['settingcode'] ?>_timestamp" />
 	<?php endforeach ?>
 <?php endif ?>
 <input type="submit" class="btn frequent" name="save_app_settings" value="Save App Settings" />
@@ -33,6 +42,7 @@ variables:
 <em>Use this form to change your password.</em><br />
 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 	<input type="hidden" name="mc" value="password" />
+	<input type="hidden" name="timestamp" value="<?= $user->get_timestamp(); ?>" />
 	<strong>Password:</strong><br />
 	<input type="password" name="password" /><br />
 	<strong>New Password:</strong><br />

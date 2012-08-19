@@ -269,15 +269,13 @@ class DAOModel extends CI_Model{
 	}
 	
 	/**
-	Updates a record to the database. Values of $set_fields and $where_fields
-	are all taken from the attributes of this object.
+	Updates a record to the database. Values of $set_fields are all taken
+	from the attributes of this object.
 	
 	This automatically updates the timestamp field of the record concerned.
 	
 	@param set_fields
 	  The fields to be updated, expressed as a comma-delimited string.
-	@param where_fields
-	  Ideally, the primary keys. Expressed with bind vars.
 	@param timestamp
 	  For timestamp checking.
 	*/
