@@ -24,6 +24,8 @@ from CI_Controller.
 */
 class MainController extends CI_Controller{
 	
+	const ERROR_CODE = "mc";
+	
 	protected $data_bundle = array();
 	
 	/**
@@ -36,6 +38,10 @@ class MainController extends CI_Controller{
 	*/
 	public function __construct(){
 		parent::__construct();
+		$this->data_bundle["user"] = null;
+		$this->data_bundle["messages"] = array();
+		
+		// View-specific data
 		$this->data_bundle["title"] = "";
 		$this->data_bundle["content"] = "";
 		$this->data_bundle["stylesheets"] = array();

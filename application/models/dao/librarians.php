@@ -22,9 +22,6 @@ class Librarians extends User{
 		$this->fields[Librarians::LIBRARIANID] = null;
 		$this->fields[Librarians::USERNAME] = null;
 		$this->fields[Librarians::PASSWORD] = null;
-		$this->fields[Librarians::CANREAD] = null;
-		$this->fields[Librarians::CANWRITE] = null;
-		$this->fields[Librarians::CANEXEC] = null;
 		array_push($this->primary_keys, Librarians::LIBRARIANID);
 	}
 	

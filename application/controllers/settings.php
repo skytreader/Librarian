@@ -1,6 +1,7 @@
 <?php
 
 require_once(APPPATH . "app_constants.php");
+require_once(APPPATH . "architecture_constants.php");
 require_once("maincontroller.php");
 
 class Settings extends MainController{
@@ -20,6 +21,8 @@ class Settings extends MainController{
 		$this->Librarians->set_librarianid($this->session->userdata(SESSION_LIBRARIAN_ID));
 		$this->Librarians->load();
 		
+		$this->change_password($this->Librarians);
+		
 		if($this->Librarians->get_canread() == 1 && $this->Librarians->get_canwrite() == 1 &&
 		  $this->Librarians->get_canexec() == 1){
 			$fields = "*";
@@ -36,6 +39,22 @@ class Settings extends MainController{
 		$this->data_bundle["logged_in"] = true;
 		$this->data_bundle["user"] = $this->Librarians;
 		$this->load->view("mainview", $this->data_bundle);
+	}
+	
+	private function change_password($user){
+		if($this->input->post("change_password")){
+			$error_code = $this->input->post("mc");
+				
+			try{
+				$password = hash(HASH_FUNCTION, $this->input->post("password"));
+				$new_password = hash(HASH_FUNCTION, $this->input->post("new_password"));
+				$confirm_new_password = hash(HASH_FUNCTION ,$this->input->post("confirm_new_password"));
+				$user->change_password($password, $new_password, $confirm_new_password, $user->get_timestamp());
+				$this->data_bundle["messages"][$error_code] = "Password changed successfully.";
+			} catch(Exception $e){
+				$this->data_bundle["messages"][$error_code] = $e->getMessage();
+			}
+		}
 	}
 	
 }
