@@ -128,7 +128,21 @@ class DAOModel extends CI_Model{
 			foreach($fields as $f){
 				$this->fields[$f] = $row[$f];
 			}
+		} else{
+			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
 		}
+	}
+	
+	/**
+	Checks if a certain combination of values (not necessarily primary
+	keys) exists in the table.
+	
+	@param where_clause
+	The where clause, expected as bind vars.
+	*/
+	public function check_exists($where_clause){
+		$query = $this->select("*", $where_clause, "LIMIT 1");
+		return $query->num_rows() == 1;
 	}
 	
 	/**
@@ -333,9 +347,9 @@ class DAOModel extends CI_Model{
 		$where_clause = $this->pk_condition();
 		
 		if(!are_pks_set()){
-			throw new Exception(PK_EXCEPTION_MESSAGE);
+			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
 		}else if(get_current_timestamp($where_clause) != $timestamp){
-			throw new Exception(TIMESTAMP_EXPIRED_MESSAGE);
+			throw new Exception(DAOModel::TIMESTAMP_EXPIRED_MESSAGE);
 		}
 		
 		lock($where_clause);

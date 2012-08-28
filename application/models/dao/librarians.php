@@ -64,6 +64,8 @@ class Librarians extends User{
 	to using update).
 	
 	Throws an exception when pks are not set.
+	
+	TODO: Use DAOModel function check_exists.
 	*/
 	public function change_password($old_password, $new_password, $new_password_verify, $timestamp){
 		if($this->are_pks_set()){
