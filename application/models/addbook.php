@@ -46,22 +46,15 @@ class Addbook extends CI_Model{
 				$array_vals = array(array($isbn,$title), array($lastname,$firstname),
 					array($publisher), array($printer), array($genre));
 				
-				//Insert values into the database
-				//$add_book_result = $this->db->query($add_book_query, array($isbn, $title));
-				$this->Utils->insert("books", "isbn,title", array($isbn, $title));				
+				//Insert book into the database
+				$this->Utils->insert("books", "isbn,title", array($isbn, $title));
+				//Insert persons into the database
 				$this->insert_persons($authors);
 				$this->insert_persons($illustrators);
 				$this->insert_persons($editors);
 				
-				$publisher_array = array($publisher);
-				if($this->check_not_exists("publishers", "publishername = ?", $publisher_array)){
-					$add_publisher_result = $this->db->query($add_publisher_query, $publisher_array);
-				}
-				
-				$printer_array = array($printer);
-				if($this->check_not_exists("printers", "printername = ?", $printer_array)){
-					$add_printer_result = $this->db->query($add_printer_query, $printer_array);
-				}
+				$this->LibrarianUtilities->insert_entity("publisher", "publishername", array($publisher));
+				$this->LibrarianUtilities->insert_entity("printer", "printername", array($printer));
 			
 				//Relate the added values to each other
 				$author_personids = $this->LibrarianUtilities->get_personids(explode(";", $authors));

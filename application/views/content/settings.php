@@ -10,13 +10,13 @@ Expects the variable $app_settings defined containing all the
 rows in the appsettings table in an array.
 -->
 <h1>App Settings</h1>
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+<form id="app_settings" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 <input type="hidden" name="mc" value="app_settings" />
 <?php if(isset($app_settings)): ?>
 	<?php foreach($app_settings as $s): ?>
 		<strong><?= $s["settingstring"] ?>:</strong><br />
 		<em><?= $s["description"] ?></em><br />
-		<input type="text" value="<?= $s['settingvalue'] ?>" name="<?= $s['settingcode'] ?>" /><br />
+		<input type="text" value="<?= $s['settingvalue'] ?>" class="<?= $s['classes'] ?>" name="<?= $s['settingcode'] ?>" /><br />
 		<input type="hidden" value="<?= $s['lastupdate'] ?>" name="<?= $s['settingcode'] ?>_timestamp" />
 	<?php endforeach ?>
 <?php endif ?>
@@ -40,14 +40,14 @@ variables:
 <h1>User Settings</h1>
 <h2>Change Password</h2>
 <em>Use this form to change your password.</em><br />
-<form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+<form id="change_password" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
 	<input type="hidden" name="mc" value="password" />
 	<input type="hidden" name="timestamp" value="<?= $user->get_timestamp(); ?>" />
 	<strong>Password:</strong><br />
-	<input type="password" name="password" /><br />
+	<input type="password" class="required" name="password" /><br />
 	<strong>New Password:</strong><br />
-	<input type="password" name="new_password" /><br />
+	<input type="password" class="required" name="new_password" /><br />
 	<strong>Confirm New Password:</strong><br />
-	<input type="password" name="confirm_new_password" /><br />
+	<input type="password" class="required" name="confirm_new_password" /><br />
 	<input type="submit" class="btn frequent" name="change_password" value="Change Password" />
 </form>
