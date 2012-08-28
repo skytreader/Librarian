@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 01, 2012 at 06:57 PM
+-- Generation Time: Aug 28, 2012 at 10:26 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -27,6 +27,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `appsettings` (
   `settingcode` varchar(50) NOT NULL,
+  `classes` varchar(255) DEFAULT NULL,
   `settingstring` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `settingvalue` varchar(255) DEFAULT NULL,
@@ -40,9 +41,9 @@ CREATE TABLE IF NOT EXISTS `appsettings` (
 -- Dumping data for table `appsettings`
 --
 
-INSERT INTO `appsettings` (`settingcode`, `settingstring`, `description`, `settingvalue`, `lastupdate`, `lastupdateby`) VALUES
-('name_separator', 'Name Separator', 'Separates portions of a name (e.g. last name from first name)', ',', '2012-07-29 02:39:59', 1),
-('person_separator', 'Person Separator', 'In case of multiple name inputs, this character separates one name from another.', ';', '2012-07-29 02:40:50', 1);
+INSERT INTO `appsettings` (`settingcode`, `classes`, `settingstring`, `description`, `settingvalue`, `lastupdate`, `lastupdateby`) VALUES
+('name_separator', 'required', 'Name Separator', 'Separates portions of a name (e.g. last name from first name)', ',', '2012-08-28 15:31:11', 1),
+('person_separator', 'required', 'Person Separator', 'In case of multiple name inputs, this character separates one name from another.', ';', '2012-08-28 15:31:29', 1);
 
 -- --------------------------------------------------------
 
@@ -214,8 +215,8 @@ CREATE TABLE IF NOT EXISTS `librarians` (
 --
 
 INSERT INTO `librarians` (`librarianid`, `username`, `password`, `canread`, `canwrite`, `canexec`, `lastupdate`, `lastupdateby`) VALUES
-(1, 'administrator', 'cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282', 1, 1, 1, '2012-08-02 00:54:18', 0),
-(2, 'chad', 'cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282', 1, 1, 1, '2012-08-02 00:54:42', 0);
+(1, 'admin', '447978d02df9334482902891a0c2936f95ddebd627e957007a70ed46ac5f6b03', 1, 1, 1, '2012-08-18 11:39:07', 0),
+(2, 'chad', 'cfd6b334a4d362a04ea16985af05d7ecc8f7f1641c08e1a1c54396aa37c7b282', 1, 1, 1, '2012-08-19 15:20:37', 0);
 
 -- --------------------------------------------------------
 

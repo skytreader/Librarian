@@ -150,6 +150,7 @@ This will act like a hash map of setting values.
 */
 CREATE TABLE IF NOT EXISTS appsettings(
 	settingcode VARCHAR(50) PRIMARY KEY,
+	classes VARCHAR(255),
 	settingstring VARCHAR(100) NOT NULL,
 	description VARCHAR(255),
 	settingvalue VARCHAR(255),
