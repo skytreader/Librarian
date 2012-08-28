@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 28, 2012 at 10:26 AM
+-- Generation Time: Aug 28, 2012 at 06:06 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -48,27 +48,6 @@ INSERT INTO `appsettings` (`settingcode`, `classes`, `settingstring`, `descripti
 -- --------------------------------------------------------
 
 --
--- Table structure for table `authored`
---
-
-CREATE TABLE IF NOT EXISTS `authored` (
-  `isbn` varchar(13) NOT NULL DEFAULT '',
-  `personid` int(11) NOT NULL DEFAULT '0',
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`personid`),
-  KEY `lastupdateby` (`lastupdateby`),
-  KEY `personid` (`personid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `authored`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `bookgenres`
 --
 
@@ -84,6 +63,31 @@ CREATE TABLE IF NOT EXISTS `bookgenres` (
 
 --
 -- Dumping data for table `bookgenres`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookparticipants`
+--
+
+CREATE TABLE IF NOT EXISTS `bookparticipants` (
+  `isbn` varchar(13) NOT NULL DEFAULT '',
+  `personid` int(11) NOT NULL DEFAULT '0',
+  `isauthor` tinyint(1) DEFAULT '0',
+  `iseditor` tinyint(1) DEFAULT '0',
+  `istranslator` tinyint(1) DEFAULT '0',
+  `isillustrator` tinyint(1) DEFAULT '0',
+  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastupdateby` int(11) NOT NULL,
+  PRIMARY KEY (`isbn`,`personid`),
+  KEY `lastupdateby` (`lastupdateby`),
+  KEY `personid` (`personid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `bookparticipants`
 --
 
 
@@ -132,27 +136,6 @@ CREATE TABLE IF NOT EXISTS `books` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `edited`
---
-
-CREATE TABLE IF NOT EXISTS `edited` (
-  `isbn` varchar(13) NOT NULL DEFAULT '',
-  `personid` int(11) NOT NULL DEFAULT '0',
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`personid`),
-  KEY `lastupdateby` (`lastupdateby`),
-  KEY `personid` (`personid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `edited`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `genres`
 --
 
@@ -167,27 +150,6 @@ CREATE TABLE IF NOT EXISTS `genres` (
 
 --
 -- Dumping data for table `genres`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `illustrated`
---
-
-CREATE TABLE IF NOT EXISTS `illustrated` (
-  `isbn` varchar(13) NOT NULL DEFAULT '',
-  `personid` int(11) NOT NULL DEFAULT '0',
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`personid`),
-  KEY `lastupdateby` (`lastupdateby`),
-  KEY `personid` (`personid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `illustrated`
 --
 
 
@@ -326,27 +288,6 @@ CREATE TABLE IF NOT EXISTS `publishers` (
 --
 
 
--- --------------------------------------------------------
-
---
--- Table structure for table `translated`
---
-
-CREATE TABLE IF NOT EXISTS `translated` (
-  `isbn` varchar(13) NOT NULL DEFAULT '',
-  `personid` int(11) NOT NULL DEFAULT '0',
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`personid`),
-  KEY `lastupdateby` (`lastupdateby`),
-  KEY `personid` (`personid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `translated`
---
-
-
 --
 -- Constraints for dumped tables
 --
@@ -358,20 +299,20 @@ ALTER TABLE `appsettings`
   ADD CONSTRAINT `appsettings_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
 
 --
--- Constraints for table `authored`
---
-ALTER TABLE `authored`
-  ADD CONSTRAINT `authored_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
-  ADD CONSTRAINT `authored_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `authored_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
-
---
 -- Constraints for table `bookgenres`
 --
 ALTER TABLE `bookgenres`
   ADD CONSTRAINT `bookgenres_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
   ADD CONSTRAINT `bookgenres_ibfk_2` FOREIGN KEY (`genreid`) REFERENCES `genres` (`genreid`),
   ADD CONSTRAINT `bookgenres_ibfk_3` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`);
+
+--
+-- Constraints for table `bookparticipants`
+--
+ALTER TABLE `bookparticipants`
+  ADD CONSTRAINT `bookparticipants_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `bookparticipants_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `bookparticipants_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
 
 --
 -- Constraints for table `bookpersons`
@@ -386,26 +327,10 @@ ALTER TABLE `books`
   ADD CONSTRAINT `books_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
 
 --
--- Constraints for table `edited`
---
-ALTER TABLE `edited`
-  ADD CONSTRAINT `edited_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
-  ADD CONSTRAINT `edited_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `edited_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
-
---
 -- Constraints for table `genres`
 --
 ALTER TABLE `genres`
   ADD CONSTRAINT `genres_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
-
---
--- Constraints for table `illustrated`
---
-ALTER TABLE `illustrated`
-  ADD CONSTRAINT `illustrated_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
-  ADD CONSTRAINT `illustrated_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `illustrated_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
 
 --
 -- Constraints for table `printed`
@@ -442,11 +367,3 @@ ALTER TABLE `published`
 --
 ALTER TABLE `publishers`
   ADD CONSTRAINT `publishers_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
-
---
--- Constraints for table `translated`
---
-ALTER TABLE `translated`
-  ADD CONSTRAINT `translated_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
-  ADD CONSTRAINT `translated_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `translated_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);

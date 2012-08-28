@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS bookpersons(
 	CONSTRAINT uniqueNames UNIQUE (lastname, firstname)
 ) ENGINE = INNODB;
 
-CREATE TABLE IF NOT EXISTS bookparticipant(
+CREATE TABLE IF NOT EXISTS bookparticipants(
 	isbn VARCHAR(13),
 	personid INTEGER,
 	isauthor BOOLEAN DEFAULT FALSE,
