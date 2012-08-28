@@ -1,27 +1,17 @@
 <?php
 
-require_once("daomodel.php");
+require_once("bookrelated.php");
 
-class Authored extends DAOModel{
+class Authored extends BookRelated{
 	
-	const ISBN = "isbn";
 	const PERSONID = "personid";
 	
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "authored";
-		$this->fields[ISBN] = null;
-		$this->fields[PERSONID] = null;
-		array_push($this->primary_keys, ISBN);
-		array_push($this->primary_keys, PERSONID);
-	}
-	
-	public get_isbn(){
-		return $this->fields[ISBN];
-	}
-	
-	public set_isbn($i){
-		$this->fields[ISBN] = $i;
+		$this->fields[Authored::PERSONID] = null;
+		array_push($this->primary_keys, BookRelated::ISBN);
+		array_push($this->primary_keys, Authored::PERSONID);
 	}
 	
 	public get_personid(){

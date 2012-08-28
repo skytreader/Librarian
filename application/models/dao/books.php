@@ -1,26 +1,16 @@
 <?php
 
-require_once("daomodel.php");
+require_once("bookrelated.php");
 
-class Books extends DAOModel{
+class Books extends BookRelated{
 	
-	const ISBN = "isbn";
 	const TITLE = "title";
 	
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "books";
-		$this->fields[ISBN] = null;
-		$this->fields[TITLE] = null;
+		$this->fields[Books::TITLE] = null;
 		array_push($this->primary_keys, Books::ISBN);
-	}
-	
-	public function get_isbn($i){
-		return $this->fields[Books::ISBN];
-	}
-	
-	public function set_isbn($i){
-		$this->fields[Books::ISBN] = $i;
 	}
 	
 	public function get_title(){
