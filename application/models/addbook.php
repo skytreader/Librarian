@@ -82,38 +82,23 @@ class Addbook extends CI_Model{
 		}
 	}
 	
-	private function relate_to_persons($personids, $common_factor, $relation_query){
-		foreach($personids as $id){
-			$this->db->query($relation_query, array($common_factor, $id));
-		}
-	}
-	
-	/**
-	Checks if a certain combination of values does not exist $in_table.
-	*/
-	private function check_not_exists($in_table, $where_clause, $values){
-		$query_statement = "SELECT * FROM $in_table WHERE $where_clause LIMIT 1;";
-		$query_result = $this->db->query($query_statement, $values);
-		return $query_result->num_rows() == 0;
-	}
-	
 	/**
 	Parses user input of $authors, $illustrators, and $editors. Presently,
 	we are assuming that the format of names is in Lastname, Firstname(s)
 	and delimited by semicolons.
-	
-	TODO: We need to check the user settings for the name format and the
-	delimiter used.
 	*/
-	private function insert_persons($persons_delimited){
-		$persons_split = explode(";", $persons_delimited);
+	private function insert_persons($persons_delimited, $person_delimiter, $name_part_delimiter){
+		$person_delimiter = ";";
+		$name_part_delimiter = ",";
+		
+		$persons_split = explode($person_delimiter, $persons_delimited);
 		
 		foreach($persons_split as $person){
 			if($person == "" || $person == NULL){
 				continue;
 			}
 			
-			$name_parse = explode(",", $person);
+			$name_parse = explode($name_part_delimiter, $person);
 			
 			$this->LibrarianUtilities->insert_entity("bookpersons", "lastname,firstname", $name_parse);
 		}
