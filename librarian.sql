@@ -66,42 +66,13 @@ CREATE TABLE IF NOT EXISTS bookpersons(
 	CONSTRAINT uniqueNames UNIQUE (lastname, firstname)
 ) ENGINE = INNODB;
 
-CREATE TABLE IF NOT EXISTS authored(
+CREATE TABLE IF NOT EXISTS bookparticipant(
 	isbn VARCHAR(13),
 	personid INTEGER,
-	lastupdate TIMESTAMP NOT NULL,
-	lastupdateby INTEGER NOT NULL,
-	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books (isbn),
-	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
-	PRIMARY KEY (isbn, personid)
-) ENGINE = INNODB;
-
-CREATE TABLE IF NOT EXISTS edited(
-	isbn VARCHAR(13),
-	personid INTEGER,
-	lastupdate TIMESTAMP NOT NULL,
-	lastupdateby INTEGER NOT NULL,
-	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books (isbn),
-	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
-	PRIMARY KEY (isbn, personid)
-) ENGINE = INNODB;
-
-CREATE TABLE IF NOT EXISTS translated(
-	isbn VARCHAR(13),
-	personid INTEGER,
-	lastupdate TIMESTAMP NOT NULL,
-	lastupdateby INTEGER NOT NULL,
-	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books (isbn),
-	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
-	PRIMARY KEY (isbn, personid)
-) ENGINE = INNODB;
-
-CREATE TABLE IF NOT EXISTS illustrated(
-	isbn VARCHAR(13),
-	personid INTEGER,
+	isauthor BOOLEAN DEFAULT FALSE,
+	iseditor BOOLEAN DEFAULT FALSE,
+	istranslator BOOLEAN DEFAULT FALSE,
+	isillustrator BOOLEAN DEFAULT FALSE,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
