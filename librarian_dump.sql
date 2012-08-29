@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 28, 2012 at 06:06 PM
+-- Generation Time: Aug 29, 2012 at 09:20 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -44,6 +44,27 @@ CREATE TABLE IF NOT EXISTS `appsettings` (
 INSERT INTO `appsettings` (`settingcode`, `classes`, `settingstring`, `description`, `settingvalue`, `lastupdate`, `lastupdateby`) VALUES
 ('name_separator', 'required', 'Name Separator', 'Separates portions of a name (e.g. last name from first name)', ',', '2012-08-28 15:31:11', 1),
 ('person_separator', 'required', 'Person Separator', 'In case of multiple name inputs, this character separates one name from another.', ';', '2012-08-28 15:31:29', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bookcompanies`
+--
+
+CREATE TABLE IF NOT EXISTS `bookcompanies` (
+  `companyid` int(11) NOT NULL AUTO_INCREMENT,
+  `companyname` varchar(255) NOT NULL,
+  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastupdateby` int(11) NOT NULL,
+  PRIMARY KEY (`companyid`),
+  UNIQUE KEY `companyname` (`companyname`),
+  KEY `lastupdateby` (`lastupdateby`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `bookcompanies`
+--
+
 
 -- --------------------------------------------------------
 
@@ -156,6 +177,50 @@ CREATE TABLE IF NOT EXISTS `genres` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `imprints`
+--
+
+CREATE TABLE IF NOT EXISTS `imprints` (
+  `mothercompany` int(11) NOT NULL DEFAULT '0',
+  `imprintcompany` int(11) NOT NULL DEFAULT '0',
+  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastupdateby` int(11) NOT NULL,
+  PRIMARY KEY (`mothercompany`,`imprintcompany`),
+  KEY `lastupdateby` (`lastupdateby`),
+  KEY `imprintcompany` (`imprintcompany`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `imprints`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leafmakers`
+--
+
+CREATE TABLE IF NOT EXISTS `leafmakers` (
+  `isbn` varchar(13) NOT NULL DEFAULT '',
+  `companyid` int(11) NOT NULL DEFAULT '0',
+  `ispublisher` tinyint(1) NOT NULL DEFAULT '0',
+  `isprinter` tinyint(1) NOT NULL DEFAULT '0',
+  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastupdateby` int(11) NOT NULL,
+  PRIMARY KEY (`isbn`,`companyid`),
+  KEY `lastupdateby` (`lastupdateby`),
+  KEY `companyid` (`companyid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `leafmakers`
+--
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `librarians`
 --
 
@@ -183,48 +248,6 @@ INSERT INTO `librarians` (`librarianid`, `username`, `password`, `canread`, `can
 -- --------------------------------------------------------
 
 --
--- Table structure for table `printed`
---
-
-CREATE TABLE IF NOT EXISTS `printed` (
-  `isbn` varchar(13) NOT NULL DEFAULT '',
-  `printerid` int(11) NOT NULL DEFAULT '0',
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`printerid`),
-  KEY `lastupdateby` (`lastupdateby`),
-  KEY `printerid` (`printerid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `printed`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `printers`
---
-
-CREATE TABLE IF NOT EXISTS `printers` (
-  `printerid` int(11) NOT NULL AUTO_INCREMENT,
-  `printername` varchar(255) NOT NULL,
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`printerid`),
-  UNIQUE KEY `printername` (`printername`),
-  KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `printers`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pseudonyms`
 --
 
@@ -245,49 +268,6 @@ CREATE TABLE IF NOT EXISTS `pseudonyms` (
 --
 
 
--- --------------------------------------------------------
-
---
--- Table structure for table `published`
---
-
-CREATE TABLE IF NOT EXISTS `published` (
-  `isbn` varchar(13) NOT NULL,
-  `publisherid` int(11) NOT NULL,
-  `year` int(11) NOT NULL,
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`publisherid`),
-  KEY `lastupdateby` (`lastupdateby`),
-  KEY `publisherid` (`publisherid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `published`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `publishers`
---
-
-CREATE TABLE IF NOT EXISTS `publishers` (
-  `publisherid` int(11) NOT NULL AUTO_INCREMENT,
-  `publishername` varchar(255) NOT NULL,
-  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`publisherid`),
-  UNIQUE KEY `publishername` (`publishername`),
-  KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Dumping data for table `publishers`
---
-
-
 --
 -- Constraints for dumped tables
 --
@@ -297,6 +277,12 @@ CREATE TABLE IF NOT EXISTS `publishers` (
 --
 ALTER TABLE `appsettings`
   ADD CONSTRAINT `appsettings_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+
+--
+-- Constraints for table `bookcompanies`
+--
+ALTER TABLE `bookcompanies`
+  ADD CONSTRAINT `bookcompanies_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
 
 --
 -- Constraints for table `bookgenres`
@@ -333,18 +319,20 @@ ALTER TABLE `genres`
   ADD CONSTRAINT `genres_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
 
 --
--- Constraints for table `printed`
+-- Constraints for table `imprints`
 --
-ALTER TABLE `printed`
-  ADD CONSTRAINT `printed_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
-  ADD CONSTRAINT `printed_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `printed_ibfk_3` FOREIGN KEY (`printerid`) REFERENCES `printers` (`printerid`);
+ALTER TABLE `imprints`
+  ADD CONSTRAINT `imprints_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `imprints_ibfk_2` FOREIGN KEY (`mothercompany`) REFERENCES `bookcompanies` (`companyid`),
+  ADD CONSTRAINT `imprints_ibfk_3` FOREIGN KEY (`imprintcompany`) REFERENCES `bookcompanies` (`companyid`);
 
 --
--- Constraints for table `printers`
+-- Constraints for table `leafmakers`
 --
-ALTER TABLE `printers`
-  ADD CONSTRAINT `printers_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
+ALTER TABLE `leafmakers`
+  ADD CONSTRAINT `leafmakers_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
+  ADD CONSTRAINT `leafmakers_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
+  ADD CONSTRAINT `leafmakers_ibfk_3` FOREIGN KEY (`companyid`) REFERENCES `bookcompanies` (`companyid`);
 
 --
 -- Constraints for table `pseudonyms`
@@ -353,17 +341,3 @@ ALTER TABLE `pseudonyms`
   ADD CONSTRAINT `pseudonyms_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
   ADD CONSTRAINT `pseudonyms_ibfk_2` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`),
   ADD CONSTRAINT `pseudonyms_ibfk_3` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`);
-
---
--- Constraints for table `published`
---
-ALTER TABLE `published`
-  ADD CONSTRAINT `published_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
-  ADD CONSTRAINT `published_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `published_ibfk_3` FOREIGN KEY (`publisherid`) REFERENCES `publishers` (`publisherid`);
-
---
--- Constraints for table `publishers`
---
-ALTER TABLE `publishers`
-  ADD CONSTRAINT `publishers_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);
