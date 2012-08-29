@@ -17,43 +17,36 @@ CREATE TABLE IF NOT EXISTS books(
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
 ) ENGINE = INNODB;
 
-CREATE TABLE IF NOT EXISTS publishers(
-	publisherid INTEGER PRIMARY KEY AUTO_INCREMENT,
-	publishername VARCHAR(255) UNIQUE NOT NULL,
+CREATE TABLE IF NOT EXISTS bookcompanies(
+	companyid INTEGER PRIMARY KEY AUTO_INCREMENT,
+	companyname VARCHAR(255) UNIQUE NOT NULL,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
 ) ENGINE = INNODB;
 
-CREATE TABLE IF NOT EXISTS published(
-	isbn VARCHAR(13) NOT NULL,
-	publisherid INTEGER NOT NULL,
-	year INTEGER NOT NULL,
+CREATE TABLE IF NOT EXISTS imprints(
+	mothercompany INTEGER,
+	imprintcompany INTEGER,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
-	FOREIGN KEY (isbn) REFERENCES books (isbn),
-	FOREIGN KEY (publisherid) REFERENCES publishers (publisherid),
-	PRIMARY KEY (isbn, publisherid)
+	FOREIGN KEY (mothercompany) REFERENCES bookcompanies (companyid),
+	FOREIGN KEY (imprintcompany) REFERENCES bookcompanies (companyid),
+	PRIMARY KEY (mothercompany, imprintcompany)
 ) ENGINE = INNODB;
 
-CREATE TABLE IF NOT EXISTS printers(
-	printerid INTEGER PRIMARY KEY AUTO_INCREMENT,
-	printername VARCHAR(255) UNIQUE NOT NULL,
-	lastupdate TIMESTAMP NOT NULL,
-	lastupdateby INTEGER NOT NULL,
-	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-) ENGINE = INNODB;
-
-CREATE TABLE IF NOT EXISTS printed(
+CREATE TABLE IF NOT EXISTS leafmakers(
 	isbn VARCHAR(13),
-	printerid INTEGER,
+	companyid INTEGER,
+	ispublisher BOOLEAN NOT NULL DEFAULT FALSE,
+	isprinter BOOLEAN NOT NULL DEFAULT FALSE,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
 	FOREIGN KEY (isbn) REFERENCES books (isbn),
-	FOREIGN KEY (printerid) REFERENCES printers (printerid),
-	PRIMARY KEY (isbn, printerid)
+	FOREIGN KEY (companyid) REFERENCES bookcompanies (companyid),
+	PRIMARY KEY (isbn, companyid)
 ) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS bookpersons(
@@ -69,10 +62,10 @@ CREATE TABLE IF NOT EXISTS bookpersons(
 CREATE TABLE IF NOT EXISTS bookparticipants(
 	isbn VARCHAR(13),
 	personid INTEGER,
-	isauthor BOOLEAN DEFAULT FALSE,
-	iseditor BOOLEAN DEFAULT FALSE,
-	istranslator BOOLEAN DEFAULT FALSE,
-	isillustrator BOOLEAN DEFAULT FALSE,
+	isauthor BOOLEAN NOT NULL DEFAULT FALSE,
+	iseditor BOOLEAN NOT NULL DEFAULT FALSE,
+	istranslator BOOLEAN NOT NULL DEFAULT FALSE,
+	isillustrator BOOLEAN NOT NULL DEFAULT FALSE,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
