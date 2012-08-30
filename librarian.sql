@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS librarians(
 CREATE TABLE IF NOT EXISTS books(
 	isbn VARCHAR(13) PRIMARY KEY,
 	title VARCHAR(255) NOT NULL,
+	year INTEGER NOT NULL,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)

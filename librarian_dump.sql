@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 29, 2012 at 09:20 PM
+-- Generation Time: Aug 30, 2012 at 03:45 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -143,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `bookpersons` (
 CREATE TABLE IF NOT EXISTS `books` (
   `isbn` varchar(13) NOT NULL,
   `title` varchar(255) NOT NULL,
+  `year` int(11) NOT NULL,
   `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`isbn`),
