@@ -290,6 +290,9 @@ class DAOModel extends CI_Model{
 	
 	This automatically updates the timestamp field of the record concerned
 	---no need to specift in $set_fields (though it wouldn't hurt to do so).
+	The record is also automatically locked before the timestamps are compared.
+	If the timestamps are different, the lock is released (by "commit") before
+	and exception is thrown.
 	
 	@param set_fields
 	  The fields to be updated, expressed as a comma-delimited string.
@@ -298,14 +301,14 @@ class DAOModel extends CI_Model{
 	*/
 	public function update($set_fields, $timestamp){
 		$where_fields = $this->pk_condition();
+		$this->lock($where_fields);
 		
 		if(!$this->are_pks_set()){
 			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
 		}else if($this->get_current_timestamp($where_fields) != $timestamp){
+			$this->db->query("commit");
 			throw new Exception(DAOModel::TIMESTAMP_EXPIRED_MESSAGE);
 		}
-		
-		$this->lock($where_fields);
 		
 		$timestamp_in_set_fields = strpos($set_fields, DAOModel::TIMESTAMP);
 		
