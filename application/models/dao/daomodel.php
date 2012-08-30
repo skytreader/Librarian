@@ -138,7 +138,8 @@ class DAOModel extends CI_Model{
 	keys) exists in the table.
 	
 	@param where_clause
-	The where clause, expected as bind vars.
+	  The where clause, expected as bind vars. The values are taken from the
+	  attributes of the invoking DAOModel.
 	*/
 	public function check_exists($where_clause){
 		$query = $this->select("*", $where_clause, "LIMIT 1");
@@ -284,9 +285,11 @@ class DAOModel extends CI_Model{
 	
 	/**
 	Updates a record to the database. Values of $set_fields are all taken
-	from the attributes of this object.
+	from the attributes of this object. The invoking DAOModel must have all
+	its PKs set.
 	
-	This automatically updates the timestamp field of the record concerned.
+	This automatically updates the timestamp field of the record concerned
+	---no need to specift in $set_fields (though it wouldn't hurt to do so).
 	
 	@param set_fields
 	  The fields to be updated, expressed as a comma-delimited string.

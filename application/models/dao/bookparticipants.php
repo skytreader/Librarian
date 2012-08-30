@@ -62,6 +62,23 @@ class BookParticipants extends BookRelated{
 		$this->fields[BookParticipants::ISILLUSTRATOR] = $is_illustrator;
 	}
 	
+	/**
+	Automatically set the role in a bookparticipants record by the parameter
+	$role. I.E., if $role is "isillustrator", do set_isillustrator(true).
+	
+	If the $role passed isn't an actual role, nothing happens.
+	
+	Pro tip: Just use the class constants provided.
+	*/
+	public function set_role($role, $val){
+		if($role == BookParticipants::ISAUTHOR ||
+		  $role == BookParticipants::ISEDITOR ||
+		  $role == BookParticipants::ISTRANSLATOR ||
+		  $role == BookParticipants::ISILLUSTRATOR){
+			$this->fields[$role] = $val;
+		}
+	}
+	
 }
 
 ?>
