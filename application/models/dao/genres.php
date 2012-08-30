@@ -8,6 +8,7 @@ class Genres extends DAOModels{
 	const GENRENAME = "genrename";
 	
 	public function __construct(){
+		parent::__construct();
 		$this->table_name = "genres";
 		$this->fields[Genres::GENREID] = null;
 		$this->fields[Genres::GENRENAME] = null;

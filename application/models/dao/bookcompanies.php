@@ -8,6 +8,7 @@ class BookCompanies extends DAOModel{
 	const COMPANYNAME = "COMPANYNAME";
 
 	public function __construct(){
+		parent::__construct();
 		$this->table_name = "bookcompanies";
 		$this->fields[BookCompanies::COMPANYID] = null;
 		$this->fields[BookCompanies::COMPANYNAME] = null;
