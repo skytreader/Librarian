@@ -47,4 +47,5 @@ echo form_open("search", $search_form_attributes);
 </tr>
 </table>
 <?php echo form_close(); ?>
+<h1>...or, alternatively, just <a href="#">browse</a> my collection.</h1>
 </div>
