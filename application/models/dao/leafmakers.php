@@ -41,6 +41,17 @@ class LeafMakers extends BookRelated{
 		$this->fields[LeafMaker::ISPRINTER] = $isprinter;
 	}
 	
+	/**
+	Allows setting arbitrary participation fields. For best results,
+	use the constants provided by this class
+	*/
+	public function set_role($role, $val){
+		if($role == LeafMakers::ISPUBLISHER ||
+		  $role == LeafMakers::ISPRINTER){
+			$this->fields[$role] = $val;
+		}
+	}
+	
 }
 
 ?>

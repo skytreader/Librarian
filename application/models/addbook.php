@@ -2,6 +2,7 @@
 
 require_once(APPPATH . "app_constants.php");
 require_once(APPPATH . "models/dao/bookparticipants.php");
+require_once(APPPATH . "models/dao/leafmakers.php");
 
 /**
 Model that handles all the add functions in Librarian.
@@ -12,10 +13,23 @@ a western concept. Handle this.
 */
 class Addbook extends CI_Model{
 	
+	/*
+	Loaded at add. Holds the userid of the user performing the
+	insertion.
+	*/
+	private $this->userid;
+	
 	public function __construct(){
 		parent::__construct();
 		$this->load->library("Utils");
 		$this->load->library("LibrarianUtilities");
+		
+		$this->load->model("dao/appsettings");
+		$this->load->model("dao/books");
+		$this->load->model("dao/bookcompanies");
+		$this->load->model("dao/leafmakers");
+		$this->load->model("dao/bookpersons");
+		$this->load->model("dao/bookparticipants");
 	}
 	
 	/**
@@ -39,13 +53,10 @@ class Addbook extends CI_Model{
 		
 		// Load the user id of current user for lastupdateby fields
 		$this->load->library("session");
-		$userid = $this->session->userdata(SESSION_LIBRARIAN_ID);
+		$this->userid = $this->session->userdata(SESSION_LIBRARIAN_ID);
 		
 		try{
 			$this->load->database(BOOKS_DSN);
-			
-			// Load app settings and get relevant settings
-			$this->load->model("dao/appsettings");
 			
 			$this->AppSettings->set_settingcode("name_separator");
 			$this->AppSettings->load();
@@ -58,11 +69,10 @@ class Addbook extends CI_Model{
 			$ps_regex = "/\s*$person_separator\s*/";
 			
 			// Add the book to the books table
-			$this->load->model("dao/books");
 			$this->Books->set_isbn($isbn);
 			$this->Books->set_title($title);
 			$this->Books->set_year($year);
-			$this->Books->set_lastupdateby($userid);
+			$this->Books->set_lastupdateby($this->userid);
 			$this->Books->insert("isbn,title,lastupdateby");
 			
 			// Now, the messy part...
@@ -72,26 +82,26 @@ class Addbook extends CI_Model{
 			$editor_names = preg_split($editors, $ps_regex);
 			$translator_names = preg_split($translators, $ps_regex);
 			
-			$this->insert_bookpersons($author_names, $ns_delimiter, $userid);
-			$this->insert_bookpersons($illustrator_names, $ns_delimiter, $userid);
-			$this->insert_bookpersons($editor_names, $ns_delimiter, $userid);
-			$this->insert_bookpersons($translator_names, $ns_delimiter, $userid);
+			$this->insert_bookpersons($author_names, $ns_delimiter);
+			$this->insert_bookpersons($illustrator_names, $ns_delimiter);
+			$this->insert_bookpersons($editor_names, $ns_delimiter);
+			$this->insert_bookpersons($translator_names, $ns_delimiter);
 			
-			$this->insert_bookparticipants($author_names, $ns_delimiter, $userid, BookParticipants::ISAUTHOR);
-			$this->insert_bookparticipants($illustrator_names, $ns_delimiter, $userid,
+			$this->insert_bookparticipants($author_names, $ns_delimiter,
+			  BookParticipants::ISAUTHOR);
+			$this->insert_bookparticipants($illustrator_names, $ns_delimiter,
 			  BookParticipants::ISILLUSTRATOR);
-			$this->insert_bookparticipants($editor_names, $ns_delimiter, $userid, BookParticipants::ISEDITOR);
-			$this->insert_bookparticipants($translator_names, $ns_delimiter, $userid,
+			$this->insert_bookparticipants($editor_names, $ns_delimiter,
+			  BookParticipants::ISEDITOR);
+			$this->insert_bookparticipants($translator_names, $ns_delimiter,
 			  BookParticipants::ISTRANSLATOR);
 			
 			// Publisher and printer.
-			$this->load->model("dao/bookcompanies");
-			$this->load->model("dao/leafmakers");
 			$diff_publisher_printer = $publisher != $printer;
 			
 			// Add them to bookcompanies
-			$publisher_companyid = $this->insert_bookcompanies($publisher, $userid);
-			$printer_companyid = ($diff_publisher_printer) ? $this->insert_bookcompanies($publisher, $userid) :
+			$publisher_companyid = $this->insert_bookcompanies($publisher);
+			$printer_companyid = ($diff_publisher_printer) ? $this->insert_bookcompanies($publisher) :
 			  $publisher_companyid;
 			
 			// Get publisher timestamp.
@@ -117,7 +127,9 @@ class Addbook extends CI_Model{
 				$printer_timestamp = $publisher_timestamp;
 			}
 			
-			
+			// Aaannnddd... set!
+			$this->check_toggle($publisher_companyid, LeafMakers::ISPUBLISHER, $publisher_timestamp);
+			$this->check_toggle($printer_companyid, LeafMakers::ISPRINTER, $printer_timestamp);
 			
 			return true;
 		} catch(Exception $e){
@@ -127,17 +139,32 @@ class Addbook extends CI_Model{
 	}
 	
 	/*
+	Checks if a given companyid id in the leafmakers table and inserts
+	them if not. The given role is also set to true.
+	*/
+	private function check_toggle($companyid, $role, $timestamp){
+		$this->LeafMakers->set_company_id($companyid);
+		$this->LeafMakers->set_lastupdateby($this->userid);
+		
+		if(!$this->LeafMakers->check_exists("companyid = ?")){
+			$this->LeafMakers->insert("companyid,lastupdateby");
+		}
+		
+		$this->LeafMakers->set_role($role, true);
+		$this->LeafMakers->update($role, $timestamp);
+	}
+	
+	/*
 	Checks if a given company is in the bookcompanies table and inserts
 	them if not.
 	
 	Returns the companyid of the company in the database.
 	*/
-	private function insert_bookcompanies($company_name, $userid){
-		$this->load->model("dao/bookcompanies");
+	private function insert_bookcompanies($company_name){
 		$this->BookCompanies->set_companyname($company_name);
 		
 		if(!$this->BookCompanies->check_exists("companyname = ?")){
-			$this->BookCompanies->set_lastupdateby($userid);
+			$this->BookCompanies->set_lastupdateby($this->userid);
 			$this->BookCompanies->insert("companyname,lastupdateby");
 		}
 		
@@ -172,10 +199,7 @@ class Addbook extends CI_Model{
 	@param role
 	  Role of these names.
 	*/
-	private function insert_bookparticipants($names, $name_delimiter, $userid, $role){
-		$this->load->model("dao/bookpersons");
-		$this->load->model("dao/bookparticipants");
-		
+	private function insert_bookparticipants($names, $name_delimiter, $role){
 		foreach($name as $names){
 			$name_parse = preg_split($name, $name_delimiter);
 			$name_components = $name_parse[1];
@@ -191,7 +215,7 @@ class Addbook extends CI_Model{
 			
 			// Now, construct the bookparticipants record.
 			$this->BookParticipants->set_personid($personid);
-			$this->BookParticipants->set_lastupdateby($userid);
+			$this->BookParticipants->set_lastupdateby($this->userid);
 			$this->BookParticipants->set_role($role, true);
 			
 			if($this->BookParticipants->check_exists("personid = ?")){
@@ -219,10 +243,9 @@ class Addbook extends CI_Model{
 	@param userid
 	  User id of the user performing the insertion.
 	*/
-	private function insert_bookpersons($names, $name_delimiter, $userid){
-		$this->load->model("dao/bookpersons");
+	private function insert_bookpersons($names, $name_delimiter){
 		$where_clause = "firstname = ? AND lastname = ?";
-		$this->BookPersons->set_lastupdateby($userid);
+		$this->BookPersons->set_lastupdateby($this->userid);
 		
 		foreach($name as $names){
 			$name_parse = preg_split($name, $name_delimiter);
