@@ -17,9 +17,9 @@ class BookParticipants extends BookRelated{
 		$this->fields[BookParticipants::ISAUTHOR] = null;
 		$this->fields[BookParticipants::ISEDITOR] = null;
 		$this->fields[BookParticipants::ISTRANSLATOR] = null;
-		$this->fields[BookParticipants::ISILLUSTRATOR] = null
+		$this->fields[BookParticipants::ISILLUSTRATOR] = null;
 		array_push($this->primary_keys, BookRelated::ISBN);
-		array_push($this->primary_keys, Authored::PERSONID);
+		array_push($this->primary_keys, BookParticipants::PERSONID);
 	}
 	
 	public function get_personid(){

@@ -2,7 +2,7 @@
 
 require_once("daomodel.php");
 
-class AppSettings extends DAOModel{
+class Appsettings extends DAOModel{
 	
 	const SETTINGCODE = "settingcode";
 	const SETTINGSTRING = "settingstring";

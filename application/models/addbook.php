@@ -17,12 +17,11 @@ class Addbook extends CI_Model{
 	Loaded at add. Holds the userid of the user performing the
 	insertion.
 	*/
-	private $this->userid;
+	private $userid;
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->library("Utils");
-		$this->load->library("LibrarianUtilities");
+		//$this->load->model("Q");
 		
 		$this->load->model("dao/appsettings");
 		$this->load->model("dao/books");
@@ -58,7 +57,7 @@ class Addbook extends CI_Model{
 		try{
 			$this->load->database(BOOKS_DSN);
 			
-			$this->AppSettings->set_settingcode("name_separator");
+			$this->Appsettings->set_settingcode("name_separator");
 			$this->AppSettings->load();
 			$name_separator = $this->AppSettings->get_settingvalue();
 			$ns_regex = "/\s*$name_separator\s*/";
@@ -249,12 +248,12 @@ class Addbook extends CI_Model{
 		
 		foreach($name as $names){
 			$name_parse = preg_split($name, $name_delimiter);
-			$name_components = $name_parse[1]
-			$this->BookPersons->set_lastname($name_components[0]);
+			$name_components = $name_parse[1];
+			$this->BookPersons->set_lastname($name_parse[0]);
 			$first_name = (count($name_components) == 2) ? $name_components[1] : "";
 			$this->BookPersons->set_firstname($first_name);
 			
-			if($this->BookPersons->check_exists($where_clause){
+			if($this->BookPersons->check_exists($where_clause)){
 				$this->BookPersons->insert("lastname,firstname,lastupdateby");
 			}
 		}
