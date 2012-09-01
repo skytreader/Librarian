@@ -2,7 +2,7 @@
 
 require_once("daomodel.php");
 
-class Appsettings extends DAOModel{
+class Appsettings extends Daomodel{
 	
 	const SETTINGCODE = "settingcode";
 	const SETTINGSTRING = "settingstring";
@@ -12,43 +12,43 @@ class Appsettings extends DAOModel{
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "appsettings";
-		$this->fields[AppSettings::SETTINGCODE] = null;
-		$this->fields[AppSettings::SETTINGSTRING] = null;
-		$this->fields[AppSettings::DESCRIPTION] = null;
-		$this->fields[AppSettings::SETTINGVALUE] = null;
-		array_push($this->primary_keys, AppSettings::SETTINGCODE);
+		$this->fields[Appsettings::SETTINGCODE] = null;
+		$this->fields[Appsettings::SETTINGSTRING] = null;
+		$this->fields[Appsettings::DESCRIPTION] = null;
+		$this->fields[Appsettings::SETTINGVALUE] = null;
+		array_push($this->primary_keys, Appsettings::SETTINGCODE);
 	}
 	
 	public function get_settingcode(){
-		return $this->fields[AppSettings::SETTINGCODE];
+		return $this->fields[Appsettings::SETTINGCODE];
 	}
 	
 	public function set_settingcode($s){
-		$this->fields[AppSettings::SETTINGCODE] = $s;
+		$this->fields[Appsettings::SETTINGCODE] = $s;
 	}
 	
 	public function get_settingstring(){
-		return $this->fields[AppSettings::SETTINGSTRING];
+		return $this->fields[Appsettings::SETTINGSTRING];
 	}
 	
 	public function set_settingstring($s){
-		$this->fields[AppSettings::SETTINGSTRING] = $s;
+		$this->fields[Appsettings::SETTINGSTRING] = $s;
 	}
 	
 	public function get_description(){
-		return $this->fields[AppSettings::DESCRIPTION];
+		return $this->fields[Appsettings::DESCRIPTION];
 	}
 	
 	public function set_description($d){
-		$this->fields[AppSettings::DESCRIPTION] = $d;
+		$this->fields[Appsettings::DESCRIPTION] = $d;
 	}
 	
 	public function get_settingvalue(){
-		return $this->fields[AppSettings::SETTINGVALUE];
+		return $this->fields[Appsettings::SETTINGVALUE];
 	}
 	
 	public function set_settingvalue($s){
-		$this->fields[AppSettings::SETTINGVALUE] = $s;
+		$this->fields[Appsettings::SETTINGVALUE] = $s;
 	}
 	
 }

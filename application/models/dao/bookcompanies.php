@@ -4,8 +4,8 @@ require_once("daomodel.php");
 
 class Bookcompanies extends Daomodel{
 
-	const COMPANYID = "COMPANYID";
-	const COMPANYNAME = "COMPANYNAME";
+	const COMPANYID = "companyid";
+	const COMPANYNAME = "companyname";
 
 	public function __construct(){
 		parent::__construct();

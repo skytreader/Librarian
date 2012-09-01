@@ -6,7 +6,7 @@ require_once("daomodel.php");
 This class represents any web app user. This encapsulates
 common properties for any app user for any project.
 */
-class User extends DAOModel{
+class User extends Daomodel{
 	
 	const CANREAD = "canread";
 	const CANWRITE = "canwrite";

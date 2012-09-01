@@ -1,6 +1,6 @@
 <?php
 
-class LibrarianUtilities extends CI_Model{
+class Librarianutilities extends CI_Model{
 	
 	public function __construct(){
 		parent::__construct();

@@ -2,7 +2,7 @@
 
 require_once("bookrelated.php");
 
-class BookParticipants extends BookRelated{
+class Bookparticipants extends Bookrelated{
 	
 	const PERSONID = "personid";
 	const ISAUTHOR = "isauthor";
@@ -12,54 +12,54 @@ class BookParticipants extends BookRelated{
 	
 	public function __construct(){
 		parent::__construct();
-		$this->table_name = "authored";
-		$this->fields[BookParticipants::PERSONID] = null;
-		$this->fields[BookParticipants::ISAUTHOR] = null;
-		$this->fields[BookParticipants::ISEDITOR] = null;
-		$this->fields[BookParticipants::ISTRANSLATOR] = null;
-		$this->fields[BookParticipants::ISILLUSTRATOR] = null;
-		array_push($this->primary_keys, BookRelated::ISBN);
-		array_push($this->primary_keys, BookParticipants::PERSONID);
+		$this->table_name = "bookparticipants";
+		$this->fields[Bookparticipants::PERSONID] = null;
+		$this->fields[Bookparticipants::ISAUTHOR] = null;
+		$this->fields[Bookparticipants::ISEDITOR] = null;
+		$this->fields[Bookparticipants::ISTRANSLATOR] = null;
+		$this->fields[Bookparticipants::ISILLUSTRATOR] = null;
+		array_push($this->primary_keys, Bookrelated::ISBN);
+		array_push($this->primary_keys, Bookparticipants::PERSONID);
 	}
 	
 	public function get_personid(){
-		return $this->fields[BookParticipants::PERSONID];
+		return $this->fields[Bookparticipants::PERSONID];
 	}
 	
 	public function set_personid($p){
-		$this->fields[BookParticipants::PERSONID] = $p;
+		$this->fields[Bookparticipants::PERSONID] = $p;
 	}
 	
 	public function get_isauthor(){
-		return $this->fields[BookParticipants::ISAUTHOR];
+		return $this->fields[Bookparticipants::ISAUTHOR];
 	}
 	
 	public function set_isauthor($is_author){
-		$this->fields[BookParticipants::ISAUTHOR] = $is_author;
+		$this->fields[Bookparticipants::ISAUTHOR] = $is_author;
 	}
 	
 	public function get_iseditor(){
-		return $this->fields[BookParticipants::ISEDITOR];
+		return $this->fields[Bookparticipants::ISEDITOR];
 	}
 	
 	public function set_iseditor($is_editor){
-		$this->fields[BookParticipants::ISEDITOR] = $is_editor;
+		$this->fields[Bookparticipants::ISEDITOR] = $is_editor;
 	}
 	
 	public function get_istranslator(){
-		return $this->fields[BookParticipants::ISTRANSLATOR];
+		return $this->fields[Bookparticipants::ISTRANSLATOR];
 	}
 	
 	public function set_istranslator($is_translator){
-		$this->fields[BookParticipants::ISTRANSLATOR] = $is_translator;
+		$this->fields[Bookparticipants::ISTRANSLATOR] = $is_translator;
 	}
 	
 	public function get_isillustrator(){
-		return $this->fields[BookParticipants::ISILLUSTRATOR];
+		return $this->fields[Bookparticipants::ISILLUSTRATOR];
 	}
 	
 	public function set_isillustrator($is_illustrator){
-		$this->fields[BookParticipants::ISILLUSTRATOR] = $is_illustrator;
+		$this->fields[Bookparticipants::ISILLUSTRATOR] = $is_illustrator;
 	}
 	
 	/**
@@ -71,10 +71,10 @@ class BookParticipants extends BookRelated{
 	Pro tip: Just use the class constants provided.
 	*/
 	public function set_role($role, $val){
-		if($role == BookParticipants::ISAUTHOR ||
-		  $role == BookParticipants::ISEDITOR ||
-		  $role == BookParticipants::ISTRANSLATOR ||
-		  $role == BookParticipants::ISILLUSTRATOR){
+		if($role == Bookparticipants::ISAUTHOR ||
+		  $role == Bookparticipants::ISEDITOR ||
+		  $role == Bookparticipants::ISTRANSLATOR ||
+		  $role == Bookparticipants::ISILLUSTRATOR){
 			$this->fields[$role] = $val;
 		}
 	}

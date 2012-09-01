@@ -2,7 +2,7 @@
 
 require_once("daomodel.php");
 
-class Imprints extends DAOModel{
+class Imprints extends Daomodel{
 	
 	const MOTHERCOMPANY = "mothercompany";
 	const IMPRINTCOMPANY = "imprintcompany";

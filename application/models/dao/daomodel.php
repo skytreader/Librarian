@@ -12,7 +12,7 @@ for details on how they'll use the DAO properties.
 
 This class automatically loads QueryStringUtils upon construction.
 */
-class DAOModel extends CI_Model{
+class Daomodel extends CI_Model{
 	const TIMESTAMP = "lastupdate";
 	const LAST_UPDATER = "lastupdateby";
 	const PK_EXCEPTION_MESSAGE = "Not all primary keys are set.";
@@ -35,7 +35,7 @@ class DAOModel extends CI_Model{
 	protected $autocommit;
 	
 	public function __construct(){
-		$this->fields = array(DAOModel::TIMESTAMP => null, DAOModel::LAST_UPDATER => null);
+		$this->fields = array(Daomodel::TIMESTAMP => null, Daomodel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
 		$this->load->database(BOOKS_DSN);
 		$this->primary_keys = array();
@@ -43,19 +43,19 @@ class DAOModel extends CI_Model{
 	}
 	
 	public function get_timestamp(){
-		return $this->fields[DAOModel::TIMESTAMP];
+		return $this->fields[Daomodel::TIMESTAMP];
 	}
 	
 	public function set_timestamp($ts){
-		$this->fields[DAOModel::TIMESTAMP] = $ts;
+		$this->fields[Daomodel::TIMESTAMP] = $ts;
 	}
 	
 	public function get_last_updater(){
-		return $this->fields[DAOModel::LAST_UPDATER];
+		return $this->fields[Daomodel::LAST_UPDATER];
 	}
 	
 	public function set_last_updater($lu){
-		$this->fields[DAOModel::LAST_UPDATER] = $lu;
+		$this->fields[Daomodel::LAST_UPDATER] = $lu;
 	}
 	
 	public function get_table_name(){
@@ -113,7 +113,7 @@ class DAOModel extends CI_Model{
 	
 	/**
 	Assuming that the primary keys have been set, this function loads
-	the invoking DAOModel instance with all the values of the row as
+	the invoking Daomodel instance with all the values of the row as
 	described by the PKs.
 	*/
 	public function load(){
@@ -129,7 +129,7 @@ class DAOModel extends CI_Model{
 				$this->fields[$f] = $row[$f];
 			}
 		} else{
-			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
+			throw new Exception(Daomodel::PK_EXCEPTION_MESSAGE);
 		}
 	}
 	
@@ -139,7 +139,7 @@ class DAOModel extends CI_Model{
 	
 	@param where_clause
 	  The where clause, expected as bind vars. The values are taken from the
-	  attributes of the invoking DAOModel.
+	  attributes of the invoking Daomodel.
 	*/
 	public function check_exists($where_clause){
 		$query = $this->select("*", $where_clause, "LIMIT 1");
@@ -166,12 +166,12 @@ class DAOModel extends CI_Model{
 	
 	/**
 	Returns an associative array with each column in $fields as key and
-	their corresponding values, as set in the invoking DAOModel as values.
+	their corresponding values, as set in the invoking Daomodel as values.
 	
 	@param fields
 	  The keys of the return array, as a comma-delimited string.
 	@return An associative array with each column as specified in $fields
-	as key and the values taken from the attributes of the calling DAOModel.
+	as key and the values taken from the attributes of the calling Daomodel.
 	*/
 	private function get_query_data_map($fields){
 		$field_parse = preg_split("/\\s*,\\s*/", $fields);
@@ -229,7 +229,7 @@ class DAOModel extends CI_Model{
 		foreach($field_names as $fn){
 			array_push($bind_var_vals, $this->fields[$fn]);
 		}
-		
+		echo "$query_statement<br />";
 		return $this->db->query($query_statement, $bind_var_vals);
 	}
 	
@@ -237,10 +237,10 @@ class DAOModel extends CI_Model{
 	Assumes that where_clause pertains to one and only one record.
 	*/
 	private function get_current_timestamp($where_clause){
-		$timestamp_resultset = $this->select(DAOModel::TIMESTAMP, $where_clause, "LIMIT 1");
+		$timestamp_resultset = $this->select(Daomodel::TIMESTAMP, $where_clause, "LIMIT 1");
 		$timestamp_array = $timestamp_resultset->row_array();
 		
-		return $timestamp_array[DAOModel::TIMESTAMP];
+		return $timestamp_array[Daomodel::TIMESTAMP];
 	}
 	
 	/**
@@ -285,7 +285,7 @@ class DAOModel extends CI_Model{
 	
 	/**
 	Updates a record to the database. Values of $set_fields are all taken
-	from the attributes of this object. The invoking DAOModel must have all
+	from the attributes of this object. The invoking Daomodel must have all
 	its PKs set.
 	
 	This automatically updates the timestamp field of the record concerned
@@ -304,16 +304,16 @@ class DAOModel extends CI_Model{
 		$this->lock($where_fields);
 		
 		if(!$this->are_pks_set()){
-			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
+			throw new Exception(Daomodel::PK_EXCEPTION_MESSAGE);
 		}else if($this->get_current_timestamp($where_fields) != $timestamp){
 			$this->db->query("commit");
-			throw new Exception(DAOModel::TIMESTAMP_EXPIRED_MESSAGE);
+			throw new Exception(Daomodel::TIMESTAMP_EXPIRED_MESSAGE);
 		}
 		
-		$timestamp_in_set_fields = strpos($set_fields, DAOModel::TIMESTAMP);
+		$timestamp_in_set_fields = strpos($set_fields, Daomodel::TIMESTAMP);
 		
 		if($timestamp_in_set_fields === false){
-			$set_fields .= "," . DAOModel::TIMESTAMP;
+			$set_fields .= "," . Daomodel::TIMESTAMP;
 			// It's alright that we have a bit of discrepancy between the timestamp
 			// set and the actual moment we update the record since the record is
 			// now locked.
@@ -353,9 +353,9 @@ class DAOModel extends CI_Model{
 		$where_clause = $this->pk_condition();
 		
 		if(!are_pks_set()){
-			throw new Exception(DAOModel::PK_EXCEPTION_MESSAGE);
+			throw new Exception(Daomodel::PK_EXCEPTION_MESSAGE);
 		}else if(get_current_timestamp($where_clause) != $timestamp){
-			throw new Exception(DAOModel::TIMESTAMP_EXPIRED_MESSAGE);
+			throw new Exception(Daomodel::TIMESTAMP_EXPIRED_MESSAGE);
 		}
 		
 		lock($where_clause);

@@ -6,7 +6,7 @@ require_once("booksearch.php");
 /**
 Searches books based on author.
 */
-class AuthorSearch extends CI_Model implements BookSearch{
+class Authorsearch extends CI_Model implements BookSearch{
 	
 	const AUTHOR_SEARCH = "SELECT * FROM books, authored WHERE authored.personid=? AND books.isbn=authored.isbn;";
 	//TODO: Try to write these using joins.
@@ -46,10 +46,10 @@ class AuthorSearch extends CI_Model implements BookSearch{
 		
 		if($firstname == ""){
 			//Lastname-only search
-			$author_query = $this->db->query(AuthorSearch::AUTHOR_LASTNAME_SEARCH, array($lastname));
+			$author_query = $this->db->query(Authorsearch::AUTHOR_LASTNAME_SEARCH, array($lastname));
 		} else{
 			//Search using both lastname and firstname
-			$author_query = $this->db->query(AuthorSearch::AUTHOR_FULL_SEARCH, array($lastname, $firstname));
+			$author_query = $this->db->query(Authorsearch::AUTHOR_FULL_SEARCH, array($lastname, $firstname));
 		}
 		
 		return $author_query;

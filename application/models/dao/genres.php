@@ -1,8 +1,8 @@
 <?php
 
-require_once("daomodels.php");
+require_once("daomodel.php");
 
-class Genres extends DAOModels{
+class Genres extends Daomodel{
 	
 	const GENREID = "genreid";
 	const GENRENAME = "genrename";

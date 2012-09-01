@@ -2,7 +2,7 @@
 
 require_once("daomodel.php");
 
-class Foo extends DAOModel{
+class Foo extends Daomodel{
 	
 	const ID = "id";
 	const MSG = "msg";

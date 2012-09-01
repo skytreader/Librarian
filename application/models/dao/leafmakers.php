@@ -2,7 +2,7 @@
 
 require_once("bookrelated.php");
 
-class LeafMakers extends BookRelated{
+class Leafmakers extends Bookrelated{
 	
 	const COMPANYID = "companyid";
 	const ISPUBLISHER = "ispublisher";
@@ -11,18 +11,18 @@ class LeafMakers extends BookRelated{
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "leafmakers";
-		$this->fields[LeafMakers::COMPANYID] = null;
-		$this->fields[LeafMakers::ISPUBLISHER] = null;
-		$this->fields[LeafMakers::ISPRINTER] = null;
-		array_push($this->primary_keys, BookRelated::ISBN, LeafMakers::COMPANYID);
+		$this->fields[Leafmakers::COMPANYID] = null;
+		$this->fields[Leafmakers::ISPUBLISHER] = null;
+		$this->fields[Leafmakers::ISPRINTER] = null;
+		array_push($this->primary_keys, Bookrelated::ISBN, Leafmakers::COMPANYID);
 	}
 	
 	public function get_companyid(){
-		return $this->fields[LeafMakers::COMPANYID];
+		return $this->fields[Leafmakers::COMPANYID];
 	}
 	
 	public function set_companyid($companyid){
-		$this->fields[LeafMakers::COMPANYID] = $companyid;
+		$this->fields[Leafmakers::COMPANYID] = $companyid;
 	}
 	
 	public function get_ispublisher(){
@@ -46,8 +46,8 @@ class LeafMakers extends BookRelated{
 	use the constants provided by this class
 	*/
 	public function set_role($role, $val){
-		if($role == LeafMakers::ISPUBLISHER ||
-		  $role == LeafMakers::ISPRINTER){
+		if($role == Leafmakers::ISPUBLISHER ||
+		  $role == Leafmakers::ISPRINTER){
 			$this->fields[$role] = $val;
 		}
 	}

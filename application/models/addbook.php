@@ -38,6 +38,14 @@ class Addbook extends CI_Model{
 	translators, publisher, printer, year.
 	*/
 	public function add($book_data){
+		$myci =& get_instance();
+		$this->load->model("dao/Appsettings");
+		$this->load->model("dao/Books");
+		$this->load->model("dao/Bookcompanies");
+		$this->load->model("dao/Leafmakers");
+		$this->load->model("dao/Bookpersons");
+		$this->load->model("dao/Bookparticipants");
+		
 		// Get all the form data
 		$isbn = $book_data["isbn"];
 		$title = $book_data["title"];
@@ -58,42 +66,45 @@ class Addbook extends CI_Model{
 			$this->load->database(BOOKS_DSN);
 			
 			$this->Appsettings->set_settingcode("name_separator");
-			$this->AppSettings->load();
-			$name_separator = $this->AppSettings->get_settingvalue();
-			$ns_regex = "/\s*$name_separator\s*/";
+			$this->Appsettings->load();
+			$name_separator = $this->Appsettings->get_settingvalue();
+			$ns_regex = '/\s*' . $name_separator . '\s*/';
 			
-			$this->AppSettings->set_settingcode("person_separator");
-			$this->AppSetting->load();
-			$person_separator = $this->AppSettings->get_settingvalue();
-			$ps_regex = "/\s*$person_separator\s*/";
+			$this->Appsettings->set_settingcode("person_separator");
+			$this->Appsettings->load();
+			$person_separator = $this->Appsettings->get_settingvalue();
+			$ps_regex = '/\s*' . $person_separator . '\s*/';
 			
 			// Add the book to the books table
 			$this->Books->set_isbn($isbn);
 			$this->Books->set_title($title);
 			$this->Books->set_year($year);
-			$this->Books->set_lastupdateby($this->userid);
-			$this->Books->insert("isbn,title,lastupdateby");
+			$this->Books->set_last_updater($this->userid);
+			$this->Books->insert("isbn,title,year,lastupdateby");
 			
 			// Now, the messy part...
 			// Parse names and insert to relevant tables.
-			$author_names = preg_split($authors, $ps_regex);
-			$illustrator_names = preg_split($illustrators, $ps_regex);
-			$editor_names = preg_split($editors, $ps_regex);
-			$translator_names = preg_split($translators, $ps_regex);
+			$author_names = preg_split($ps_regex, $authors);
+			echo "$authors<br />";
+			var_dump($author_names);
+			echo "<br />";
+			$illustrator_names = preg_split($ps_regex, $illustrators);
+			$editor_names = preg_split($ps_regex, $editors);
+			$translator_names = preg_split($ps_regex, $translators);
 			
-			$this->insert_bookpersons($author_names, $ns_delimiter);
-			$this->insert_bookpersons($illustrator_names, $ns_delimiter);
-			$this->insert_bookpersons($editor_names, $ns_delimiter);
-			$this->insert_bookpersons($translator_names, $ns_delimiter);
+			$this->insert_bookpersons($author_names, $ns_regex);
+			$this->insert_bookpersons($illustrator_names, $ns_regex);
+			$this->insert_bookpersons($editor_names, $ns_regex);
+			$this->insert_bookpersons($translator_names, $ns_regex);
 			
-			$this->insert_bookparticipants($author_names, $ns_delimiter,
-			  BookParticipants::ISAUTHOR);
-			$this->insert_bookparticipants($illustrator_names, $ns_delimiter,
-			  BookParticipants::ISILLUSTRATOR);
-			$this->insert_bookparticipants($editor_names, $ns_delimiter,
-			  BookParticipants::ISEDITOR);
-			$this->insert_bookparticipants($translator_names, $ns_delimiter,
-			  BookParticipants::ISTRANSLATOR);
+			$this->insert_bookparticipants($author_names, $isbn, $ns_regex,
+			  Bookparticipants::ISAUTHOR);
+			$this->insert_bookparticipants($illustrator_names, $isbn, $ns_regex,
+			  Bookparticipants::ISILLUSTRATOR);
+			$this->insert_bookparticipants($editor_names, $isbn, $ns_regex,
+			  Bookparticipants::ISEDITOR);
+			$this->insert_bookparticipants($translator_names, $isbn, $ns_regex,
+			  Bookparticipants::ISTRANSLATOR);
 			
 			// Publisher and printer.
 			$diff_publisher_printer = $publisher != $printer;
@@ -104,9 +115,9 @@ class Addbook extends CI_Model{
 			  $publisher_companyid;
 			
 			// Get publisher timestamp.
-			$this->BookCompanies->set_companyid($publisher_companyid);
-			$this->BookCompanies->load();
-			$publisher_timestamp = $this->BookCompanies->get_timestamp();
+			$this->Bookcompanies->set_companyid($publisher_companyid);
+			$this->Bookcompanies->load();
+			$publisher_timestamp = $this->Bookcompanies->get_timestamp();
 			
 			// Get the printer timestamp.
 			// It may be that printer and publisher is the same and in between
@@ -118,17 +129,17 @@ class Addbook extends CI_Model{
 			// In that event, the overhead of querying for the timestamp twice is
 			// wasted (it will happen again). Better just compare publisher and
 			// printer since the wrong timestamp will just terminate the whole process.
-			$this->BookCompanies->set_companyid($printer_companyid);
+			$this->Bookcompanies->set_companyid($printer_companyid);
 			if($diff_publisher_printer){
-				$this->BookCompanies->load();
-				$printer_timestamp = $this->BookCompanies->get_timestamp();
+				$this->Bookcompanies->load();
+				$printer_timestamp = $this->Bookcompanies->get_timestamp();
 			} else{
 				$printer_timestamp = $publisher_timestamp;
 			}
 			
 			// Aaannnddd... set!
-			$this->check_toggle($publisher_companyid, LeafMakers::ISPUBLISHER, $publisher_timestamp);
-			$this->check_toggle($printer_companyid, LeafMakers::ISPRINTER, $printer_timestamp);
+			$this->check_toggle($publisher_companyid, $isbn, Leafmakers::ISPUBLISHER, $publisher_timestamp);
+			$this->check_toggle($printer_companyid, $isbn, Leafmakers::ISPRINTER, $printer_timestamp);
 			
 			return true;
 		} catch(Exception $e){
@@ -141,16 +152,17 @@ class Addbook extends CI_Model{
 	Checks if a given companyid id in the leafmakers table and inserts
 	them if not. The given role is also set to true.
 	*/
-	private function check_toggle($companyid, $role, $timestamp){
-		$this->LeafMakers->set_company_id($companyid);
-		$this->LeafMakers->set_lastupdateby($this->userid);
+	private function check_toggle($companyid, $isbn, $role, $timestamp){
+		$this->Leafmakers->set_companyid($companyid);
+		$this->Leafmakers->set_isbn($isbn);
+		$this->Leafmakers->set_last_updater($this->userid);
 		
-		if(!$this->LeafMakers->check_exists("companyid = ?")){
-			$this->LeafMakers->insert("companyid,lastupdateby");
+		if(!$this->Leafmakers->check_exists("companyid = ?")){
+			$this->Leafmakers->insert("isbn,companyid,lastupdateby");
 		}
 		
-		$this->LeafMakers->set_role($role, true);
-		$this->LeafMakers->update($role, $timestamp);
+		$this->Leafmakers->set_role($role, true);
+		$this->Leafmakers->update($role, $timestamp);
 	}
 	
 	/*
@@ -160,11 +172,11 @@ class Addbook extends CI_Model{
 	Returns the companyid of the company in the database.
 	*/
 	private function insert_bookcompanies($company_name){
-		$this->BookCompanies->set_companyname($company_name);
+		$this->Bookcompanies->set_companyname($company_name);
 		
-		if(!$this->BookCompanies->check_exists("companyname = ?")){
-			$this->BookCompanies->set_lastupdateby($this->userid);
-			$this->BookCompanies->insert("companyname,lastupdateby");
+		if(!$this->Bookcompanies->check_exists("companyname = ?")){
+			$this->Bookcompanies->set_last_updater($this->userid);
+			$this->Bookcompanies->insert("companyname,lastupdateby");
 		}
 		
 		return $this->get_company_id($company_name);
@@ -175,8 +187,8 @@ class Addbook extends CI_Model{
 	name _is_ in the database.
 	*/
 	private function get_company_id($company_name){
-		$this->BookCompanies->set_companyname($company_name);
-		$query = $this->BookCompanies->select("companyid", "companyname = ?", "LIMIT 1");
+		$this->Bookcompanies->set_companyname($company_name);
+		$query = $this->Bookcompanies->select("companyid", "companyname = ?", "LIMIT 1");
 		$ra = $query->result_array();
 		return $ra[0]["companyid"];
 	}
@@ -198,35 +210,45 @@ class Addbook extends CI_Model{
 	@param role
 	  Role of these names.
 	*/
-	private function insert_bookparticipants($names, $name_delimiter, $role){
-		foreach($name as $names){
-			$name_parse = preg_split($name, $name_delimiter);
-			$name_components = $name_parse[1];
+	private function insert_bookparticipants($names, $isbn, $name_delimiter, $role){
+		$this->Bookparticipants->set_isbn($isbn);
+		$this->Bookparticipants->set_role($role, true);
+		$this->Bookparticipants->set_last_updater($this->userid);
+		
+		foreach($names as $name){
+			if($this->is_blank($name)){
+				continue;
+			}
+			echo "Bookparticipant $name<br />";
+			$name_parse = preg_split($name_delimiter, $name);
 			
 			// Get personid from bookpersons.
-			$this->BookPersons->set_lastname($name_components[0]);
-			$first_name = (count($name_components) == 2) ? $name_components[1] : "";
-			$this->BookPersons->set_firstname($first_name);
+			$this->Bookpersons->set_lastname($name_parse[0]);
+			$first_name = (count($name_parse) == 2) ? $name_parse[1] : "";
+			$this->Bookpersons->set_firstname($first_name);
 			
-			$query = $this->BookPersons->select("personid", "firstname = ? AND lastname = ?", "LIMIT 1");
-			$result_array = $query->result_array();
-			$personid = $result_array[0]["personid"];
+			echo "Lastname: " . $this->Bookpersons->get_lastname() . "<br />";
+			echo "Firstname: " . $this->Bookpersons->get_firstname() . "<br />";
+			
+			$query = $this->Bookpersons->select("personid", "firstname = ? AND lastname = ?", "LIMIT 1");
+			echo count($query->result_array);
+			$result = $query->row();
+			$personid = $result->personid;
 			
 			// Now, construct the bookparticipants record.
-			$this->BookParticipants->set_personid($personid);
-			$this->BookParticipants->set_lastupdateby($this->userid);
-			$this->BookParticipants->set_role($role, true);
+			$this->Bookparticipants->set_personid($personid);
 			
-			if($this->BookParticipants->check_exists("personid = ?")){
+			if($this->Bookparticipants->check_exists("personid = ? AND isbn = ?")){
 				// Hmmmm....something seems off with this kind of timestamp checking
 				// and locking...
-				$query = $this->BookParticipants->select("lastupdate", "personid = ?", "LIMIT 1");
+				$query = $this->Bookparticipants->select("lastupdate", "personid = ?", "LIMIT 1");
 				$result_array = $query->result_array();
 				$timestamp = $result_array[0]["lastupdate"];
 				
-				$this->BookParticipants->update("$role,lastupdateby", $timestamp);
+				$this->Bookparticipants->update("$role,lastupdateby", $timestamp);
 			} else{
-				$this->BookParticipants->insert("personid,$role,lastupdateby");
+				$this->Bookparticipants->insert("personid,isbn,$role,lastupdateby");
+				echo "Inserted $name into bookparticipants.<br />";
 			}
 		}
 	}
@@ -244,19 +266,27 @@ class Addbook extends CI_Model{
 	*/
 	private function insert_bookpersons($names, $name_delimiter){
 		$where_clause = "firstname = ? AND lastname = ?";
-		$this->BookPersons->set_lastupdateby($this->userid);
+		$this->Bookpersons->set_last_updater($this->userid);
 		
-		foreach($name as $names){
-			$name_parse = preg_split($name, $name_delimiter);
-			$name_components = $name_parse[1];
-			$this->BookPersons->set_lastname($name_parse[0]);
-			$first_name = (count($name_components) == 2) ? $name_components[1] : "";
-			$this->BookPersons->set_firstname($first_name);
+		foreach($names as $name){
+			if($this->is_blank($name)){
+				continue;
+			}
+			$name_parse = preg_split($name_delimiter, $name);
+			//$name_components = $name_parse[0][1];
+			$this->Bookpersons->set_lastname($name_parse[0]);
+			$first_name = (count($name_parse) == 2) ? $name_parse[1] : "";
+			$this->Bookpersons->set_firstname($first_name);
 			
-			if($this->BookPersons->check_exists($where_clause)){
-				$this->BookPersons->insert("lastname,firstname,lastupdateby");
+			if(!$this->Bookpersons->check_exists($where_clause)){
+				$this->Bookpersons->insert("lastname,firstname,lastupdateby");
+				echo "$name inserted!<br />";
 			}
 		}
+	}
+	
+	private function is_blank($text){
+		return $text == "";
 	}
 	
 	/**
@@ -277,7 +307,7 @@ class Addbook extends CI_Model{
 			
 			$name_parse = explode($name_part_delimiter, $person);
 			
-			$this->LibrarianUtilities->insert_entity("bookpersons", "lastname,firstname", $name_parse);
+			$this->Librarianutilities->insert_entity("bookpersons", "lastname,firstname", $name_parse);
 		}
 	}
 }

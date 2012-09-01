@@ -2,7 +2,7 @@
 
 require_once("daomodel.php");
 
-class BookPersons extends DAOModel{
+class Bookpersons extends DAOModel{
 	
 	const PERSONID = "personid";
 	const LASTNAME = "lastname";
@@ -11,34 +11,34 @@ class BookPersons extends DAOModel{
 	public function __construct(){
 		parent::__construct();
 		$this->table_name = "bookpersons";
-		$this->fields[BookPersons::PERSONID] = null;
-		$this->fields[BookPersons::LASTNAME] = null;
-		$this->fields[BookPersons::FIRSTNAME] = null;
-		array_push($this->primary_keys, BookPersons::PERSONID);
+		$this->fields[Bookpersons::PERSONID] = null;
+		$this->fields[Bookpersons::LASTNAME] = null;
+		$this->fields[Bookpersons::FIRSTNAME] = null;
+		array_push($this->primary_keys, Bookpersons::PERSONID);
 	}
 	
 	public function get_personid(){
-		return $this->fields[BookPersons::PERSONID];
+		return $this->fields[Bookpersons::PERSONID];
 	}
 	
 	public function set_personid($person_id){
-		$this->fields[BookPersons::PERSONID] = $person_id;
+		$this->fields[Bookpersons::PERSONID] = $person_id;
 	}
 	
 	public function get_lastname(){
-		return $this->fields[BookPersons::LASTNAME];
+		return $this->fields[Bookpersons::LASTNAME];
 	}
 	
 	public function set_lastname($lastname){
-		$this->fields[BookPersons::LASTNAME] = $lastname;
+		$this->fields[Bookpersons::LASTNAME] = $lastname;
 	}
 	
 	public function get_firstname(){
-		return $this->fields[BookPersons::FIRSTNAME];
+		return $this->fields[Bookpersons::FIRSTNAME];
 	}
 	
 	public function set_firstname($firstname){
-		$this->fields[BookPersons::FIRSTNAME] = $firstname;
+		$this->fields[Bookpersons::FIRSTNAME] = $firstname;
 	}
 	
 }

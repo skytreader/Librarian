@@ -2,7 +2,7 @@
 
 require_once("bookrelated.php");
 
-class Books extends BookRelated{
+class Books extends Bookrelated{
 	
 	const TITLE = "title";
 	const YEAR = "year";
