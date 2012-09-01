@@ -23,12 +23,12 @@ class Addbook extends CI_Model{
 		parent::__construct();
 		//$this->load->model("Q");
 		
-		$this->load->model("dao/appsettings");
-		$this->load->model("dao/books");
-		$this->load->model("dao/bookcompanies");
-		$this->load->model("dao/leafmakers");
-		$this->load->model("dao/bookpersons");
-		$this->load->model("dao/bookparticipants");
+		$this->load->model("dao/Appsettings");
+		$this->load->model("dao/Books");
+		$this->load->model("dao/Bookcompanies");
+		$this->load->model("dao/Leafmakers");
+		$this->load->model("dao/Bookpersons");
+		$this->load->model("dao/Bookparticipants");
 	}
 	
 	/**
@@ -38,14 +38,6 @@ class Addbook extends CI_Model{
 	translators, publisher, printer, year.
 	*/
 	public function add($book_data){
-		$myci =& get_instance();
-		$this->load->model("dao/Appsettings");
-		$this->load->model("dao/Books");
-		$this->load->model("dao/Bookcompanies");
-		$this->load->model("dao/Leafmakers");
-		$this->load->model("dao/Bookpersons");
-		$this->load->model("dao/Bookparticipants");
-		
 		// Get all the form data
 		$isbn = $book_data["isbn"];
 		$title = $book_data["title"];
@@ -85,9 +77,6 @@ class Addbook extends CI_Model{
 			// Now, the messy part...
 			// Parse names and insert to relevant tables.
 			$author_names = preg_split($ps_regex, $authors);
-			echo "$authors<br />";
-			var_dump($author_names);
-			echo "<br />";
 			$illustrator_names = preg_split($ps_regex, $illustrators);
 			$editor_names = preg_split($ps_regex, $editors);
 			$translator_names = preg_split($ps_regex, $translators);
@@ -219,7 +208,6 @@ class Addbook extends CI_Model{
 			if($this->is_blank($name)){
 				continue;
 			}
-			echo "Bookparticipant $name<br />";
 			$name_parse = preg_split($name_delimiter, $name);
 			
 			// Get personid from bookpersons.
@@ -227,11 +215,7 @@ class Addbook extends CI_Model{
 			$first_name = (count($name_parse) == 2) ? $name_parse[1] : "";
 			$this->Bookpersons->set_firstname($first_name);
 			
-			echo "Lastname: " . $this->Bookpersons->get_lastname() . "<br />";
-			echo "Firstname: " . $this->Bookpersons->get_firstname() . "<br />";
-			
 			$query = $this->Bookpersons->select("personid", "firstname = ? AND lastname = ?", "LIMIT 1");
-			echo count($query->result_array);
 			$result = $query->row();
 			$personid = $result->personid;
 			
@@ -248,7 +232,6 @@ class Addbook extends CI_Model{
 				$this->Bookparticipants->update("$role,lastupdateby", $timestamp);
 			} else{
 				$this->Bookparticipants->insert("personid,isbn,$role,lastupdateby");
-				echo "Inserted $name into bookparticipants.<br />";
 			}
 		}
 	}
@@ -280,7 +263,6 @@ class Addbook extends CI_Model{
 			
 			if(!$this->Bookpersons->check_exists($where_clause)){
 				$this->Bookpersons->insert("lastname,firstname,lastupdateby");
-				echo "$name inserted!<br />";
 			}
 		}
 	}
