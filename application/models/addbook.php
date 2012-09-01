@@ -146,7 +146,7 @@ class Addbook extends CI_Model{
 		$this->Leafmakers->set_isbn($isbn);
 		$this->Leafmakers->set_last_updater($this->userid);
 		
-		if(!$this->Leafmakers->check_exists("companyid = ?")){
+		if(!$this->Leafmakers->check_exists("companyid = ? and isbn = ?")){
 			$this->Leafmakers->insert("isbn,companyid,lastupdateby");
 		}
 		

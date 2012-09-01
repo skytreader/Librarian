@@ -132,6 +132,24 @@ function createHiddenField(inputName, value){
 	return inputObject;
 }
 
+/**
+Clears the details form.
+*/
+function clear(){
+	var detailsForm = $("#detailsForm");
+	var divs = detailsForm.children(".block");
+	var divLimit = divs.length;
+	
+	for(var i = 0; i < divLimit; i++){
+		var inputs = $(divs[i]).children("input");
+		var inputLimit = inputs.length;
+		
+		for(var j = 0; j < inputLimit; j++){
+			inputs[j].value = "";
+		}
+	}
+}
+
 $.validator.addMethod("isbn", function(value, element, param){
 	var stripped = stripExtraneous(value);
 	return verifyISBN10(stripped) || verifyISBN13(stripped);
@@ -159,6 +177,7 @@ $(document).ready(function(){
 	$("[name='add']").click(function(){
 		if($("#detailsForm").valid()){
 			addRecord();
+			clear();
 		}
 	});
 	

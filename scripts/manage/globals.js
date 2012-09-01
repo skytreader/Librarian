@@ -44,11 +44,6 @@ var breakAfter = {
 }
 
 /*
-^Put them in an array!
-*/
-//var bookDetails = [isbn, title, genre, authors, illustrators, editors, translators, publisher, printer, year];
-
-/*
 Flag to determine whether any record has been added to the
 table already. The value is true if there are yet records
 added to the table.
