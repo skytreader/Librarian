@@ -54,7 +54,6 @@ variables directly.
 */
 function renderSpine(){
 	window.spine = [title, authors, illustrators, translators, editors, publisher, printer, year];
-	/*Parallel array to window.spine specifying if a break is rendered after*/
 	var spineText = "";
 	var limit = window.spine.length;
 	
@@ -136,18 +135,33 @@ function createHiddenField(inputName, value){
 Clears the details form.
 */
 function clear(){
-	var detailsForm = $("#detailsForm");
-	var divs = detailsForm.children(".block");
-	var divLimit = divs.length;
+	var fields = getDetailFormFields();
+	var fieldLimit = fields.length;
+	
+	for(var i = 0; i < fieldLimit; i++){
+		fields[i].value = "";
+	}
+}
+
+/**
+Returns all the form fields in the detailsForm as an array.
+No order is guaranteed on the return array.
+*/
+function getDetailFormFields(){
+	var fields = new Array();
+	var blockDivs = $("#detailsForm").children(".block");
+	var divLimit = blockDivs.length;
 	
 	for(var i = 0; i < divLimit; i++){
-		var inputs = $(divs[i]).children("input");
+		var inputs = $(blockDivs[i]).children("input");
 		var inputLimit = inputs.length;
 		
 		for(var j = 0; j < inputLimit; j++){
-			inputs[j].value = "";
+			fields.push(inputs[j]);
 		}
 	}
+	
+	return fields;
 }
 
 $.validator.addMethod("isbn", function(value, element, param){
