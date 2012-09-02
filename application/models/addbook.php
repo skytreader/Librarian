@@ -127,8 +127,8 @@ class Addbook extends CI_Model{
 			}
 			
 			// Aaannnddd... set!
-			$this->check_toggle($publisher_companyid, $isbn, Leafmakers::ISPUBLISHER, $publisher_timestamp);
-			$this->check_toggle($printer_companyid, $isbn, Leafmakers::ISPRINTER, $printer_timestamp);
+			$this->leafmakers_check_toggle($publisher_companyid, $isbn, Leafmakers::ISPUBLISHER);
+			$this->leafmakers_check_toggle($printer_companyid, $isbn, Leafmakers::ISPRINTER);
 			
 			return true;
 		} catch(Exception $e){
@@ -138,20 +138,21 @@ class Addbook extends CI_Model{
 	}
 	
 	/*
-	Checks if a given companyid id in the leafmakers table and inserts
-	them if not. The given role is also set to true.
+	Checks if a given companyid id-isbn combination is in the leafmakers table
+	and inserts them if not. The given role is also set to true.
 	*/
-	private function check_toggle($companyid, $isbn, $role, $timestamp){
+	private function leafmakers_check_toggle($companyid, $isbn, $role){
 		$this->Leafmakers->set_companyid($companyid);
 		$this->Leafmakers->set_isbn($isbn);
 		$this->Leafmakers->set_last_updater($this->userid);
+		$this->Leafmakers->set_role($role, true);
 		
 		if(!$this->Leafmakers->check_exists("companyid = ? and isbn = ?")){
-			$this->Leafmakers->insert("isbn,companyid,lastupdateby");
+			$this->Leafmakers->insert("isbn,companyid,$role,lastupdateby");
+		} else{
+			$this->Leafmakers->load();
+			$this->Leafmakers->update($role, $this->Leafmakers->get_timestamp());
 		}
-		
-		$this->Leafmakers->set_role($role, true);
-		$this->Leafmakers->update($role, $timestamp);
 	}
 	
 	/*
