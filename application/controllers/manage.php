@@ -23,7 +23,7 @@ class Manage extends MainController{
 	public function books(){
 		$this->data_bundle["title"] = "Manage Books";
 		array_push($this->data_bundle["scripts"], "manage/globals.js", "jquery.js", "jquery.validate.min.js",
-			"manage/ready.js", "isbn_verify.js");
+			"manage/controller.js", "manage/model.js", "isbn_verify.js");
 		
 		parent::login_check();
 		

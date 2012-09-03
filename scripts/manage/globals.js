@@ -1,3 +1,8 @@
+/**
+globals.js will hold the global JavaScript variables in the page.
+Use this to cache page elements, save function calls, etc.
+*/
+
 /*
 Will hold the jQuery object of table that lists the books to be added.
 */
