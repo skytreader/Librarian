@@ -54,7 +54,7 @@
 	<tbody>
 		<tr class="booklist">
 			<td colspan="8">
-				No records yet.
+				No books yet.
 			</td>
 		</tr>
 	</tbody>
