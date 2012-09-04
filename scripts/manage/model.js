@@ -50,6 +50,11 @@ function addRecord(){
 Renders the "spine" display of the book list. Takes data from global
 variables directly.
 
+The global variables are expected to have the following attributes:
+  spineDisplay
+    A function returning a string. This string will be the one displayed
+    on the "spine". Include line breaks (as <br> tags).
+
 @return The text formatted like a spine of a book.
 */
 function renderSpine(){
@@ -128,9 +133,24 @@ $(document).ready(function(){
 	window.booklistTableBody = window.booklistTable[0].children[0];
 	
 	window.isbn = $("#isbn", document.addbook);
+	
 	window.title = $("#title", document.addbook);
+	window.title.spineDisplay = function(){return window.title[0].value + "<br />";};
+	
 	window.genre = $("#genre", document.addbook);
+	
 	window.authors = $("#authors", document.addbook);
+	// TODO Too many authors collapses to et. al.
+	window.authors.spineDisplay = function(){
+		var authorsVal = window.authors[0].value;
+		
+		if(authorsVal == ""){
+			return "";
+		} else{
+			return authorsVal + "<br />";
+		}
+	};
+	
 	window.illustrators = $("#illustrators", document.addbook);
 	window.editors = $("#editors", document.addbook);
 	window.translators = $("#translators", document.addbook);
