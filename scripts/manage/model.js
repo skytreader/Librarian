@@ -98,6 +98,24 @@ function clear(){
 	}
 }
 
+/**
+Returns a function that returns a by line, labeled with
+argument _by_. The names displayed with the by line is
+specified through argument _lineVal_.
+
+@param by
+@param lineVal
+*/
+function getLabeledByLine(by, lineVal){
+	return function(){
+		if(lineVal == ""){
+			return "";
+		} else{
+			return "<em>" + by + " by:</em> " + lineVal;
+		}
+	}
+}
+
 $.validator.addMethod("isbn", function(value, element, param){
 	var stripped = stripExtraneous(value);
 	return verifyISBN10(stripped) || verifyISBN13(stripped);
@@ -152,9 +170,27 @@ $(document).ready(function(){
 	};
 	
 	window.illustrators = $("#illustrators", document.addbook);
+	window.illustrators.spineDisplay = getLabeledByLine("Illustrated",
+	  window.illustrators[0].value);
+	
 	window.editors = $("#editors", document.addbook);
+	window.editors.spineDisplay = getLabeledByLine("Edited", window.editors[0].value);
+	
 	window.translators = $("#translators", document.addbook);
+	window.translators.spineDisplay = getLabeledByLine("Translated",
+	  window.translators[0].value);
+	
 	window.publisher = $("#publisher", document.addbook);
+	window.publisher.spineDisplay = function(){
+		var publisherVal = window.publisher[0].value;
+		return "Publisher: " + publisherVal + "<br />";
+	}
+	
 	window.printer = $("#printer", document.addbook);
+	window.printer.spineDisplay = function(){
+		var printerVal = window.printer[0].value;
+		return "Printer: " + printerVal + "<br />";
+	}
+	
 	window.year = $("#year", document.addbook);
 })
