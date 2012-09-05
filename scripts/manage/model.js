@@ -63,24 +63,7 @@ function renderSpine(){
 	var limit = window.spine.length;
 	
 	for(var i = 0; i < limit; i++){
-		var item = window.spine[i][0];
-		var itemId = item.id;
-		
-		if(itemId != window.title[0].id && itemId != window.year[0].id && itemId != window.authors[0].id){
-			var label = "<strong>";
-			
-			if(itemId == window.publisher[0].id || itemId == window.printer[0].id){
-				label += itemId == window.publisher[0].id ? "Published by" : "Printed by";
-			} else{
-				label += itemId;
-			}
-			
-			label += ":</strong> ";
-			spineText += label;
-		}
-		
-		spineText += item.value;
-		spineText += window.breakAfter[itemId] ? "<br />" : "";
+		spineText += window.spine[i].spineDisplay();
 	}
 	
 	return spineText;
@@ -111,7 +94,7 @@ function getLabeledByLine(by, lineVal){
 		if(lineVal == ""){
 			return "";
 		} else{
-			return "<em>" + by + " by:</em> " + lineVal;
+			return "<strong>" + by + " by:</strong> " + lineVal;
 		}
 	}
 }
@@ -183,14 +166,17 @@ $(document).ready(function(){
 	window.publisher = $("#publisher", document.addbook);
 	window.publisher.spineDisplay = function(){
 		var publisherVal = window.publisher[0].value;
-		return "Publisher: " + publisherVal + "<br />";
+		return "<strong>Publisher:</strong> " + publisherVal + "<br />";
 	}
 	
 	window.printer = $("#printer", document.addbook);
 	window.printer.spineDisplay = function(){
 		var printerVal = window.printer[0].value;
-		return "Printer: " + printerVal + "<br />";
+		return "<strong>Printer:</strong> " + printerVal + "<br />";
 	}
 	
 	window.year = $("#year", document.addbook);
+	window.year.spineDisplay = function(){
+		return window.year[0].value;
+	}
 })
