@@ -60,19 +60,25 @@ CREATE TABLE IF NOT EXISTS bookpersons(
 	CONSTRAINT uniqueNames UNIQUE (lastname, firstname)
 ) ENGINE = INNODB;
 
+CREATE TABLE IF NOT EXISTS roles(
+	roleid INTEGER PRIMARY KEY AUTO_INCREMENT,
+	rolename VARCHAR(255) UNIQUE,
+	lastupdate TIMESTAMP NOT NULL,
+	lastupdateby INTEGER NOT NULL,
+	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
+)
+
 CREATE TABLE IF NOT EXISTS bookparticipants(
 	isbn VARCHAR(13),
 	personid INTEGER,
-	isauthor BOOLEAN NOT NULL DEFAULT FALSE,
-	iseditor BOOLEAN NOT NULL DEFAULT FALSE,
-	istranslator BOOLEAN NOT NULL DEFAULT FALSE,
-	isillustrator BOOLEAN NOT NULL DEFAULT FALSE,
+	roleid INTEGER,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid),
 	FOREIGN KEY (isbn) REFERENCES books (isbn),
 	FOREIGN KEY (personid) REFERENCES bookpersons (personid),
-	PRIMARY KEY (isbn, personid)
+	FOREIGN KEY (roleid) REFERENCES roles (roleid),
+	PRIMARY KEY (isbn, personid, roleid)
 ) ENGINE = INNODB;
 
 /**
