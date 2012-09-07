@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 30, 2012 at 03:45 PM
+-- Generation Time: Sep 07, 2012 at 05:57 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `appsettings` (
 --
 
 INSERT INTO `appsettings` (`settingcode`, `classes`, `settingstring`, `description`, `settingvalue`, `lastupdate`, `lastupdateby`) VALUES
+('author_threshold', 'numeric', 'Display "et. al." when the number of authors exceeds', 'All the authors will still be saved. This just affects the display string. Values less than or equal to zero or blank will not collapse authors to "et. al.".', '', '2012-09-05 00:06:12', 2),
 ('name_separator', 'required', 'Name Separator', 'Separates portions of a name (e.g. last name from first name)', ',', '2012-08-28 15:31:11', 1),
 ('person_separator', 'required', 'Person Separator', 'In case of multiple name inputs, this character separates one name from another.', ';', '2012-08-28 15:31:29', 1);
 
@@ -96,15 +97,13 @@ CREATE TABLE IF NOT EXISTS `bookgenres` (
 CREATE TABLE IF NOT EXISTS `bookparticipants` (
   `isbn` varchar(13) NOT NULL DEFAULT '',
   `personid` int(11) NOT NULL DEFAULT '0',
-  `isauthor` tinyint(1) DEFAULT '0',
-  `iseditor` tinyint(1) DEFAULT '0',
-  `istranslator` tinyint(1) DEFAULT '0',
-  `isillustrator` tinyint(1) DEFAULT '0',
+  `roleid` int(11) NOT NULL DEFAULT '0',
   `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lastupdateby` int(11) NOT NULL,
-  PRIMARY KEY (`isbn`,`personid`),
+  PRIMARY KEY (`isbn`,`personid`,`roleid`),
   KEY `lastupdateby` (`lastupdateby`),
-  KEY `personid` (`personid`)
+  KEY `personid` (`personid`),
+  KEY `roleid` (`roleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -269,6 +268,32 @@ CREATE TABLE IF NOT EXISTS `pseudonyms` (
 --
 
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `roleid` int(11) NOT NULL AUTO_INCREMENT,
+  `rolename` varchar(255) DEFAULT NULL,
+  `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `lastupdateby` int(11) NOT NULL,
+  PRIMARY KEY (`roleid`),
+  UNIQUE KEY `rolename` (`rolename`),
+  KEY `lastupdateby` (`lastupdateby`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`roleid`, `rolename`, `lastupdate`, `lastupdateby`) VALUES
+(5, 'Author', '2012-09-07 23:52:53', 2),
+(6, 'Illustrator', '2012-09-07 23:52:53', 2),
+(7, 'Editor', '2012-09-07 23:52:53', 2),
+(8, 'Translator', '2012-09-07 23:52:53', 2);
+
 --
 -- Constraints for dumped tables
 --
@@ -299,7 +324,8 @@ ALTER TABLE `bookgenres`
 ALTER TABLE `bookparticipants`
   ADD CONSTRAINT `bookparticipants_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
   ADD CONSTRAINT `bookparticipants_ibfk_2` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`),
-  ADD CONSTRAINT `bookparticipants_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`);
+  ADD CONSTRAINT `bookparticipants_ibfk_3` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`),
+  ADD CONSTRAINT `bookparticipants_ibfk_4` FOREIGN KEY (`roleid`) REFERENCES `roles` (`roleid`);
 
 --
 -- Constraints for table `bookpersons`
@@ -342,3 +368,9 @@ ALTER TABLE `pseudonyms`
   ADD CONSTRAINT `pseudonyms_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`),
   ADD CONSTRAINT `pseudonyms_ibfk_2` FOREIGN KEY (`personid`) REFERENCES `bookpersons` (`personid`),
   ADD CONSTRAINT `pseudonyms_ibfk_3` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`);
+
+--
+-- Constraints for table `roles`
+--
+ALTER TABLE `roles`
+  ADD CONSTRAINT `roles_ibfk_1` FOREIGN KEY (`lastupdateby`) REFERENCES `librarians` (`librarianid`);

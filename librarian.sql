@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS roles(
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
-)
+) ENGINE = INNODB;
 
 CREATE TABLE IF NOT EXISTS bookparticipants(
 	isbn VARCHAR(13),
