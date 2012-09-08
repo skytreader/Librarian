@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 07, 2012 at 05:57 PM
+-- Generation Time: Sep 08, 2012 at 10:56 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -276,23 +276,24 @@ CREATE TABLE IF NOT EXISTS `pseudonyms` (
 
 CREATE TABLE IF NOT EXISTS `roles` (
   `roleid` int(11) NOT NULL AUTO_INCREMENT,
-  `rolename` varchar(255) DEFAULT NULL,
+  `rolename` varchar(255) NOT NULL,
+  `roledisplay` varchar(255) NOT NULL,
   `lastupdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lastupdateby` int(11) NOT NULL,
   PRIMARY KEY (`roleid`),
   UNIQUE KEY `rolename` (`rolename`),
   KEY `lastupdateby` (`lastupdateby`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`roleid`, `rolename`, `lastupdate`, `lastupdateby`) VALUES
-(5, 'Author', '2012-09-07 23:52:53', 2),
-(6, 'Illustrator', '2012-09-07 23:52:53', 2),
-(7, 'Editor', '2012-09-07 23:52:53', 2),
-(8, 'Translator', '2012-09-07 23:52:53', 2);
+INSERT INTO `roles` (`roleid`, `rolename`, `roledisplay`, `lastupdate`, `lastupdateby`) VALUES
+(1, 'Author', 'Author(s)', '2012-09-08 16:54:59', 1),
+(2, 'Illustrator', 'Illustrator(s)', '2012-09-08 16:54:59', 1),
+(3, 'Editor', 'Editor(s)', '2012-09-08 16:54:59', 1),
+(4, 'Translator', 'Translator(s)', '2012-09-08 16:54:59', 1);
 
 --
 -- Constraints for dumped tables

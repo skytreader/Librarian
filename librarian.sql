@@ -62,7 +62,8 @@ CREATE TABLE IF NOT EXISTS bookpersons(
 
 CREATE TABLE IF NOT EXISTS roles(
 	roleid INTEGER PRIMARY KEY AUTO_INCREMENT,
-	rolename VARCHAR(255) UNIQUE,
+	rolename VARCHAR(255) UNIQUE NOT NULL,
+	roledisplay VARCHAR(255) NOT NULL,
 	lastupdate TIMESTAMP NOT NULL,
 	lastupdateby INTEGER NOT NULL,
 	FOREIGN KEY (lastupdateby) REFERENCES librarians (librarianid)
