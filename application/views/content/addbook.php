@@ -15,14 +15,10 @@
 
 <div class="block">
 	<h2>Content Creators</h2>
-	<label for="authors">Author(s):</label><br />
-	<input type="text" id="authors" name="authors1" /><br />
-	<label for="illustrators">Illustrator(s):</label><br />
-	<input type="text" id="illustrators" name="illustrators1" /><br />
-	<label for="editors">Editor(s):</label><br />
-	<input type="text" id="editors" name="editors1" /><br />
-	<label for="translators">Translator(s):</label><br />
-	<input type="text" id="translators" name="translators1" /><br /><br />
+	<?php foreach($roles as $role): ?>
+		<label for="<?= $role['rolename'] ?>"><?= $role["roledisplay"] ?>:</label><br />
+		<input type="text" id="<?= $role['rolename'] ?>" /><br />
+	<?php endforeach ?>
 </div>
 
 <div class="block">

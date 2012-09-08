@@ -16,10 +16,6 @@ class Manage extends MainController{
 		
 	}
 	
-	/**
-	TODO: Check validity of ISBN input upon form submission.
-	(Or, maybe, we can use JavaScript for this?)
-	*/
 	public function books(){
 		$this->data_bundle["title"] = "Manage Books";
 		array_push($this->data_bundle["scripts"], "manage/globals.js", "jquery.js", "jquery.validate.min.js",
@@ -29,8 +25,16 @@ class Manage extends MainController{
 		
 		$this->data_bundle["content"] = "content/addbook.php";
 		$this->data_bundle["logged_in"] = TRUE;
+		$this->data_bundle["roles"] = $this->get_all_roles();
 		
 		$this->load->view("mainview", $this->data_bundle);
+	}
+	
+	private function get_all_roles(){
+		$this->load->database(BOOKS_DSN);
+		$this->load->model("dao/Roles");
+		$query = $this->Roles->select("*", "1", "");
+		return $query->result_array();
 	}
 	
 }
