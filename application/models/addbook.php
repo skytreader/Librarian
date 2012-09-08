@@ -21,7 +21,7 @@ class Addbook extends CI_Model{
 	
 	public function __construct(){
 		parent::__construct();
-		//$this->load->model("Q");
+		$this->load->database(BOOKS_DSN);
 		
 		$this->load->model("dao/Appsettings");
 		$this->load->model("dao/Books");
@@ -29,6 +29,7 @@ class Addbook extends CI_Model{
 		$this->load->model("dao/Leafmakers");
 		$this->load->model("dao/Bookpersons");
 		$this->load->model("dao/Bookparticipants");
+		$this->load->model("dao/Roles");
 	}
 	
 	/**

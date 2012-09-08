@@ -8,6 +8,7 @@ class Roles extends Daomodel{
 	const ROLENAME = "rolename";
 	
 	public function __construct(){
+		parent::__construct();
 		$this->fields[Roles::ROLEID] = null;
 		$this->fields[Roles::ROLENAME] = null;
 		array_push($this->primary_keys, Roles::ROLEID);

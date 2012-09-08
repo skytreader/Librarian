@@ -37,7 +37,6 @@ class Daomodel extends CI_Model{
 	public function __construct(){
 		$this->fields = array(Daomodel::TIMESTAMP => null, Daomodel::LAST_UPDATER => null);
 		$this->load->model("QueryStringUtils");
-		$this->load->database(BOOKS_DSN);
 		$this->primary_keys = array();
 		$this->autocommit = true;
 	}
