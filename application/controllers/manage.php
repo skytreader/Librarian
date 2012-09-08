@@ -30,7 +30,6 @@ class Manage extends MainController{
 		$this->data_bundle["content"] = "content/addbook.php";
 		$this->data_bundle["logged_in"] = TRUE;
 		
-		$this->load->library("javascript");
 		$this->load->view("mainview", $this->data_bundle);
 	}
 	
