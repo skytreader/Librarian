@@ -130,19 +130,19 @@ $(document).ready(function(){
 		}
 	});
 	
-	window.booklistTable = $("#booklist", document.bookqueue);
-	window.booklistTableBody = window.booklistTable[0].children[0];
+	window.bookDetailsForm.booklistTable = $("#booklist", document.bookqueue);
+	window.bookDetialsForm.booklistTableBody = window.booklistTable[0].children[0];
 	
-	window.isbn = $("#isbn", document.addbook);
+	window.bookDetailsForm.isbn = $("#isbn", document.addbook);
 	
-	window.title = $("#title", document.addbook);
-	window.title.spineDisplay = function(){return window.title[0].value + "<br />";};
+	window.bookDetailsForm.title = $("#title", document.addbook);
+	window.bookDetailsForm.title.spineDisplay = function(){return window.title[0].value + "<br />";};
 	
-	window.genre = $("#genre", document.addbook);
+	window.bookDetailsForm.genre = $("#genre", document.addbook);
 	
-	window.authors = $("#authors", document.addbook);
+	window.bookDetailsForm.authors = $("#authors", document.addbook);
 	// TODO Too many authors collapses to et. al.
-	window.authors.spineDisplay = function(){
+	window.bookDetailsForm.authors.spineDisplay = function(){
 		var authorsVal = window.authors[0].value;
 		
 		if(authorsVal == ""){
@@ -152,31 +152,31 @@ $(document).ready(function(){
 		}
 	};
 	
-	window.illustrators = $("#illustrators", document.addbook);
-	window.illustrators.spineDisplay = getLabeledByLine("Illustrated",
+	window.bookDetailsForm.illustrators = $("#illustrators", document.addbook);
+	window.bookDetailsForm.illustrators.spineDisplay = getLabeledByLine("Illustrated",
 	  window.illustrators[0].value);
 	
-	window.editors = $("#editors", document.addbook);
-	window.editors.spineDisplay = getLabeledByLine("Edited", window.editors[0].value);
+	window.bookDetailsForm.editors = $("#editors", document.addbook);
+	window.bookDetailsForm.editors.spineDisplay = getLabeledByLine("Edited", window.editors[0].value);
 	
-	window.translators = $("#translators", document.addbook);
-	window.translators.spineDisplay = getLabeledByLine("Translated",
+	window.bookDetailsForm.translators = $("#translators", document.addbook);
+	window.bookDetailsForm.translators.spineDisplay = getLabeledByLine("Translated",
 	  window.translators[0].value);
 	
-	window.publisher = $("#publisher", document.addbook);
-	window.publisher.spineDisplay = function(){
+	window.bookDetailsForm.publisher = $("#publisher", document.addbook);
+	window.bookDetailsForm.publisher.spineDisplay = function(){
 		var publisherVal = window.publisher[0].value;
 		return "<strong>Publisher:</strong> " + publisherVal + "<br />";
 	}
 	
-	window.printer = $("#printer", document.addbook);
-	window.printer.spineDisplay = function(){
+	window.bookDetailsForm.printer = $("#printer", document.addbook);
+	window.bookDetailsForm.printer.spineDisplay = function(){
 		var printerVal = window.printer[0].value;
 		return "<strong>Printer:</strong> " + printerVal + "<br />";
 	}
 	
-	window.year = $("#year", document.addbook);
-	window.year.spineDisplay = function(){
+	window.bookDetailsForm.year = $("#year", document.addbook);
+	window.bookDetailsForm.year.spineDisplay = function(){
 		return window.year[0].value;
 	}
 })

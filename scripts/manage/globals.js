@@ -28,6 +28,15 @@ var publisher;
 var printer;
 var year;
 
+/*
+Will hold the form elements of the bookDetails form. Use this in favor of the
+variables above.
+
+Sample usage:
+  bookDetailsForm.isbn = $("#isbn");
+*/
+var bookDetailsForm = new Object();
+
 /**
 An array holding the details that appears in a book spine.
 */
