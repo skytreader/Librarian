@@ -130,8 +130,8 @@ $(document).ready(function(){
 		}
 	});
 	
-	window.bookDetailsForm.booklistTable = $("#booklist", document.bookqueue);
-	window.bookDetialsForm.booklistTableBody = window.booklistTable[0].children[0];
+	window.booklistTable = $("#booklist", document.bookqueue);
+	window.booklistTableBody = window.booklistTable[0].children[0];
 	
 	window.bookDetailsForm.isbn = $("#isbn", document.addbook);
 	
@@ -154,29 +154,29 @@ $(document).ready(function(){
 	
 	window.bookDetailsForm.illustrators = $("#illustrators", document.addbook);
 	window.bookDetailsForm.illustrators.spineDisplay = getLabeledByLine("Illustrated",
-	  window.illustrators[0].value);
+	  window.bookDetailsForm.illustrators[0].value);
 	
 	window.bookDetailsForm.editors = $("#editors", document.addbook);
-	window.bookDetailsForm.editors.spineDisplay = getLabeledByLine("Edited", window.editors[0].value);
+	window.bookDetailsForm.editors.spineDisplay = getLabeledByLine("Edited", window.bookDetailsForm.editors[0].value);
 	
 	window.bookDetailsForm.translators = $("#translators", document.addbook);
 	window.bookDetailsForm.translators.spineDisplay = getLabeledByLine("Translated",
-	  window.translators[0].value);
+	  window.bookDetailsForm.translators[0].value);
 	
 	window.bookDetailsForm.publisher = $("#publisher", document.addbook);
 	window.bookDetailsForm.publisher.spineDisplay = function(){
-		var publisherVal = window.publisher[0].value;
+		var publisherVal = window.bookDetailsForm.publisher[0].value;
 		return "<strong>Publisher:</strong> " + publisherVal + "<br />";
 	}
 	
 	window.bookDetailsForm.printer = $("#printer", document.addbook);
 	window.bookDetailsForm.printer.spineDisplay = function(){
-		var printerVal = window.printer[0].value;
+		var printerVal = window.bookDetailsForm.printer[0].value;
 		return "<strong>Printer:</strong> " + printerVal + "<br />";
 	}
 	
 	window.bookDetailsForm.year = $("#year", document.addbook);
 	window.bookDetailsForm.year.spineDisplay = function(){
-		return window.year[0].value;
+		return window.bookDetailsForm.year[0].value;
 	}
 })
