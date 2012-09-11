@@ -10,8 +10,8 @@ function addRecord(){
 	}
 	var row = document.createElement("tr");
 	$(row).addClass("booklist");
-	var locISBN = window.isbn[0];
-	var locGenre = window.genre[0];
+	var locISBN = window.bookDetailsForm.isbn;
+	var locGenre = window.bookDetailsForm.genre;
 	
 	// Create the ISBN-Genre cell
 	var cell = document.createElement("td");
