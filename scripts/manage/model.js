@@ -10,8 +10,8 @@ function addRecord(){
 	}
 	var row = document.createElement("tr");
 	$(row).addClass("booklist");
-	var locISBN = window.bookDetailsForm.isbn;
-	var locGenre = window.bookDetailsForm.genre;
+	var locISBN = window.bookDetailsForm.isbn[0];
+	var locGenre = window.bookDetailsForm.genre[0];
 	
 	// Create the ISBN-Genre cell
 	var cell = document.createElement("td");
@@ -58,12 +58,12 @@ The global variables are expected to have the following attributes:
 @return The text formatted like a spine of a book.
 */
 function renderSpine(){
-	window.spine = [title, authors, illustrators, translators, editors, publisher, printer, year];
+	window.spine = ["title", "authors", "illustrators", "translators", "editors", "publisher", "printer", "year"];
 	var spineText = "";
 	var limit = window.spine.length;
 	
 	for(var i = 0; i < limit; i++){
-		spineText += window.spine[i].spineDisplay();
+		spineText += window.bookDetailsForm[spine[i]].spineDisplay();
 	}
 	
 	return spineText;
@@ -136,14 +136,14 @@ $(document).ready(function(){
 	window.bookDetailsForm.isbn = $("#isbn", document.addbook);
 	
 	window.bookDetailsForm.title = $("#title", document.addbook);
-	window.bookDetailsForm.title.spineDisplay = function(){return window.title[0].value + "<br />";};
+	window.bookDetailsForm.title.spineDisplay = function(){return window.bookDetailsForm.title[0].value + "<br />";};
 	
 	window.bookDetailsForm.genre = $("#genre", document.addbook);
 	
 	window.bookDetailsForm.authors = $("#authors", document.addbook);
 	// TODO Too many authors collapses to et. al.
 	window.bookDetailsForm.authors.spineDisplay = function(){
-		var authorsVal = window.authors[0].value;
+		var authorsVal = window.bookDetailsForm.authors[0].value;
 		
 		if(authorsVal == ""){
 			return "";
