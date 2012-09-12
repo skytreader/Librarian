@@ -13,7 +13,15 @@ class Manage extends MainController{
 	}
 	
 	public function users(){
+		$this->data_bundle["title"] = "Manage Users";
+		array_push($this->data_bundle["scripts"], "jquery.js", "jquery.validate.min.js");
 		
+		parent::login_check();
+		
+		$this->data_bundle["content"] = "content/adduser.php";
+		$this->data_bundle["logged_in"] = true;
+		
+		$this->load->view("mainview", $this->data_bundle);
 	}
 	
 	public function books(){
@@ -24,7 +32,7 @@ class Manage extends MainController{
 		parent::login_check();
 		
 		$this->data_bundle["content"] = "content/addbook.php";
-		$this->data_bundle["logged_in"] = TRUE;
+		$this->data_bundle["logged_in"] = true;
 		$this->data_bundle["roles"] = $this->get_all_roles();
 		
 		$this->load->view("mainview", $this->data_bundle);
