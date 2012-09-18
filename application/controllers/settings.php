@@ -16,7 +16,7 @@ class Settings extends MainController{
 		$this->load->model("dao/Librarians");
 		$this->load->library("session");
 		
-		array_push($this->data_bundle["scripts"], "jquery.js", "jquery.validate.min.js", "settings/ready.js");
+		array_push($this->data_bundle["scripts"], JQUERY_PATH, "jquery.validate.min.js", "settings/ready.js");
 		
 		// Check first if user is super user to save time querying
 		$this->Librarians->set_librarianid($this->session->userdata(SESSION_LIBRARIAN_ID));

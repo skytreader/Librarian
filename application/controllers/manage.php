@@ -14,7 +14,7 @@ class Manage extends MainController{
 	
 	public function users(){
 		$this->data_bundle["title"] = "Manage Users";
-		array_push($this->data_bundle["scripts"], "jquery.js", "jquery.validate.min.js");
+		array_push($this->data_bundle["scripts"], JQUERY_PATH, "jquery.validate.min.js");
 		
 		parent::login_check();
 		
@@ -26,7 +26,7 @@ class Manage extends MainController{
 	
 	public function books(){
 		$this->data_bundle["title"] = "Manage Books";
-		array_push($this->data_bundle["scripts"], "manage/globals.js", "jquery.js", "jquery.validate.min.js",
+		array_push($this->data_bundle["scripts"], "manage/globals.js", JQUERY_PATH, "jquery.validate.min.js",
 			"manage/controller.js", "manage/model.js", "isbn_verify.js");
 		
 		parent::login_check();
